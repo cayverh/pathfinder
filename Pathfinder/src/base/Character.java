@@ -1,49 +1,94 @@
-package application;
+package base;
 
 import java.util.*;
 import classes.*;
+import classes.Class;
+import classes.*;
+import races.*;
 
-public class Character
+public class Character implements Abilities
 {
-  private static final int NUM_CLASSES = 11;
-  private static final int NUM_ABILITY_SCORES = 6;
-  private static final int MAX_6D = 6;
-  private static final int MIN_6D = 1;
-  private static final String STR = "Str";
-  private static final String DEX = "Dex";
-  private static final String CON = "Con";
-  private static final String INT = "Int";
-  private static final String WIS = "Wis";
-  private static final String CHA = "Cha";
-  
-  private String player;
+  public static final int NUM_CLASSES = 11;
+  public static final int NUM_ABILITY_SCORES = 6;
+  public static final int MAX = 6;
+  public static final int MIN = 1;
+
   private String charName;
-  
+  private String alignment;
+  private String player;
+  private int charLevel;
+  private String diety;
+  private String homeland;
+  private CoreRace charRace; // Size, gender, age, height, weight, and speed are all determined by
+                             // race
+  private String hairColor;
+  private String eyeColor;
+
+  private Class charClass; // HP is determined by class
+
   private HashMap<String, Integer> abilityScores;
   private HashMap<String, Integer> abilityMods;
-  
-  public Character(String player, String charName)
+
+  public Character(String player, String charName, String gender, String align, String race,
+      String cclass)
   {
     this.player = player;
     this.charName = charName;
-  }
-  
-  public void genClass()
-  {
-    int classIdentifier = new Random().nextInt(NUM_CLASSES);
-    
-    switch(classIdentifier)
+    alignment = align;
+
+    abilityScores = new HashMap<String, Integer>();
+    abilityMods = new HashMap<String, Integer>();
+
+    if (race.equals("Dwarf"))
+      charRace = new Dwarf(gender);
+    else if (race.equals("Elf"))
+      charRace = new Elf();
+    else if (race.equals("Gnome"))
+      charRace = new Gnome();
+    else if (race.equals("Half-Elf"))
+      charRace = new HalfElf();
+    else if (race.equals("Halfling"))
+      charRace = new Halfling();
+    else if (race.equals("Half-Orc"))
+      charRace = new HalfOrc();
+    else if (race.equals("Human"))
+      charRace = new Human();
+    else
     {
-      case 0:
-        
+      charRace = null;
+      // Randomly choose a race.
     }
   }
-  
+
+  public void genCoreClass()
+  {
+    int classIdentifier = new Random().nextInt(NUM_CLASSES);
+
+    switch (classIdentifier)
+    {
+      case 0:
+        charClass = new Barbarian();
+        break;
+      case 1:
+        charClass = new Bard();
+        break;
+      /*
+       * case 2: charClass = new Cleric(); break; case 3: charClass = new Druid(); break; case 4:
+       * charClass = new Fighter(); break; case 5: charClass = new Monk(); break; case 6: charClass
+       * = new Paladin(); break; case 7: charClass = new Ranger(); break; case 8: charClass = new
+       * Rogue(); break; case 9: charClass = new Sorcerer(); break; case 10: charClass = new
+       * Wizard(); break;
+       */
+      default:
+        break;
+    }
+  }
+
   /**
    * Generate random scores for the six abilities: Strength, Dexterity, Constitution, Intelligence,
    * Wisdom, and Charisma.
    */
-  protected void genAbilityScores()
+  public void genAbilityScores()
   {
     int[] randNum = new int[4];
     int lowestScore;
@@ -61,7 +106,7 @@ public class Character
       // Also record the lowest number.
       for (int j = 0; j < 4; j++)
       {
-        randNum[j] = new Random().nextInt(MAX_6D) + MIN_6D;
+        randNum[j] = new Random().nextInt(MAX) + MIN;
 
         if (j == 0)
         {
@@ -116,7 +161,7 @@ public class Character
    * Generate the ability modifiers of the six abilities: Strength, Dexterity, Constitution,
    * Intelligence, Wisdom, and Charisma.
    */
-  protected void genAbilityMods()
+  public void genAbilityMods()
   {
     abilityMods = new HashMap<>();
 
@@ -145,9 +190,8 @@ public class Character
       else
         mod = 4;
 
-      abilityMods.put(key, mod);
+      abilityMods.put(key, mod + charRace.getAbilityBonuses().get(key));
     }
-
   }
 
   /**
@@ -186,7 +230,7 @@ public class Character
   {
     return abilityScores.get(CON);
   }
-  
+
   public int getConMod()
   {
     return abilityMods.get(CON);
@@ -200,7 +244,7 @@ public class Character
   {
     return abilityScores.get(INT);
   }
-  
+
   public int getIntMod()
   {
     return abilityMods.get(INT);
@@ -214,7 +258,7 @@ public class Character
   {
     return abilityScores.get(WIS);
   }
-  
+
   public int getWisMod()
   {
     return abilityMods.get(WIS);

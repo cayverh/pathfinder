@@ -1,12 +1,16 @@
 package application;
 
+import base.Character;
 import classes.*;
 
 public class Driver
 {
   public static void main(String[] args)
   {
-    Character c = new Character("Cayleigh", "Rukoa");
+    Character c = new Character("Cayleigh", "Rukoa", "Female", "Chaotic Good", "Dwarf", "Barbarian");
+    
+    c.genAbilityScores();
+    c.genAbilityMods();
 
     System.out.printf("Str: %s, Mod: %s\n", c.getStr(), c.getStrMod());
     System.out.printf("Dex: %s, Mod: %s\n", c.getDex(), c.getDexMod());
