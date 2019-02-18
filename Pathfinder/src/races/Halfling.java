@@ -10,7 +10,6 @@ public class Halfling extends Race
   {
     super(gender);
 
-    setAge();
     setWeightAndHeight();
 
     // Alter standard racial traits
@@ -25,10 +24,9 @@ public class Halfling extends Race
   }
 
   @Override
-  public void setAge()
+  public int getBaseAge()
   {
-    age = BASE_AGE;
-    // TODO
+    return BASE_AGE;
   }
 
   @Override
@@ -56,7 +54,7 @@ public class Halfling extends Race
   
   public String getRace()
   {
-    return "Halfling";
+    return HALFLING;
   }
 
   /**

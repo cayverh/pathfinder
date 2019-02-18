@@ -10,7 +10,6 @@ public class Gnome extends Race
   {
     super(gender);
 
-    setAge();
     setWeightAndHeight();
 
     // Alter standard racial traits
@@ -25,10 +24,9 @@ public class Gnome extends Race
   }
 
   @Override
-  public void setAge()
+  public int getBaseAge()
   {
-    age = BASE_AGE;
-    // TODO
+    return BASE_AGE;
   }
 
   @Override
@@ -57,7 +55,7 @@ public class Gnome extends Race
   
   public String getRace()
   {
-    return "Gnomef";
+    return GNOME;
   }
 
   /**

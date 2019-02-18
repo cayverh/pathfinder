@@ -10,7 +10,6 @@ public class Human extends Race
   {
     super(gender);
 
-    setAge();
     setWeightAndHeight();
 
     // Alter standard racial traits
@@ -23,9 +22,9 @@ public class Human extends Race
   }
 
   @Override
-  public void setAge()
+  public int getBaseAge()
   {
-    age = BASE_AGE;
+    return BASE_AGE;
   }
 
   @Override
@@ -54,7 +53,7 @@ public class Human extends Race
   
   public String getRace()
   {
-    return "Human";
+    return HUMAN;
   }
 
   /**

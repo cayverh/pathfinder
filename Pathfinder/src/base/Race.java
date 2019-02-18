@@ -1,10 +1,22 @@
 package base;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public abstract class Race implements Dice, Abilities
 {
+  protected final DecimalFormat FORMAT = new DecimalFormat("#.##");
+  
+  public static final String DWARF = "Dwarf";
+  public static final String ELF = "Elf";
+  public static final String GNOME = "Gnome";
+  public static final String HALFELF = "Half-Elf";
+  public static final String HALFLING = "Halfling";
+  public static final String HALFORC = "Half-Orc";
+  public static final String HUMAN = "Human";
+  
   protected int age;
   protected String gender;
   protected String size;
@@ -55,7 +67,7 @@ public abstract class Race implements Dice, Abilities
   
   public String getHeight()
   {
-    return (int) height + "ft. " + (height % 1) * 12 + " in.";
+    return (int) height + "ft. " + FORMAT.format((height % 1) * 12) + " in.";
   }
   
   public String getSize()
@@ -65,15 +77,15 @@ public abstract class Race implements Dice, Abilities
   
   public String getSpeed()
   {
-    return baseSpeed + "ft.";
+    return baseSpeed + " ft.";
   }
   
   public String getWeight()
   {
-    return weight + "lbs.";
+    return FORMAT.format(weight) + " lbs.";
   }
 
-  public abstract void setAge();
+  public abstract int getBaseAge();
 
   public abstract void setLanguages();
 

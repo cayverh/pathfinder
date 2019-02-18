@@ -10,7 +10,6 @@ public class Elf extends Race
   {
     super(gender);
     
-    setAge();
     setWeightAndHeight();
 
     // Alter standard racial traits
@@ -28,10 +27,9 @@ public class Elf extends Race
    * Set the age of the player's elf. Based on class.
    */
   @Override
-  public void setAge()
+  public int getBaseAge()
   {
-    // Set the age of the player's character
-    age = BASE_AGE; // TODO - Add age based on class
+    return BASE_AGE;
   }
 
   @Override
@@ -62,7 +60,7 @@ public class Elf extends Race
   
   public String getRace()
   {
-    return "Elf";
+    return ELF;
   }
 
   /**

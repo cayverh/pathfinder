@@ -10,7 +10,6 @@ public class HalfElf extends Race
   {
     super(gender);
 
-    setAge();
     setWeightAndHeight();
 
     // Alter standard racial traits
@@ -23,9 +22,9 @@ public class HalfElf extends Race
   }
 
   @Override
-  public void setAge()
+  public int getBaseAge()
   {
-    age = BASE_AGE;
+    return BASE_AGE;
     // TODO
   }
 
@@ -57,7 +56,7 @@ public class HalfElf extends Race
   
   public String getRace()
   {
-    return "Half-Elf";
+    return HALFELF;
   }
 
   /**
@@ -84,7 +83,7 @@ public class HalfElf extends Race
     }
 
     // Generate the actual height and weight of the player's character
-    height = height + D8.roll(2);
+    height = height + (D8.roll(2) / 12.0);
     weight = weight + D8.roll(2) * 5;
   }
 

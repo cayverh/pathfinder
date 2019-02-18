@@ -16,54 +16,59 @@ import races.*;
  */
 public class Character implements Dice, Abilities
 {
-  public static final int NUM_CLASSES = 11;
-  public static final int NUM_RACES = 7;
-  public static final int NUM_ABILITY_SCORES = 6;
   public static final int MAX = 6;
   public static final int MIN = 1;
-
+  
   private String charName;
   private String alignment;
   private String player;
   private int charLevel;
   private String diety;
   private String homeland;
-
+  private String gender;
   private String hairColor;
   private String eyeColor;
 
+  private String race;
   private Race charRace; // Size, gender, age, height, weight, and speed are all determined by
                          // race
 
+  private String classification;
   private Classification charClass; // HP, starting wealth, skills, and skill ranks, base attack
                                     // bonus, fort
   // save, ref save, and will save are determined by class
 
-  public Character(String player, String charName, String gender, String align,
+  public Character(String player, String charName, String gen, String align,
       String race, String cclass)
   {
     this.player = player;
     this.charName = charName;
     alignment = align;
+    this.race = race;
+    this.classification = cclass;
+    
+    gender = Generator.genGender(gen);
 
-    if (race.equals("Dwarf"))
+    if (race.equals(Race.DWARF))
       charRace = new Dwarf(gender);
-    else if (race.equals("Elf"))
+    else if (race.equals(Race.ELF))
       charRace = new Elf(gender);
-    else if (race.equals("Gnome"))
+    else if (race.equals(Race.GNOME))
       charRace = new Gnome(gender);
-    else if (race.equals("Half-Elf"))
+    else if (race.equals(Race.HALFELF))
       charRace = new HalfElf(gender);
-    else if (race.equals("Halfling"))
+    else if (race.equals(Race.HALFLING))
       charRace = new Halfling(gender);
-    else if (race.equals("Half-Orc"))
+    else if (race.equals(Race.HALFORC))
       charRace = new HalfOrc(gender);
-    else if (race.equals("Human"))
+    else if (race.equals(Race.HUMAN))
       charRace = new Human(gender);
     else
     {
-      genRace(gender);
+      charRace = Generator.genRace(gender);
     }
+
+    setAppearance(hairColor, eyeColor);
   }
 
   public void applyAbilityScoreMod(String ability)
@@ -76,81 +81,40 @@ public class Character implements Dice, Abilities
       genAbilityMods();
   }
 
-  public void genClass()
+  public void setAppearance(String hairColor, String eyeColor)
   {
-    int classIdentifier = new Random().nextInt(NUM_CLASSES);
+    if (hairColor != null)
+      this.hairColor = hairColor;
+    else
+      this.hairColor = "";
 
-    switch (classIdentifier)
-    {
-      case 0:
-        charClass = new Barbarian();
-        break;
-      case 1:
-        charClass = new Bard();
-        break;
-      /*
-       * case 2: charClass = new Cleric(); break; case 3: charClass = new Druid(); break; case 4:
-       * charClass = new Fighter(); break; case 5: charClass = new Monk(); break; case 6: charClass
-       * = new Paladin(); break; case 7: charClass = new Ranger(); break; case 8: charClass = new
-       * Rogue(); break; case 9: charClass = new Sorcerer(); break; case 10: charClass = new
-       * Wizard(); break;
-       */
-      default:
-        break;
-    }
+    if (eyeColor != null)
+      this.eyeColor = eyeColor;
+    else
+      this.eyeColor = "";
   }
 
   public String getGeneralCharInfo()
   {
     String charInfo = "";
 
-    charInfo += "   Player Name: " + player + "\tCharacter: " + charName + "\n";
-
     charInfo +=
-        "\t  Race: " + charRace.getRace() + "\t      Age: " + charRace.getAge() + "\n";
+        String.format("   Player Name: %-20.20s\tCharacter: %s\n",
+            player, charName, charRace.getAge());
+    charInfo += String.format("\tGender: %-20.20s\t      Age: %d\n", gender, getAge());
+    charInfo += String.format("\tHeight: %-20.20s\t   Weight: %-20.10s\tSize: %s\n",
+        charRace.getHeight(), charRace.getWeight(), charRace.getSize());
+    charInfo += String.format("    Hair Color: %-20.20s\tEye Color: %s\n",
+        hairColor, eyeColor);
 
-    charInfo += "\tHeight: " + charRace.getHeight() + "\t   Weight: "
-        + charRace.getWeight() + "\n";
-
-    charInfo += "     Alignment: " + alignment + "\t    Diety: " + diety + "\n";
+    charInfo += "\n";
     
-    charInfo += "      Homeland: " + homeland + "\t\t     Size: " + charRace.getSize() + "\n";
+    charInfo += String.format("\t  Race: %-20.20s\t    Class: %s\n", getRace(), "");
+    charInfo +=
+        String.format("     Alignment: %-20.20s\t    Diety: %s\n", alignment, diety);
+    charInfo += String.format("      Homeland: %-20.20s\n", homeland);
 
-    charInfo += "    Hair Color: " + hairColor + "\t\tEye Color: " + eyeColor + "\n";
-    
     return charInfo;
-  }
-
-  public void genRace(String gender)
-  {
-    int raceIdentifier = new Random().nextInt(NUM_RACES);
-
-    switch (raceIdentifier)
-    {
-      case 0:
-        charRace = new Dwarf(gender);
-        break;
-      case 1:
-        charRace = new Elf(gender);
-        break;
-      case 2:
-        charRace = new Gnome(gender);
-        break;
-      case 3:
-        charRace = new HalfElf(gender);
-        break;
-      case 4:
-        charRace = new Halfling(gender);
-        break;
-      case 5:
-        charRace = new HalfOrc(gender);
-        break;
-      case 6:
-        charRace = new Human(gender);
-        break;
-      default:
-        break;
-    }
   }
 
   /**
@@ -159,70 +123,7 @@ public class Character implements Dice, Abilities
    */
   public void genAbilityScores()
   {
-    int[] randNum = new int[4];
-    int lowestScore = 0;
-    int totalScore = 0;
-
-    // Randomly generate an ability score for each ability.
-    for (int i = 0; i < NUM_ABILITY_SCORES; i++)
-    {
-      // Reset
-      lowestScore = 0;
-      totalScore = 0;
-
-      // Generate and store four random numbers between 1 and 6.
-      // Also record the lowest number.
-      for (int j = 0; j < 4; j++)
-      {
-        randNum[j] = new Random().nextInt(MAX) + MIN;
-
-        if (j == 0)
-        {
-          lowestScore = randNum[j];
-        }
-        else if (randNum[j] <= lowestScore)
-        {
-          lowestScore = randNum[j];
-        }
-      }
-
-      // Add the three highest "rolls" together.
-      for (int k = 0; k < 4; k++)
-      {
-        totalScore += randNum[k];
-      }
-
-      // Subtract the lowest "roll" from the total score.
-      totalScore -= lowestScore;
-
-      // Associate the random generated score to an ability score on each iteration.
-      switch (i)
-      {
-        case 0:
-          abilityScores.put(STR, totalScore);
-          break;
-
-        case 1:
-          abilityScores.put(DEX, totalScore);
-          break;
-
-        case 2:
-          abilityScores.put(CON, totalScore);
-          break;
-
-        case 3:
-          abilityScores.put(INT, totalScore);
-          break;
-
-        case 4:
-          abilityScores.put(WIS, totalScore);
-          break;
-
-        case 5:
-          abilityScores.put(CHA, totalScore);
-          break;
-      }
-    }
+    Generator.genAbilityScores(abilityScores);
   }
 
   /**
@@ -231,33 +132,7 @@ public class Character implements Dice, Abilities
    */
   public void genAbilityMods()
   {
-    int mod;
-
-    for (String key : abilityScores.keySet())
-    {
-      int score = abilityScores.get(key);
-
-      if (score <= 3)
-        mod = -4;
-      else if (score <= 5)
-        mod = -3;
-      else if (score <= 7)
-        mod = -2;
-      else if (score <= 9)
-        mod = -1;
-      else if (score <= 11)
-        mod = 0;
-      else if (score <= 13)
-        mod = 1;
-      else if (score <= 15)
-        mod = 2;
-      else if (score <= 17)
-        mod = 3;
-      else
-        mod = 4;
-
-      abilityMods.put(key, mod + charRace.getAbilityBonuses().get(key));
-    }
+    Generator.genAbilityMods(abilityScores, abilityMods, charRace);
   }
 
   public String getAbilityInfo()
@@ -271,6 +146,21 @@ public class Character implements Dice, Abilities
     }
 
     return abilityInfo;
+  }
+  
+  public int getAge()
+  {
+    return charRace.getAge();
+  }
+  
+  public String getClassification()
+  {
+    return "";
+  }
+
+  public String getRace()
+  {
+    return charRace.getRace();
   }
 
   /**
