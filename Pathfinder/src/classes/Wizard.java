@@ -1,6 +1,36 @@
 package classes;
 
-public class Wizard
+import base.Classification;
+
+public class Wizard extends Classification
 {
+
+  @Override
+  public void setSkillRanksPerLevel(int base, int intMod)
+  {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void setFortSave()
+  {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void setRefSave()
+  {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void setWillSave()
+  {
+    // TODO Auto-generated method stub
+    
+  }
 
 }

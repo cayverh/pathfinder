@@ -1,10 +1,12 @@
-package classes;
+package base;
 
-import java.util.HashMap;
-import java.util.Random;
-
-public abstract class CoreClass implements Class
+public abstract class Classification
 {
+  // Has an HP
+  // Has a base wealth
+  // Has default class skills
+  // Has a skill ranks per level
+  
   private int skillRanksPerLevel;
 
   private int baseAttackBonus;
@@ -23,7 +25,7 @@ public abstract class CoreClass implements Class
    */
   public abstract void setSkillRanksPerLevel(int base, int intMod);
 
-  public abstract void setForSave();
+  public abstract void setFortSave();
   
   public abstract void setRefSave();
   

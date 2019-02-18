@@ -1,57 +1,86 @@
 package races;
 
-import dice.*;
+import base.*;
 
-public class Dwarf extends CoreRace
+public class Dwarf extends Race
 {
-  protected static final String DESCRIPTION = "Dwarves are a short and stocky race, and stand about a foot shorter than most humans, "
-      + "with wide, compact bodies that account for their burly appearance. Male and female dwarves pride"
-      + " themselves on the long length of their hair, and men often decorate their beards with a variety"
-      + " of clasps and intricate braids. Clean-shavenness on a male dwarf is a sure sign of madness, or"
-      + " worse—no one familiar with their race trusts a beardless dwarven man.";
-  protected static final int BASE_AGE = 40;
-  
+  protected final int BASE_AGE = 40;
+
   public Dwarf(String gender)
   {
-    super();
+    super(gender);
+
+    setAge();
+    setWeightAndHeight();
+
+    // Alter standard racial traits
+    setAbilityBonuses(CON, 2);
+    setAbilityBonuses(WIS, 2);
+    setAbilityBonuses(CHA, -2);
+
+    size = "Medium";
+    baseSpeed = 20;
     
-    die = new D4();
+    setLanguages();
+  }
 
-    // Set the gender of the player's character
-    this.gender = gender;
-
-    // Set the age of the player's character
+  /**
+   * Set the age of the player's dwarf. Based on class.
+   */
+  @Override
+  public void setAge()
+  {
     age = BASE_AGE; // TODO - Add age based on class
+  }
 
-    // Set the base height and weight of the player's character
+  @Override
+  public void setLanguages()
+  {
+    languages.add("Common");
+    languages.add("Dwarven");
+  }
+
+  public String getPhysicalDesc()
+  {
+    return "Dwarves are a short and stocky race, and stand about a foot shorter than most humans, "
+        + "with wide, compact bodies that account for their burly appearance. Male and female "
+        + "dwarves pride themselves on the long length of their hair, and men often decorate their "
+        + "beards with a variety of clasps and intricate braids. Clean-shavenness on a male dwarf "
+        + "is a sure sign of madness, or worse—no one familiar with their race trusts a beardless "
+        + "dwarven man.";
+  }
+  
+  public String getRace()
+  {
+    return "Dwarf";
+  }
+
+  /**
+   * Set the base height and weight of the player's character. These attributes vary depending on
+   * gender.
+   */
+  @Override
+  public void setWeightAndHeight()
+  {
+
     if (gender.equals("Male"))
     {
-      baseHeight = 3.75;
-      baseWeight = 150;
+      height = 3.75;
+      weight = 150;
     }
     else if (gender.equals("Female"))
     {
-      baseHeight = 3.58;
-      baseWeight = 120;
+      height = 3.58;
+      weight = 120;
     }
     else if (gender.equals("Non-Binary"))
     {
-      baseHeight = 3.66;
-      baseWeight = 135;
+      height = 3.66;
+      weight = 135;
     }
 
     // Generate the actual height and weight of the player's character
-    height = baseHeight + die.roll(2);
-    weight = baseWeight + die.roll(2) * 7;
-    
-    // Alter standard racial traits
-    abilityBonuses.replace(CON, abilityBonuses.get(CON) + 2);
-    abilityBonuses.replace(WIS, abilityBonuses.get(WIS) + 2);
-    abilityBonuses.replace(CHA, abilityBonuses.get(CHA) - 2);
-    
-    size = "Medium";
-    baseSpeed = 20;
-    languages.add("Common");
-    languages.add("Dwarven");
+    height = height + D4.roll(2);
+    weight = weight + D4.roll(2) * 7;
   }
 }

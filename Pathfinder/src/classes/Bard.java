@@ -1,6 +1,8 @@
 package classes;
 
-public class Bard extends CoreClass
+import base.Classification;
+
+public class Bard extends Classification
 {
 
   @Override
@@ -11,7 +13,7 @@ public class Bard extends CoreClass
   }
 
   @Override
-  public void setForSave()
+  public void setFortSave()
   {
     // TODO Auto-generated method stub
     

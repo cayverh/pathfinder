@@ -1,14 +1,23 @@
 package base;
 
 import java.util.*;
-import classes.*;
-import classes.Class;
+
+import base.*;
 import classes.*;
 import races.*;
 
-public class Character implements Abilities
+/**
+ * The creation of a Pathfinder character.
+ * 
+ * The user enters information into a GUI, which is passed to this class.
+ * 
+ * @author Cayleigh
+ *
+ */
+public class Character implements Dice, Abilities
 {
   public static final int NUM_CLASSES = 11;
+  public static final int NUM_RACES = 7;
   public static final int NUM_ABILITY_SCORES = 6;
   public static final int MAX = 6;
   public static final int MIN = 1;
@@ -19,48 +28,55 @@ public class Character implements Abilities
   private int charLevel;
   private String diety;
   private String homeland;
-  private CoreRace charRace; // Size, gender, age, height, weight, and speed are all determined by
-                             // race
+
   private String hairColor;
   private String eyeColor;
 
-  private Class charClass; // HP is determined by class
+  private Race charRace; // Size, gender, age, height, weight, and speed are all determined by
+                         // race
 
-  private HashMap<String, Integer> abilityScores;
-  private HashMap<String, Integer> abilityMods;
+  private Classification charClass; // HP, starting wealth, skills, and skill ranks, base attack
+                                    // bonus, fort
+  // save, ref save, and will save are determined by class
 
-  public Character(String player, String charName, String gender, String align, String race,
-      String cclass)
+  public Character(String player, String charName, String gender, String align,
+      String race, String cclass)
   {
     this.player = player;
     this.charName = charName;
     alignment = align;
 
-    abilityScores = new HashMap<String, Integer>();
-    abilityMods = new HashMap<String, Integer>();
-
     if (race.equals("Dwarf"))
       charRace = new Dwarf(gender);
     else if (race.equals("Elf"))
-      charRace = new Elf();
+      charRace = new Elf(gender);
     else if (race.equals("Gnome"))
-      charRace = new Gnome();
+      charRace = new Gnome(gender);
     else if (race.equals("Half-Elf"))
-      charRace = new HalfElf();
+      charRace = new HalfElf(gender);
     else if (race.equals("Halfling"))
-      charRace = new Halfling();
+      charRace = new Halfling(gender);
     else if (race.equals("Half-Orc"))
-      charRace = new HalfOrc();
+      charRace = new HalfOrc(gender);
     else if (race.equals("Human"))
-      charRace = new Human();
+      charRace = new Human(gender);
     else
     {
-      charRace = null;
-      // Randomly choose a race.
+      genRace(gender);
     }
   }
 
-  public void genCoreClass()
+  public void applyAbilityScoreMod(String ability)
+  {
+    int toSpend = charRace.getAbilityScoreBonusToSpend();
+
+    abilityScores.put(ability, abilityScores.get(ability) + toSpend);
+
+    if (toSpend != 0)
+      genAbilityMods();
+  }
+
+  public void genClass()
   {
     int classIdentifier = new Random().nextInt(NUM_CLASSES);
 
@@ -84,6 +100,59 @@ public class Character implements Abilities
     }
   }
 
+  public String getGeneralCharInfo()
+  {
+    String charInfo = "";
+
+    charInfo += "   Player Name: " + player + "\tCharacter: " + charName + "\n";
+
+    charInfo +=
+        "\t  Race: " + charRace.getRace() + "\t      Age: " + charRace.getAge() + "\n";
+
+    charInfo += "\tHeight: " + charRace.getHeight() + "\t   Weight: "
+        + charRace.getWeight() + "\n";
+
+    charInfo += "     Alignment: " + alignment + "\t    Diety: " + diety + "\n";
+    
+    charInfo += "      Homeland: " + homeland + "\t\t     Size: " + charRace.getSize() + "\n";
+
+    charInfo += "    Hair Color: " + hairColor + "\t\tEye Color: " + eyeColor + "\n";
+    
+    return charInfo;
+  }
+
+  public void genRace(String gender)
+  {
+    int raceIdentifier = new Random().nextInt(NUM_RACES);
+
+    switch (raceIdentifier)
+    {
+      case 0:
+        charRace = new Dwarf(gender);
+        break;
+      case 1:
+        charRace = new Elf(gender);
+        break;
+      case 2:
+        charRace = new Gnome(gender);
+        break;
+      case 3:
+        charRace = new HalfElf(gender);
+        break;
+      case 4:
+        charRace = new Halfling(gender);
+        break;
+      case 5:
+        charRace = new HalfOrc(gender);
+        break;
+      case 6:
+        charRace = new Human(gender);
+        break;
+      default:
+        break;
+    }
+  }
+
   /**
    * Generate random scores for the six abilities: Strength, Dexterity, Constitution, Intelligence,
    * Wisdom, and Charisma.
@@ -91,14 +160,13 @@ public class Character implements Abilities
   public void genAbilityScores()
   {
     int[] randNum = new int[4];
-    int lowestScore;
-    int totalScore;
-    abilityScores = new HashMap<>();
+    int lowestScore = 0;
+    int totalScore = 0;
 
     // Randomly generate an ability score for each ability.
     for (int i = 0; i < NUM_ABILITY_SCORES; i++)
     {
-      // Set/reset
+      // Reset
       lowestScore = 0;
       totalScore = 0;
 
@@ -163,8 +231,6 @@ public class Character implements Abilities
    */
   public void genAbilityMods()
   {
-    abilityMods = new HashMap<>();
-
     int mod;
 
     for (String key : abilityScores.keySet())
@@ -192,6 +258,19 @@ public class Character implements Abilities
 
       abilityMods.put(key, mod + charRace.getAbilityBonuses().get(key));
     }
+  }
+
+  public String getAbilityInfo()
+  {
+    String abilityInfo = "";
+
+    for (String ability : abilityScores.keySet())
+    {
+      abilityInfo += String.format("%s: %s, Mod: %s\n", ability,
+          abilityScores.get(ability), abilityMods.get(ability));
+    }
+
+    return abilityInfo;
   }
 
   /**

@@ -1,17 +1,17 @@
-package dice;
+package base;
 
 import java.util.Random;
 
 public class Die
 {
-  public static int faces;
+  public int faces;
   
   public Die(int faces)
   {
     this.faces = faces;
   }
   
-  public static int roll(int times)
+  public int roll(int times)
   {
     int result = 0;
     
