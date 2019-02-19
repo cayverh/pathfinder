@@ -33,4 +33,10 @@ public class Rogue extends Classification
     
   }
 
+  @Override
+  public String getClassification()
+  {
+    return Classification.ROGUE;
+  }
+
 }

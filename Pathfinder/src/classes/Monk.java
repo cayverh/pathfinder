@@ -33,4 +33,10 @@ public class Monk extends Classification
     
   }
 
+  @Override
+  public String getClassification()
+  {
+    return Classification.MONK;
+  }
+
 }

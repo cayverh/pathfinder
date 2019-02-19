@@ -1,7 +1,6 @@
 package base;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Random;
 
 import classes.*;
@@ -14,7 +13,7 @@ public final class Generator implements Abilities
   public static final int NUM_ABILITY_SCORES = 6;
   public static final int MAX = 6;
   public static final int MIN = 1;
-  
+
   /**
    * Generate random scores for the six abilities: Strength, Dexterity, Constitution, Intelligence,
    * Wisdom, and Charisma.
@@ -86,12 +85,13 @@ public final class Generator implements Abilities
       }
     }
   }
-  
+
   /**
    * Generate the ability modifiers of the six abilities: Strength, Dexterity, Constitution,
    * Intelligence, Wisdom, and Charisma.
    */
-  public static void genAbilityMods(HashMap<String, Integer> abilityScores, HashMap<String, Integer> abilityMods, Race charRace)
+  public static void genAbilityMods(HashMap<String, Integer> abilityScores,
+      HashMap<String, Integer> abilityMods, Race charRace)
   {
     int mod;
 
@@ -121,41 +121,71 @@ public final class Generator implements Abilities
       abilityMods.put(key, mod + charRace.getAbilityBonuses().get(key));
     }
   }
-  
-  public static Classification genClass()
+
+  public static Classification genClass(String cclass)
   {
     Classification charClass;
-    int classIdentifier = new Random().nextInt(NUM_CLASSES);
 
-    switch (classIdentifier)
+    if (cclass.equals(Classification.BARBARIAN))
+      charClass = new Barbarian();
+    else if (cclass.equals(Classification.BARD))
+      charClass = new Bard();
+    else
     {
-      case 0:
-        charClass = new Barbarian();
-        break;
-      case 1:
-        charClass = new Bard();
-        break;
-      /*
-       * case 2: charClass = new Cleric(); break; case 3: charClass = new Druid(); break; case 4:
-       * charClass = new Fighter(); break; case 5: charClass = new Monk(); break; case 6: charClass
-       * = new Paladin(); break; case 7: charClass = new Ranger(); break; case 8: charClass = new
-       * Rogue(); break; case 9: charClass = new Sorcerer(); break;
-       */
-      default:
-        charClass = new Wizard();
-        break;
+
+      int classIdentifier = new Random().nextInt(NUM_CLASSES);
+
+      switch (classIdentifier)
+      {
+        case 0:
+          charClass = new Barbarian();
+          break;
+        case 1:
+          charClass = new Bard();
+          break;
+
+        case 2:
+          charClass = new Cleric();
+          break;
+        case 3:
+          charClass = new Druid();
+          break;
+        case 4:
+          charClass = new Fighter();
+          break;
+        case 5:
+          charClass = new Monk();
+          break;
+        case 6:
+          charClass = new Paladin();
+          break;
+        case 7:
+          charClass = new Ranger();
+          break;
+        case 8:
+          charClass = new Rogue();
+          break;
+        case 9:
+          charClass = new Sorcerer();
+          break;
+
+        default:
+          charClass = new Wizard();
+          break;
+      }
     }
-    
+
     return charClass;
   }
-  
+
   public static String genGender(String gender)
   {
     String g = "";
-    
-    int genPer = new Random().nextInt(100); 
-    
-    if (!gender.equals("Male") && !gender.equals("Female") && !gender.equals("Non-Binary"))
+
+    int genPer = new Random().nextInt(100);
+
+    if (!gender.equals("Male") && !gender.equals("Female")
+        && !gender.equals("Non-Binary"))
     {
       if (genPer < 35)
         g = "Male";
@@ -166,40 +196,58 @@ public final class Generator implements Abilities
     }
     else
       g = gender;
-    
+
     return g;
   }
-  
-  public static Race genRace(String gender)
+
+  public static Race genRace(String gender, String race)
   {
     Race charRace;
-    int raceIdentifier = new Random().nextInt(NUM_RACES);
 
-    switch (raceIdentifier)
+    if (race.equals(Race.DWARF))
+      charRace = new Dwarf(gender);
+    else if (race.equals(Race.ELF))
+      charRace = new Elf(gender);
+    else if (race.equals(Race.GNOME))
+      charRace = new Gnome(gender);
+    else if (race.equals(Race.HALFELF))
+      charRace = new HalfElf(gender);
+    else if (race.equals(Race.HALFLING))
+      charRace = new Halfling(gender);
+    else if (race.equals(Race.HALFORC))
+      charRace = new HalfOrc(gender);
+    else if (race.equals(Race.HUMAN))
+      charRace = new Human(gender);
+    else
     {
-      case 0:
-        charRace = new Dwarf(gender);
-        break;
-      case 1:
-        charRace = new Elf(gender);
-        break;
-      case 2:
-        charRace = new Gnome(gender);
-        break;
-      case 3:
-        charRace = new HalfElf(gender);
-        break;
-      case 4:
-        charRace = new Halfling(gender);
-        break;
-      case 5:
-        charRace = new HalfOrc(gender);
-        break;
-      default:
-        charRace = new Human(gender);
-        break;
+      int raceIdentifier = new Random().nextInt(NUM_RACES);
+
+      switch (raceIdentifier)
+      {
+        case 0:
+          charRace = new Dwarf(gender);
+          break;
+        case 1:
+          charRace = new Elf(gender);
+          break;
+        case 2:
+          charRace = new Gnome(gender);
+          break;
+        case 3:
+          charRace = new HalfElf(gender);
+          break;
+        case 4:
+          charRace = new Halfling(gender);
+          break;
+        case 5:
+          charRace = new HalfOrc(gender);
+          break;
+        default:
+          charRace = new Human(gender);
+          break;
+      }
     }
-    
+
     return charRace;
   }
 }

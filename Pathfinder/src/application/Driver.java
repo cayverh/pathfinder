@@ -1,37 +1,38 @@
 package application;
 
 import base.Character;
-import base.Classification;
-import base.Generator;
-import base.Race;
-import classes.*;
 
 public class Driver
 {
   public static void main(String[] args)
   {
-    String charName;
-    String alignment;
-    String player;
-    int charLevel;
+    String player = "Cayleigh";
+    String charName = "Amyn";
+    String gend = "";
+    String alignment = "";
+    
+    String charRace = "";
+    String charClass = "";
+    
     String diety;
     String homeland;
-
-    String hairColor;
-    String eyeColor;
-
-    String charRace;
-    String charClass;
     
-    Character c = new Character("Cayleigh", "Amyn", "", "Chaotic Good", "Half-Elf", "Cleric");
+    String hairColor = "Dusty Pink";
+    String eyeColor = "Brown";
     
+    int age = 23;
+    int charLevel;
+
+    Character c = new Character(player, charName, gend, alignment, charRace,
+        charClass, hairColor, eyeColor, age);
+
     c.genAbilityScores();
     c.genAbilityMods();
-    
+
     System.out.println(c.getGeneralCharInfo());
-    
+
     c.applyAbilityScoreMod("Dex");
 
-    System.out.println(c.getAbilityInfo());
+    // System.out.println(c.getAbilityInfo());
   }
 }

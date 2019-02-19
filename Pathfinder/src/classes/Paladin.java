@@ -33,4 +33,10 @@ public class Paladin extends Classification
     
   }
 
+  @Override
+  public String getClassification()
+  {
+    return Classification.MONK;
+  }
+
 }

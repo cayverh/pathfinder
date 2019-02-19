@@ -33,4 +33,10 @@ public class Fighter extends Classification
     
   }
 
+  @Override
+  public String getClassification()
+  {
+    return Classification.FIGHTER;
+  }
+
 }

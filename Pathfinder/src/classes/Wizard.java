@@ -33,4 +33,10 @@ public class Wizard extends Classification
     
   }
 
+  @Override
+  public String getClassification()
+  {
+    return Classification.WIZARD;
+  }
+
 }

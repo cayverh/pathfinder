@@ -5,22 +5,42 @@ import base.*;
 public class Elf extends Race
 {
   protected final int BASE_AGE = 110;
+  protected final String DEFAULT_ALIGN = "Chaotic Good";
 
   public Elf(String gender)
   {
     super(gender);
-    
+
     setWeightAndHeight();
 
     // Alter standard racial traits
     setAbilityBonuses(DEX, 2);
     setAbilityBonuses(INT, 2);
     setAbilityBonuses(CON, -2);
-    
+
     size = "Medium";
     baseSpeed = 30;
 
     setLanguages();
+  }
+  
+  public String getAlignment()
+  {
+    return DEFAULT_ALIGN;
+  }
+  
+  public int getAgeModifier(String cclass)
+  {
+    int ageMod = 0;
+
+    if (isIntuitiveClass(cclass))
+      ageMod = D6.roll(4);
+    else if (isSelfTaughtClass(cclass))
+      ageMod = D6.roll(5);
+    else if (isTrainedClass(cclass))
+      ageMod = D6.roll(7);
+
+    return ageMod;
   }
 
   /**
@@ -46,18 +66,15 @@ public class Elf extends Race
      */
   }
 
-  public String getPhysicalDesc()
+  public String getDesc()
   {
-    return "Generally taller than humans, elves possess a graceful, slender physique that is accentuated "
-        + "by their long, pointed ears. It is a mistake, however, to consider them weak or feeble, as the "
-        + "thin limbs of an elf can contain surprising power. Their eyes are wide and almond-shaped, and "
-        + "filled with large, vibrantly colored pupils. The coloration of elves as a whole varies wildly, "
-        + "and is much more diverse than that of human populations. However, as their coloration often "
-        + "matches their surroundings, the elves of a single community may appear quite similar. "
-        + "Forest-dwelling elves often have variations of green, brown, and tan in their hair, eye, and "
-        + "even skin tones.";
+    return "GTall, noble, and often haughty, elves are long-lived and subtle masters of the "
+        + "wilderness. Elves excel in the arcane arts. Often they use their intrinsic link to "
+        + "nature to forge new spells and create wondrous items that, like their creators, seem "
+        + "nearly impervious to the ravages of time. A private and often introverted race, elves "
+        + "can give the impression they are indifferent to the plights of others.";
   }
-  
+
   public String getRace()
   {
     return ELF;
@@ -70,31 +87,30 @@ public class Elf extends Race
   @Override
   public void setWeightAndHeight()
   {
+    height = 5.33;
+    
     if (gender.equals("Male"))
     {
-      height = 3.75;
-      weight = 150;
+      weight = 110;
 
       // Generate the actual height and weight of the player's character
-      height = height + D8.roll(2);
+      height = height + (D8.roll(2) / 12.0);
       weight = weight + D8.roll(2) * 3;
     }
     else if (gender.equals("Female"))
     {
-      height = 3.58;
-      weight = 120;
+      weight = 90;
 
       // Generate the actual height and weight of the player's character
-      height = height + D6.roll(2);
+      height = height + (D6.roll(2) / 12.0);
       weight = weight + D6.roll(2) * 3;
     }
     else if (gender.equals("Non-Binary"))
     {
-      height = 3.66;
-      weight = 135;
+      weight = 100;
 
       // Generate the actual height and weight of the player's character
-      height = height + D6.roll(1) + D8.roll(1);
+      height = height + (D6.roll(1) + D8.roll(1) / 12.0);
       weight = weight + (D6.roll(2) * 3 + D8.roll(2) * 3) / 3;
     }
   }

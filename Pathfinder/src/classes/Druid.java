@@ -33,4 +33,10 @@ public class Druid extends Classification
     
   }
 
+  @Override
+  public String getClassification()
+  {
+    return Classification.DRUID;
+  }
+
 }

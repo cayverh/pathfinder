@@ -5,6 +5,7 @@ import base.*;
 public class Dwarf extends Race
 {
   protected final int BASE_AGE = 40;
+  protected final String DEFAULT_ALIGN = "Lawful Good";
 
   public Dwarf(String gender)
   {
@@ -19,8 +20,27 @@ public class Dwarf extends Race
 
     size = "Medium";
     baseSpeed = 20;
-    
+
     setLanguages();
+  }
+
+  public String getAlignment()
+  {
+    return DEFAULT_ALIGN;
+  }
+
+  public int getAgeModifier(String cclass)
+  {
+    int ageMod = 0;
+
+    if (isIntuitiveClass(cclass))
+      ageMod = D6.roll(3);
+    else if (isSelfTaughtClass(cclass))
+      ageMod = D6.roll(5);
+    else if (isTrainedClass(cclass))
+      ageMod = D6.roll(7);
+
+    return ageMod;
   }
 
   /**
@@ -39,16 +59,15 @@ public class Dwarf extends Race
     languages.add("Dwarven");
   }
 
-  public String getPhysicalDesc()
+  public String getDesc()
   {
-    return "Dwarves are a short and stocky race, and stand about a foot shorter than most humans, "
-        + "with wide, compact bodies that account for their burly appearance. Male and female "
-        + "dwarves pride themselves on the long length of their hair, and men often decorate their "
-        + "beards with a variety of clasps and intricate braids. Clean-shavenness on a male dwarf "
-        + "is a sure sign of madness, or worse—no one familiar with their race trusts a beardless "
-        + "dwarven man.";
+    return "These short and stocky defenders of mountain fortresses are often seen as stern and "
+        + "humorless. Known for mining the earth’s treasures and crafting magnificent items from "
+        + "ore and gemstones, they have an unrivaled affinity for the bounties of the deep earth. "
+        + "Dwarves also have a tendency toward traditionalism and isolation that sometimes "
+        + "manifests as xenophobia.";
   }
-  
+
   public String getRace()
   {
     return DWARF;
@@ -79,7 +98,9 @@ public class Dwarf extends Race
     }
 
     // Generate the actual height and weight of the player's character
-    height = height + D4.roll(2);
+    height = height + (D4.roll(2) / 12.0);
     weight = weight + D4.roll(2) * 7;
+
+    System.out.println(height);
   }
 }

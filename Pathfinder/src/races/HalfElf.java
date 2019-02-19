@@ -1,10 +1,12 @@
 package races;
 
+import base.Classification;
 import base.Race;
 
 public class HalfElf extends Race
 {
   protected final int BASE_AGE = 20;
+  protected final String DEFAULT_ALIGN = "Chaotic Good";
 
   public HalfElf(String gender)
   {
@@ -19,6 +21,25 @@ public class HalfElf extends Race
     baseSpeed = 30;
 
     setLanguages();
+  }
+  
+  public String getAlignment()
+  {
+    return DEFAULT_ALIGN;
+  }
+  
+  public int getAgeModifier(String cclass)
+  {
+    int ageMod = 0;
+
+    if (isIntuitiveClass(cclass))
+      ageMod = D6.roll(1);
+    else if (isSelfTaughtClass(cclass))
+      ageMod = D6.roll(2);
+    else if (isTrainedClass(cclass))
+      ageMod = D6.roll(3);
+
+    return ageMod;
   }
 
   @Override
@@ -41,19 +62,15 @@ public class HalfElf extends Race
   }
 
   @Override
-  public String getPhysicalDesc()
+  public String getDesc()
   {
-    return "Half-elves stand taller than humans but shorter than elves. They inherit the lean build "
-        + "and comely features of their elven lineage, but their skin color is normally dictated by "
-        + "their human side. While half-elves retain the pointed ears of elves, theirs are more "
-        + "rounded and less pronounced. Their eyes tend to be human-like in shape, but feature an "
-        + "exotic range of colors from amber or violet to emerald green and deep blue. This pattern "
-        + "changes for half-elves of drow descent, however. Such elves are almost unfailingly marked "
-        + "with the white or silver hair of the drow parent, and more often than not have dusky gray "
-        + "skin that takes on a purplish or bluish tinge in the right light, while their eye color "
-        + "usually favors that of the human parent.";
+    return "HOften caught between the worlds of their progenitor races, half-elves are a race of "
+        + "both grace and contradiction. Their dual heritage and natural gifts often create "
+        + "brilliant diplomats and peacemakers, but half-elves are often susceptible to an intense "
+        + "and even melancholic isolation, realizing that they are never truly part of elven or "
+        + "human society.";
   }
-  
+
   public String getRace()
   {
     return HALFELF;

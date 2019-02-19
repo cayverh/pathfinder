@@ -33,4 +33,11 @@ public class Cleric extends Classification
     
   }
 
+  @Override
+  public String getClassification()
+  {
+    // TODO Auto-generated method stub
+    return Classification.CLERIC;
+  }
+
 }

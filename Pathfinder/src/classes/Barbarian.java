@@ -33,4 +33,10 @@ public class Barbarian extends Classification
     
   }
 
+  @Override
+  public String getClassification()
+  {
+    return Classification.BARBARIAN;
+  }
+
 }

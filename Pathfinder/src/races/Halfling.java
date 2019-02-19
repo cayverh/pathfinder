@@ -1,10 +1,12 @@
 package races;
 
+import base.Classification;
 import base.Race;
 
 public class Halfling extends Race
 {
   protected final int BASE_AGE = 20;
+  protected final String DEFAULT_ALIGN = "Neutral";
 
   public Halfling(String gender)
   {
@@ -21,6 +23,25 @@ public class Halfling extends Race
     baseSpeed = 30;
 
     setLanguages();
+  }
+  
+  public String getAlignment()
+  {
+    return DEFAULT_ALIGN;
+  }
+  
+  public int getAgeModifier(String cclass)
+  {
+    int ageMod = 0;
+
+    if (isIntuitiveClass(cclass))
+      ageMod = D4.roll(2);
+    else if (isSelfTaughtClass(cclass))
+      ageMod = D6.roll(3);
+    else if (isTrainedClass(cclass))
+      ageMod = D6.roll(4);
+
+    return ageMod;
   }
 
   @Override
@@ -43,15 +64,14 @@ public class Halfling extends Race
   }
 
   @Override
-  public String getPhysicalDesc()
+  public String getDesc()
   {
-    return "Halflings rise to a humble height of 3 feet. They prefer to walk barefoot, leading the "
-        + "bottoms of their feet to become roughly calloused. Tufts of thick, curly hair warm the tops "
-        + "of their broad, tanned feet.\n" + "\n"
-        + "Their skin tends toward a rich cinnamon color and their hair toward light shades of brown. "
-        + "A halfling’s ears are pointed, but proportionately not much larger than those of a human.";
+    return "Members of this diminutive race find strength in family, community, and their own innate "
+        + "and seemingly inexhaustible luck. While their fierce curiosity is sometimes at odds with "
+        + "their intrinsic common sense, half lings are eternal optimists and cunning opportunists "
+        + "with an incredible knack for getting out the worst situations.";
   }
-  
+
   public String getRace()
   {
     return HALFLING;
@@ -81,7 +101,7 @@ public class Halfling extends Race
     }
 
     // Generate the actual height and weight of the player's character
-    height = height + D4.roll(2);
+    height = height + (D4.roll(2) / 12.0);
     weight = weight + D4.roll(2);
   }
 

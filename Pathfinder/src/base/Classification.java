@@ -2,6 +2,18 @@ package base;
 
 public abstract class Classification
 {
+  public static final String BARBARIAN = "Barbarian";
+  public static final String BARD = "Bard";
+  public static final String CLERIC = "Cleric";
+  public static final String DRUID = "Druid";
+  public static final String FIGHTER = "Fighter";
+  public static final String MONK = "Monk";
+  public static final String PALADIN = "Paladin";
+  public static final String RANGER = "Ranger";
+  public static final String ROGUE = "Rogue";
+  public static final String SORCERER = "Sorcerer";
+  public static final String WIZARD = "Wizard";
+  
   // Has an HP
   // Has a base wealth
   // Has default class skills
@@ -14,6 +26,8 @@ public abstract class Classification
   private int refSave;
   private int willSave;
 
+  public abstract String getClassification();
+  
   /**
    * Sets the skill ranks earned per level, depending on the character's class and Intelligence
    * modifier.

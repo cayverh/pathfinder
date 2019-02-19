@@ -1,10 +1,12 @@
 package races;
 
+import base.Classification;
 import base.Race;
 
 public class Human extends Race
 {
   protected final int BASE_AGE = 15;
+  protected final String DEFAULT_ALIGN = "Neutral";
 
   public Human(String gender)
   {
@@ -19,6 +21,25 @@ public class Human extends Race
     baseSpeed = 30;
 
     setLanguages();
+  }
+  
+  public String getAlignment()
+  {
+    return DEFAULT_ALIGN;
+  }
+  
+  public int getAgeModifier(String cclass)
+  {
+    int ageMod = 0;
+
+    if (isIntuitiveClass(cclass))
+      ageMod = D4.roll(1);
+    else if (isSelfTaughtClass(cclass))
+      ageMod = D6.roll(1);
+    else if (isTrainedClass(cclass))
+      ageMod = D6.roll(2);
+
+    return ageMod;
   }
 
   @Override
@@ -40,17 +61,14 @@ public class Human extends Race
   }
 
   @Override
-  public String getPhysicalDesc()
+  public String getDesc()
   {
-    return "The physical characteristics of humans are as varied as the world’s climes. From the "
-        + "dark-skinned tribesmen of the southern continents to the pale and barbaric raiders of "
-        + "the northern lands, humans possess a wide variety of skin colors, body types, and facial "
-        + "features. Generally speaking, humans’ skin color assumes a darker hue the closer to the "
-        + "equator they live. At the same time, bone structure, hair color and texture, eye color, "
-        + "and a host of facial and bodily phenotypic characteristics vary immensely from one locale "
-        + "to another.";
+    return "Ambitious, sometimes heroic, and always confident, humans have an ability to work "
+        + "together toward common goals that makes them a force to be reckoned with. Though "
+        + "short-lived compared to other races, their boundless energy and drive allow them to "
+        + "accomplish much in their brief lifetimes.";
   }
-  
+
   public String getRace()
   {
     return HUMAN;
@@ -80,7 +98,7 @@ public class Human extends Race
     }
 
     // Generate the actual height and weight of the player's character
-    height = height + D10.roll(2);
+    height = height + (D10.roll(2) / 12.0);
     weight = weight + D10.roll(2) * 5;
   }
 

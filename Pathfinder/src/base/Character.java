@@ -18,11 +18,12 @@ public class Character implements Dice, Abilities
 {
   public static final int MAX = 6;
   public static final int MIN = 1;
-  
+
+  private String player;
+  private int level;
+  private int age;
   private String charName;
   private String alignment;
-  private String player;
-  private int charLevel;
   private String diety;
   private String homeland;
   private String gender;
@@ -30,47 +31,59 @@ public class Character implements Dice, Abilities
   private String eyeColor;
 
   private String race;
-  private Race charRace; // Size, gender, age, height, weight, and speed are all determined by
+  private Race charRace; // Size, gender, height, weight, and speed are all determined by
                          // race
 
   private String classification;
   private Classification charClass; // HP, starting wealth, skills, and skill ranks, base attack
-                                    // bonus, fort
-  // save, ref save, and will save are determined by class
+                                    // bonus, fort save, ref save, and will save are determined by
+                                    // class
 
-  public Character(String player, String charName, String gen, String align,
-      String race, String cclass)
+  /**
+   * Creates a new Pathfinder character based on user input. If a user omits information, details
+   * are either randomly generated or left blank.
+   * 
+   * @param player
+   *          The name of the player
+   * @param charName
+   *          The name of the player's character
+   * @param gend
+   *          The gender of the player's character
+   * @param align
+   *          The alignment of the player's character
+   * @param race
+   *          The Race of the player's character
+   * @param cclass
+   *          The Classification of the player's character
+   */
+  public Character(String player, String charName, String gend, String align,
+      String race, String cclass, String hairColor, String eyeColor, int age)
   {
     this.player = player;
     this.charName = charName;
     alignment = align;
     this.race = race;
     this.classification = cclass;
-    
-    gender = Generator.genGender(gen);
+    this.age = age;
 
-    if (race.equals(Race.DWARF))
-      charRace = new Dwarf(gender);
-    else if (race.equals(Race.ELF))
-      charRace = new Elf(gender);
-    else if (race.equals(Race.GNOME))
-      charRace = new Gnome(gender);
-    else if (race.equals(Race.HALFELF))
-      charRace = new HalfElf(gender);
-    else if (race.equals(Race.HALFLING))
-      charRace = new Halfling(gender);
-    else if (race.equals(Race.HALFORC))
-      charRace = new HalfOrc(gender);
-    else if (race.equals(Race.HUMAN))
-      charRace = new Human(gender);
-    else
-    {
-      charRace = Generator.genRace(gender);
-    }
+    gender = Generator.genGender(gend);
+
+    // Gets the Race of the character based on user input.
+    // If none, a Race is randomly generated.
+    charRace = Generator.genRace(gender, race);
+    charClass = Generator.genClass(classification);
 
     setAppearance(hairColor, eyeColor);
   }
 
+  /**
+   * Applies an Ability Score Bonus Modifier to an ability of the player's choice. If the player has
+   * a Modifier to spend, the Ability Modifiers are regenerated in order to account for the change
+   * in Ability Score.
+   * 
+   * @param ability
+   *          Ability to spend bonus on
+   */
   public void applyAbilityScoreMod(String ability)
   {
     int toSpend = charRace.getAbilityScoreBonusToSpend();
@@ -81,6 +94,22 @@ public class Character implements Dice, Abilities
       genAbilityMods();
   }
 
+  public String getAlignment()
+  {
+    if (alignment.isEmpty())
+      alignment = charRace.getAlignment();
+
+    return alignment;
+  }
+
+  /**
+   * Sets the player's character's appearance.
+   * 
+   * @param hairColor
+   *          Color of character's hair
+   * @param eyeColor
+   *          Color of character's eyes
+   */
   public void setAppearance(String hairColor, String eyeColor)
   {
     if (hairColor != null)
@@ -94,24 +123,31 @@ public class Character implements Dice, Abilities
       this.eyeColor = "";
   }
 
+  /**
+   * Creates a formatted String representing the general information about the player's character.
+   * 
+   * @return charInfo
+   */
   public String getGeneralCharInfo()
   {
     String charInfo = "";
 
+    charInfo += String.format("   Player Name: %-20.20s\tCharacter: %s\n",
+        player, charName, charRace.getBaseAge());
     charInfo +=
-        String.format("   Player Name: %-20.20s\tCharacter: %s\n",
-            player, charName, charRace.getAge());
-    charInfo += String.format("\tGender: %-20.20s\t      Age: %d\n", gender, getAge());
-    charInfo += String.format("\tHeight: %-20.20s\t   Weight: %-20.10s\tSize: %s\n",
-        charRace.getHeight(), charRace.getWeight(), charRace.getSize());
+        String.format("\tGender: %-20.20s\t      Age: %d\n", gender, getAge());
+    charInfo +=
+        String.format("\tHeight: %-20.20s\t   Weight: %-20.10s\tSize: %s\n",
+            getHeight(), getWeight(), getSize());
     charInfo += String.format("    Hair Color: %-20.20s\tEye Color: %s\n",
         hairColor, eyeColor);
 
     charInfo += "\n";
-    
-    charInfo += String.format("\t  Race: %-20.20s\t    Class: %s\n", getRace(), "");
+
     charInfo +=
-        String.format("     Alignment: %-20.20s\t    Diety: %s\n", alignment, diety);
+        String.format("\t  Race: %-20.20s\t    Class: %s\n", getRace(), getClassification());
+    charInfo += String.format("     Alignment: %-20.20s\t    Diety: %s\n",
+        getAlignment(), diety);
     charInfo += String.format("      Homeland: %-20.20s\n", homeland);
 
     return charInfo;
@@ -135,6 +171,12 @@ public class Character implements Dice, Abilities
     Generator.genAbilityMods(abilityScores, abilityMods, charRace);
   }
 
+  /**
+   * Creates a formatted String representing the Ability Scores and Modifiers of the player's
+   * character.
+   * 
+   * @return abilityInfo
+   */
   public String getAbilityInfo()
   {
     String abilityInfo = "";
@@ -147,101 +189,199 @@ public class Character implements Dice, Abilities
 
     return abilityInfo;
   }
-  
+
+  /**
+   * Returns the age of the player's character. If the player doesn't enter a desired age, the age
+   * is generated based on Race and Class.
+   * 
+   * @return age
+   */
   public int getAge()
   {
-    return charRace.getAge();
+    if (age == 0)
+      return charRace.getBaseAge() + charRace.getAgeModifier(getClassification());
+    else
+      return age;
   }
   
-  public String getClassification()
+  /**
+   * Generates, sets, and returns a new race for the player's character.
+   * 
+   * @return new Race
+   */
+  public String getNewClass()
   {
-    return "";
+    charClass = Generator.genClass("");
+    return getClassification();
   }
 
+  /**
+   * Returns the Class of the player's character.
+   * 
+   * @return classification
+   */
+  public String getClassification()
+  {
+    return charClass.getClassification();
+  }
+
+  public String getHeight()
+  {
+    return charRace.getHeight();
+  }
+
+  /**
+   * Generates, sets, and returns a new race for the player's character.
+   * 
+   * @return new Race
+   */
+  public String getNewRace()
+  {
+    charRace = Generator.genRace(gender, "");
+    return getRace();
+  }
+
+  /**
+   * Returns the Race of the player's character.
+   * 
+   * @return race
+   */
   public String getRace()
   {
     return charRace.getRace();
   }
 
+  public String getSize()
+  {
+    return charRace.getSize();
+  }
+
+  public String getWeight()
+  {
+    return charRace.getWeight();
+  }
+
+  /********************************************************************************************************/
+  /*
+   * BELOW ARE THE GETTERS AND SETTERS FOR THE ABILITY SCORES AND MODIFIERS. MAY NOT EVER BE USED.
+   */
+  /********************************************************************************************************/
+
   /**
+   * Returns the Ability Score for STRENGTH.
    * 
-   * @return Strength
+   * @return strength score
    */
   public int getStr()
   {
     return abilityScores.get(STR);
   }
 
+  /**
+   * Returns the Ability Modifier for STRENGTH.
+   * 
+   * @return strength mod
+   */
   public int getStrMod()
   {
     return abilityMods.get(STR);
   }
 
   /**
+   * Returns the Ability Score for DEXTERITY.
    * 
-   * @return Dexterity
+   * @return dexterity score
    */
   public int getDex()
   {
     return abilityScores.get(DEX);
   }
 
+  /**
+   * Returns the Ability Modifier for DEXTERITY.
+   * 
+   * @return dexterity mod
+   */
   public int getDexMod()
   {
     return abilityMods.get(DEX);
   }
 
   /**
+   * Returns the Ability Score for CONSTITUTION.
    * 
-   * @return Constitution
+   * @return constitution score
    */
   public int getCon()
   {
     return abilityScores.get(CON);
   }
 
+  /**
+   * Returns the Ability Modifier for CONSTITUTION.
+   * 
+   * @return constitution mod
+   */
   public int getConMod()
   {
     return abilityMods.get(CON);
   }
 
   /**
+   * Returns the Ability Score for INTELLIGENCE.
    * 
-   * @return Intelligence
+   * @return intelligence score
    */
   public int getInt()
   {
     return abilityScores.get(INT);
   }
 
+  /**
+   * Returns the Ability Mod for INTELLIGENCE.
+   * 
+   * @return intelligence mod
+   */
   public int getIntMod()
   {
     return abilityMods.get(INT);
   }
 
   /**
+   * Returns the Ability Score for WISDOM.
    * 
-   * @return Wisdom
+   * @return wisdom score
    */
   public int getWis()
   {
     return abilityScores.get(WIS);
   }
 
+  /**
+   * Returns the Ability Modifier for WISDOM.
+   * 
+   * @return wisdom mod
+   */
   public int getWisMod()
   {
     return abilityMods.get(WIS);
   }
 
   /**
+   * Returns the Ability Score for CHARISMA.
    * 
-   * @return Charisma
+   * @return charisma score
    */
   public int getCha()
   {
     return abilityScores.get(CHA);
   }
 
+  /**
+   * Returns the Ability Modifier for CHARISMA.
+   * 
+   * @return charisma mod
+   */
   public int getChaMod()
   {
     return abilityMods.get(CHA);

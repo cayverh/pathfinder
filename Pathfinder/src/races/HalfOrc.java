@@ -1,10 +1,12 @@
 package races;
 
+import base.Classification;
 import base.Race;
 
 public class HalfOrc extends Race
 {
   protected final int BASE_AGE = 14;
+  protected final String DEFAULT_ALIGN = "Chaotic Neutral";
 
   public HalfOrc(String gender)
   {
@@ -19,6 +21,25 @@ public class HalfOrc extends Race
     baseSpeed = 30;
 
     setLanguages();
+  }
+  
+  public String getAlignment()
+  {
+    return DEFAULT_ALIGN;
+  }
+  
+  public int getAgeModifier(String cclass)
+  {
+    int ageMod = 0;
+
+    if (isIntuitiveClass(cclass))
+      ageMod = D6.roll(1);
+    else if (isSelfTaughtClass(cclass))
+      ageMod = D6.roll(1);
+    else if (isTrainedClass(cclass))
+      ageMod = D6.roll(2);
+
+    return ageMod;
   }
 
   @Override
@@ -41,15 +62,15 @@ public class HalfOrc extends Race
   }
 
   @Override
-  public String getPhysicalDesc()
+  public String getDesc()
   {
-    return "Half-orcs average around 6 feet tall, with powerful builds and greenish or grayish skin. "
-        + "Their canine teeth often grow long enough to protrude from their mouths, and these 'tusks,' "
-        + "combined with heavy brows and slightly pointed ears, give them their notoriously bestial "
-        + "appearance. While half-orcs may be impressive, few ever describe them as beautiful. Despite "
-        + "these obvious orc traits, half-orcs are as varied as their human parents.";
+    return "Often fierce and savage, sometimes noble and resolute, half-orcs can manifest the best "
+        + "and worst qualities of their parent races. Many half-orcs struggle to keep their more "
+        + "bestial natures in check in order to epitomize the most heroic values of humanity. "
+        + "Unfortunately, many outsiders see half-orcs as hopeless abominations devoid of civility, "
+        + "if not monsters unworthy of pity or parley.";
   }
-  
+
   public String getRace()
   {
     return HALFORC;
@@ -79,7 +100,7 @@ public class HalfOrc extends Race
     }
 
     // Generate the actual height and weight of the player's character
-    height = height + D12.roll(2);
+    height = height + (D12.roll(2) / 12.0);
     weight = weight + D12.roll(2) * 7;
   }
 

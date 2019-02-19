@@ -1,11 +1,13 @@
 package races;
 
+import base.Classification;
 import base.Race;
 
 public class Gnome extends Race
 {
   protected final int BASE_AGE = 40;
-  
+  protected final String DEFAULT_ALIGN = "Neutral Good";
+
   public Gnome(String gender)
   {
     super(gender);
@@ -21,6 +23,25 @@ public class Gnome extends Race
     baseSpeed = 20;
 
     setLanguages();
+  }
+  
+  public String getAlignment()
+  {
+    return DEFAULT_ALIGN;
+  }
+  
+  public int getAgeModifier(String cclass)
+  {
+    int ageMod = 0;
+
+    if (isIntuitiveClass(cclass))
+      ageMod = D6.roll(4);
+    else if (isSelfTaughtClass(cclass))
+      ageMod = D6.roll(6);
+    else if (isTrainedClass(cclass))
+      ageMod = D6.roll(9);
+
+    return ageMod;
   }
 
   @Override
@@ -44,15 +65,14 @@ public class Gnome extends Race
   }
 
   @Override
-  public String getPhysicalDesc()
+  public String getDesc()
   {
-    return "Gnomes are one of the smallest of the common races, generally standing just over 3 feet "
-        + "in height. Despite their small frames, however, gnomes are extremely resilient, and not as "
-        + "weak as many of their foes assume. Though their diminutive stature reduces their ability to "
-        + "move quickly, gnomes often train to take advantage of their size, especially when fighting "
-        + "foes much larger than themselves.";
+    return "Expatriates of the strange land of fey, these small folk have a reputation for flighty "
+        + "and eccentric behavior. Many gnomes are whimsical artisans and tinkers, creating strange "
+        + "devices powered by magic, alchemy, and their quirky imagination. Gnomes have an "
+        + "insatiable need for new experiences that often gets them in trouble.";
   }
-  
+
   public String getRace()
   {
     return GNOME;
@@ -82,7 +102,7 @@ public class Gnome extends Race
     }
 
     // Generate the actual height and weight of the player's character
-    height = height + D4.roll(2);
+    height = height + (D4.roll(2) / 12.0);
     weight = weight + D4.roll(2);
   }
 
