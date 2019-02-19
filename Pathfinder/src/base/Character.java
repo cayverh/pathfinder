@@ -1,11 +1,5 @@
 package base;
 
-import java.util.*;
-
-import base.*;
-import classes.*;
-import races.*;
-
 /**
  * The creation of a Pathfinder character.
  * 
@@ -14,13 +8,12 @@ import races.*;
  * @author Cayleigh
  *
  */
-public class Character implements Dice, Abilities
+public class Character implements Abilities
 {
   public static final int MAX = 6;
   public static final int MIN = 1;
 
   private String player;
-  private int level;
   private int age;
   private String charName;
   private String alignment;
@@ -30,11 +23,9 @@ public class Character implements Dice, Abilities
   private String hairColor;
   private String eyeColor;
 
-  private String race;
   private Race charRace; // Size, gender, height, weight, and speed are all determined by
                          // race
 
-  private String classification;
   private Classification charClass; // HP, starting wealth, skills, and skill ranks, base attack
                                     // bonus, fort save, ref save, and will save are determined by
                                     // class
@@ -62,8 +53,6 @@ public class Character implements Dice, Abilities
     this.player = player;
     this.charName = charName;
     alignment = align;
-    this.race = race;
-    this.classification = cclass;
     this.age = age;
 
     gender = Generator.genGender(gend);
@@ -71,36 +60,16 @@ public class Character implements Dice, Abilities
     // Gets the Race of the character based on user input.
     // If none, a Race is randomly generated.
     charRace = Generator.genRace(gender, race);
-    charClass = Generator.genClass(classification);
+    charClass = Generator.genClass(cclass);
 
     setAppearance(hairColor, eyeColor);
   }
-
-  /**
-   * Applies an Ability Score Bonus Modifier to an ability of the player's choice. If the player has
-   * a Modifier to spend, the Ability Modifiers are regenerated in order to account for the change
-   * in Ability Score.
-   * 
-   * @param ability
-   *          Ability to spend bonus on
+  
+  /********************************************************************************************************/
+  /*
+   * BELOW ARE THE SETTERS FOR APPLYING DETAILS TO THE PLAYER'S CHARACTER.
    */
-  public void applyAbilityScoreMod(String ability)
-  {
-    int toSpend = charRace.getAbilityScoreBonusToSpend();
-
-    abilityScores.put(ability, abilityScores.get(ability) + toSpend);
-
-    if (toSpend != 0)
-      genAbilityMods();
-  }
-
-  public String getAlignment()
-  {
-    if (alignment.isEmpty())
-      alignment = charRace.getAlignment();
-
-    return alignment;
-  }
+  /********************************************************************************************************/
 
   /**
    * Sets the player's character's appearance.
@@ -124,36 +93,6 @@ public class Character implements Dice, Abilities
   }
 
   /**
-   * Creates a formatted String representing the general information about the player's character.
-   * 
-   * @return charInfo
-   */
-  public String getGeneralCharInfo()
-  {
-    String charInfo = "";
-
-    charInfo += String.format("   Player Name: %-20.20s\tCharacter: %s\n",
-        player, charName, charRace.getBaseAge());
-    charInfo +=
-        String.format("\tGender: %-20.20s\t      Age: %d\n", gender, getAge());
-    charInfo +=
-        String.format("\tHeight: %-20.20s\t   Weight: %-20.10s\tSize: %s\n",
-            getHeight(), getWeight(), getSize());
-    charInfo += String.format("    Hair Color: %-20.20s\tEye Color: %s\n",
-        hairColor, eyeColor);
-
-    charInfo += "\n";
-
-    charInfo +=
-        String.format("\t  Race: %-20.20s\t    Class: %s\n", getRace(), getClassification());
-    charInfo += String.format("     Alignment: %-20.20s\t    Diety: %s\n",
-        getAlignment(), diety);
-    charInfo += String.format("      Homeland: %-20.20s\n", homeland);
-
-    return charInfo;
-  }
-
-  /**
    * Generate random scores for the six abilities: Strength, Dexterity, Constitution, Intelligence,
    * Wisdom, and Charisma.
    */
@@ -170,6 +109,30 @@ public class Character implements Dice, Abilities
   {
     Generator.genAbilityMods(abilityScores, abilityMods, charRace);
   }
+  
+  /**
+   * Applies an Ability Score Bonus Modifier to an ability of the player's choice. If the player has
+   * a Modifier to spend, the Ability Modifiers are regenerated in order to account for the change
+   * in Ability Score.
+   * 
+   * @param ability
+   *          Ability to spend bonus on
+   */
+  public void setAbilityScoreMod(String ability)
+  {
+    int toSpend = charRace.getAbilityScoreBonusToSpend();
+
+    abilityScores.put(ability, abilityScores.get(ability) + toSpend);
+
+    if (toSpend != 0)
+      genAbilityMods();
+  }
+
+  /********************************************************************************************************/
+  /*
+   * BELOW ARE THE GETTERS FOR RETREIVING DETAILS ABOUT THE PLAYER'S CHARACTER.
+   */
+  /********************************************************************************************************/
 
   /**
    * Creates a formatted String representing the Ability Scores and Modifiers of the player's
@@ -199,11 +162,56 @@ public class Character implements Dice, Abilities
   public int getAge()
   {
     if (age == 0)
-      return charRace.getBaseAge() + charRace.getAgeModifier(getClassification());
+      return charRace.getBaseAge()
+          + charRace.getAgeModifier(getClassification());
     else
       return age;
   }
-  
+
+  /**
+   * Returns the character's alignment. If an alignment isn't provided by the user, the alignment is
+   * set as the character's Race default alignment.
+   * 
+   * @return alignment
+   */
+  public String getAlignment()
+  {
+    if (alignment.isEmpty())
+      alignment = charRace.getAlignment();
+
+    return alignment;
+  }
+
+  /**
+   * Creates a formatted String representing the general information about the player's character.
+   * 
+   * @return charInfo
+   */
+  public String getGeneralCharInfo()
+  {
+    String charInfo = "";
+
+    charInfo += String.format("   Player Name: %-20.20s\tCharacter: %s\n",
+        player, charName, charRace.getBaseAge());
+    charInfo +=
+        String.format("\tGender: %-20.20s\t      Age: %d\n", gender, getAge());
+    charInfo +=
+        String.format("\tHeight: %-20.20s\t   Weight: %-20.10s\tSize: %s\n",
+            getHeight(), getWeight(), getSize());
+    charInfo += String.format("    Hair Color: %-20.20s\tEye Color: %s\n",
+        hairColor, eyeColor);
+
+    charInfo += "\n";
+
+    charInfo += String.format("\t  Race: %-20.20s\t    Class: %s\n", getRace(),
+        getClassification());
+    charInfo += String.format("     Alignment: %-20.20s\t    Diety: %s\n",
+        getAlignment(), diety);
+    charInfo += String.format("      Homeland: %-20.20s\n", homeland);
+
+    return charInfo;
+  }
+
   /**
    * Generates, sets, and returns a new race for the player's character.
    * 
@@ -251,11 +259,21 @@ public class Character implements Dice, Abilities
     return charRace.getRace();
   }
 
+  /**
+   * Gets the size of the character's race.
+   * 
+   * @return size
+   */
   public String getSize()
   {
     return charRace.getSize();
   }
 
+  /**
+   * Gets the String representation of the character's weight.
+   * 
+   * @return weight
+   */
   public String getWeight()
   {
     return charRace.getWeight();

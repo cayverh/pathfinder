@@ -31,7 +31,7 @@ public class Driver
 
     System.out.println(c.getGeneralCharInfo());
 
-    c.applyAbilityScoreMod("Dex");
+    c.setAbilityScoreMod("Dex");
 
     // System.out.println(c.getAbilityInfo());
   }
