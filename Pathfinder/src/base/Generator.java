@@ -122,6 +122,14 @@ public final class Generator implements Abilities
     }
   }
 
+  /**
+   * Generates the Class of the player's character based on user input. If the user input is invalid
+   * or missing, the Class is randomly chosen.
+   * 
+   * @param cclass
+   *          The desired Class of the player's character
+   * @return Class
+   */
   public static Classification genClass(String cclass)
   {
     Classification charClass;
@@ -178,14 +186,21 @@ public final class Generator implements Abilities
     return charClass;
   }
 
+  /**
+   * Generates the gender of the player's character based on user input. If the user input is
+   * invalid or missing, the gender is randomly chosen.
+   * 
+   * @param gender
+   *          The desired gender of the player's character
+   * @return gender
+   */
   public static String genGender(String gender)
   {
     String g = "";
 
     int genPer = new Random().nextInt(100);
 
-    if (!gender.equals("Male") && !gender.equals("Female")
-        && !gender.equals("Non-Binary"))
+    if (!gender.equals("Male") && !gender.equals("Female") && !gender.equals("Non-Binary"))
     {
       if (genPer < 35)
         g = "Male";
@@ -200,6 +215,16 @@ public final class Generator implements Abilities
     return g;
   }
 
+  /**
+   * Generates the Race of the player's character based on user input. If the user input is invalid
+   * or missing, the Race is randomly chosen.
+   * 
+   * @param gender
+   *          The desired gender of the player's character
+   * @param race
+   *          The desired Race of the player's character
+   * @return Race
+   */
   public static Race genRace(String gender, String race)
   {
     Race charRace;

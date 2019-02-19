@@ -1,5 +1,9 @@
 package base;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
 /**
  * The creation of a Pathfinder character.
  * 
@@ -14,21 +18,24 @@ public class Character implements Abilities
   public static final int MIN = 1;
 
   private String player;
+
   private int age;
-  private String charName;
   private String alignment;
+  private String charName;
   private String diety;
-  private String homeland;
+  private String eyeColor;
   private String gender;
   private String hairColor;
-  private String eyeColor;
+  private String homeland;
 
-  private Race charRace; // Size, gender, height, weight, and speed are all determined by
-                         // race
+  private Race charRace;
 
   private Classification charClass; // HP, starting wealth, skills, and skill ranks, base attack
                                     // bonus, fort save, ref save, and will save are determined by
                                     // class
+
+  private HashMap<String, Integer> abilityScores = new LinkedHashMap<String, Integer>(6);
+  private HashMap<String, Integer> abilityMods = new LinkedHashMap<String, Integer>(6);
 
   /**
    * Creates a new Pathfinder character based on user input. If a user omits information, details
@@ -47,8 +54,8 @@ public class Character implements Abilities
    * @param cclass
    *          The Classification of the player's character
    */
-  public Character(String player, String charName, String gend, String align,
-      String race, String cclass, String hairColor, String eyeColor, int age)
+  public Character(String player, String charName, String gend, String align, String race,
+      String cclass, String hairColor, String eyeColor, int age)
   {
     this.player = player;
     this.charName = charName;
@@ -64,10 +71,10 @@ public class Character implements Abilities
 
     setAppearance(hairColor, eyeColor);
   }
-  
+
   /********************************************************************************************************/
   /*
-   * BELOW ARE THE SETTERS FOR APPLYING DETAILS TO THE PLAYER'S CHARACTER.
+   * BELOW ARE THE SETTERS/GENERATORS FOR APPLYING DETAILS TO THE PLAYER'S CHARACTER.
    */
   /********************************************************************************************************/
 
@@ -109,7 +116,7 @@ public class Character implements Abilities
   {
     Generator.genAbilityMods(abilityScores, abilityMods, charRace);
   }
-  
+
   /**
    * Applies an Ability Score Bonus Modifier to an ability of the player's choice. If the player has
    * a Modifier to spend, the Ability Modifiers are regenerated in order to account for the change
@@ -146,8 +153,8 @@ public class Character implements Abilities
 
     for (String ability : abilityScores.keySet())
     {
-      abilityInfo += String.format("%s: %s, Mod: %s\n", ability,
-          abilityScores.get(ability), abilityMods.get(ability));
+      abilityInfo += String.format("%s: %s, Mod: %s\n", ability, abilityScores.get(ability),
+          abilityMods.get(ability));
     }
 
     return abilityInfo;
@@ -162,8 +169,7 @@ public class Character implements Abilities
   public int getAge()
   {
     if (age == 0)
-      return charRace.getBaseAge()
-          + charRace.getAgeModifier(getClassification());
+      return charRace.getBaseAge() + charRace.getAgeModifier(getClassification());
     else
       return age;
   }
@@ -191,22 +197,18 @@ public class Character implements Abilities
   {
     String charInfo = "";
 
-    charInfo += String.format("   Player Name: %-20.20s\tCharacter: %s\n",
-        player, charName, charRace.getBaseAge());
-    charInfo +=
-        String.format("\tGender: %-20.20s\t      Age: %d\n", gender, getAge());
-    charInfo +=
-        String.format("\tHeight: %-20.20s\t   Weight: %-20.10s\tSize: %s\n",
-            getHeight(), getWeight(), getSize());
-    charInfo += String.format("    Hair Color: %-20.20s\tEye Color: %s\n",
-        hairColor, eyeColor);
+    charInfo += String.format("   Player Name: %-20.20s\tCharacter: %s\n", player, charName,
+        charRace.getBaseAge());
+    charInfo += String.format("\tGender: %-20.20s\t      Age: %d\n", gender, getAge());
+    charInfo += String.format("\tHeight: %-20.20s\t   Weight: %-20.10s\tSize: %s\n", getHeight(),
+        getWeight(), getSize());
+    charInfo += String.format("    Hair Color: %-20.20s\tEye Color: %s\n", hairColor, eyeColor);
 
     charInfo += "\n";
 
-    charInfo += String.format("\t  Race: %-20.20s\t    Class: %s\n", getRace(),
-        getClassification());
-    charInfo += String.format("     Alignment: %-20.20s\t    Diety: %s\n",
-        getAlignment(), diety);
+    charInfo +=
+        String.format("\t  Race: %-20.20s\t    Class: %s\n", getRace(), getClassification());
+    charInfo += String.format("     Alignment: %-20.20s\t    Diety: %s\n", getAlignment(), diety);
     charInfo += String.format("      Homeland: %-20.20s\n", homeland);
 
     return charInfo;
@@ -233,9 +235,18 @@ public class Character implements Abilities
     return charClass.getClassification();
   }
 
+  /**
+   * Returns the height of the player's character.
+   * @return
+   */
   public String getHeight()
   {
     return charRace.getHeight();
+  }
+  
+  public ArrayList<String> getLanguages()
+  {
+    return charRace.getLanguages();
   }
 
   /**
@@ -267,6 +278,16 @@ public class Character implements Abilities
   public String getSize()
   {
     return charRace.getSize();
+  }
+
+  /**
+   * Gets the speed of the character's race.
+   * 
+   * @return speed
+   */
+  public String getSpeed()
+  {
+    return charRace.getSpeed();
   }
 
   /**
