@@ -37,6 +37,8 @@ public class Character implements Abilities
   private HashMap<String, Integer> abilityScores = new LinkedHashMap<String, Integer>(6);
   private HashMap<String, Integer> abilityMods = new LinkedHashMap<String, Integer>(6);
 
+  private ArrayList<String> languages;
+
   /**
    * Creates a new Pathfinder character based on user input. If a user omits information, details
    * are either randomly generated or left blank.
@@ -115,6 +117,11 @@ public class Character implements Abilities
   public void genAbilityMods()
   {
     Generator.genAbilityMods(abilityScores, abilityMods, charRace);
+    
+    if (abilityMods.get(INT) > 0)
+      charRace.setCanLearnLang(true);
+    else
+      charRace.setCanLearnLang(false);
   }
 
   /**
@@ -133,6 +140,25 @@ public class Character implements Abilities
 
     if (toSpend != 0)
       genAbilityMods();
+  }
+
+  /**
+   * Adds a language to the list of languages known to the player's character.
+   * 
+   * @param language
+   *          A language the player's character knows.
+   */
+  public void addLanguage(String language)
+  {
+    languages.add(language);
+  }
+
+  /**
+   * Sets the list of languages known to the player's character.
+   */
+  public void setLanguages()
+  {
+    languages = getLanguages();
   }
 
   /********************************************************************************************************/
@@ -237,13 +263,14 @@ public class Character implements Abilities
 
   /**
    * Returns the height of the player's character.
+   * 
    * @return
    */
   public String getHeight()
   {
     return charRace.getHeight();
   }
-  
+
   public ArrayList<String> getLanguages()
   {
     return charRace.getLanguages();

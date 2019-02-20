@@ -1,6 +1,9 @@
 package races;
 
+import java.util.Arrays;
+
 import base.Classification;
+import base.Languages;
 import base.Race;
 
 public class Gnome extends Race
@@ -19,17 +22,34 @@ public class Gnome extends Race
     setAbilityBonuses(CHA, 2);
     setAbilityBonuses(STR, -2);
 
+    languagesToLearn.addAll(Arrays.asList(Languages.DRACONIC, Languages.DWARVEN, Languages.ELVEN,
+        Languages.GIANT, Languages.GOBLIN, Languages.GOBLIN, Languages.ORC));
+
+    setRacialTraits("Defensive Training",
+        "+4 dodge bonus to AC against monsters of the giant subtype.");
+    setRacialTraits("Illusion Resisitance",
+        "+2 racial saving throw bonus against illusion spells and effects.");
+    setRacialTraits("Keen Senses", "+2 racial bonus on Perception checks.");
+    setRacialTraits("Gnome Magic",
+        "+1 to the DC of any saving throws against illusion spells that they cast.");
+    setRacialTraits("Hatred",
+        "+1 bonus on attack rolls against humanoid creatures of the reptilian and goblinoid subtypes.");
+    setRacialTraits("Weapon Familiarity",
+        "Any weapon with the word \"gnome\" in its name as a martial weapon.");
+    setRacialTraits("Low-Light Vision",
+        "Can see twice as far as humans in conditions of dim light.");
+
     size = "Small";
     baseSpeed = 20;
 
     setLanguages();
   }
-  
+
   public String getAlignment()
   {
     return DEFAULT_ALIGN;
   }
-  
+
   public int getAgeModifier(String cclass)
   {
     int ageMod = 0;

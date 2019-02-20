@@ -1,5 +1,7 @@
 package races;
 
+import java.util.Arrays;
+
 import base.*;
 
 public class Elf extends Race
@@ -18,17 +20,32 @@ public class Elf extends Race
     setAbilityBonuses(INT, 2);
     setAbilityBonuses(CON, -2);
 
+    languagesToLearn.addAll(Arrays.asList(Languages.CELESTIAL, Languages.DRACONIC, Languages.GNOLL,
+        Languages.GNOME, Languages.GOBLIN, Languages.ORC, Languages.SYLVAN));
+
+    setRacialTraits("Even Immunities",
+        "Immune to magic sleep effects and gain a +2 racial saving throw bonus against enchantment spells and effects.");
+    setRacialTraits("Keen Senses", "+2 racial bonus on Perception checks.");
+    setRacialTraits("Elven Magic",
+        "+2 racial bonus on caster level checks made to overcome spell resistance.\n"
+            + "Also receive a +2 racial bonus on Spellcraft skill checks made to identify the properties of magic items.");
+    setRacialTraits("Weapon Familiarity",
+        "Proficient with longbows, longswords, rapiers, and shortbows.\n"
+            + "Also treat any weapon with the word \"elven\" in its name as a martial weapon.");
+    setRacialTraits("Low-Light Vision",
+        "Can See twice as far as humans in conditions of dim light.");
+
     size = "Medium";
     baseSpeed = 30;
 
     setLanguages();
   }
-  
+
   public String getAlignment()
   {
     return DEFAULT_ALIGN;
   }
-  
+
   public int getAgeModifier(String cclass)
   {
     int ageMod = 0;
@@ -88,7 +105,7 @@ public class Elf extends Race
   public void setWeightAndHeight()
   {
     height = 5.33;
-    
+
     if (gender.equals("Male"))
     {
       weight = 110;

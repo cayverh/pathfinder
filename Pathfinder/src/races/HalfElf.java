@@ -1,6 +1,7 @@
 package races;
 
 import base.Classification;
+import base.Languages;
 import base.Race;
 
 public class HalfElf extends Race
@@ -17,17 +18,33 @@ public class HalfElf extends Race
     // Alter standard racial traits
     abilityScoreBonusToSpend = 2;
 
+    languagesToLearn.addAll(Languages.allLanguages);
+
+    setRacialTraits("Elven Immunities",
+        "Immune to magic sleep effects and gain a +2 racial saving throw bonus against enchantment spells and effects.");
+    setRacialTraits("Adaptability", "Receive Skill Focus as a bonus feat at 1st level.");
+    setRacialTraits("Keen Senses", "+2 racial bonus on Perception checks");
+    setRacialTraits("Low-Light Vision", "See twice as far as humans in conditions of dim light");
+    setRacialTraits("Elven Magic",
+        "+2 racial bonus on caster level checks made to overcome spell resistance.\n"
+            + "Also +2 racial bonus on Spellcraft skill checks made to identify the properties of magic items.");
+    setRacialTraits("Multitalented",
+        "Choose two favored classes at first level and gain +1 hit point or +1 skill point whenever they take a level in either one of those classes.");
+    setRacialTraits("Bonus Feat", "Select one extra feat at 1st level.");
+    setRacialTraits("Skilled",
+        "Gain an additional skill rank at first level and one additional rank whenever they gain a level.");
+
     size = "Medium";
     baseSpeed = 30;
 
     setLanguages();
   }
-  
+
   public String getAlignment()
   {
     return DEFAULT_ALIGN;
   }
-  
+
   public int getAgeModifier(String cclass)
   {
     int ageMod = 0;

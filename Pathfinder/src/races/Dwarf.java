@@ -1,5 +1,7 @@
 package races;
 
+import java.util.Arrays;
+
 import base.*;
 
 public class Dwarf extends Race
@@ -17,6 +19,26 @@ public class Dwarf extends Race
     setAbilityBonuses(CON, 2);
     setAbilityBonuses(WIS, 2);
     setAbilityBonuses(CHA, -2);
+
+    languagesToLearn.addAll(Arrays.asList(Languages.GIANT, Languages.GNOLL));
+
+    setRacialTraits("Defensive Training",
+        "+4 dodge bonus to AC against monsters of the giant subtype.");
+    setRacialTraits("Hardy",
+        "+2 racial bonus on saving throws against poison, spells, and spell-like abilities.");
+    setRacialTraits("Stability",
+        "+4 racial bonus on CMD when resisting a bull rush or trip attempt while standing.");
+    setRacialTraits("Greed",
+        "+2 racial bonus to Appraise checks made to determine the price of non-magical goods that contain precious metals or gemstones.");
+    setRacialTraits("Stonecunning",
+        "+2 bonus on Perception checks to notice unusual stonework, such as traps and hidden doors located in stone walls or floors.\n"
+            + "Also receive a check to notice such features whenever they pass within 10 feet of them, whether or not they are actively looking.");
+    setRacialTraits("Darkvision", "See perfectly in the dark up to 60 feet.");
+    setRacialTraits("Hatred",
+        "+1 racial bonus on attack rolls against creatures of the orc and goblinoid subtypes.");
+    setRacialTraits("Weapon Familiarity",
+        "Proficiency with battleaxes, heavy picks, and warhammers.\n"
+            + "Also treat any weapon with the word \"dwarven\" in its name as a martial weapon.");
 
     size = "Medium";
     baseSpeed = 20;

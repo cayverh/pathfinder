@@ -1,6 +1,9 @@
 package races;
 
+import java.util.Arrays;
+
 import base.Classification;
+import base.Languages;
 import base.Race;
 
 public class HalfOrc extends Race
@@ -17,17 +20,36 @@ public class HalfOrc extends Race
     // Alter standard racial traits
     abilityScoreBonusToSpend = 2;
 
+    languagesToLearn.addAll(Arrays.asList(Languages.ABYSSAL, Languages.DRACONIC, Languages.GIANT,
+        Languages.GNOLL, Languages.GOBLIN));
+
+    setRacialTraits("Intimidating",
+        "+2 racial bonus on Intimidate checks due to their fearsome nature.");
+    setRacialTraits("Orc Ferocity",
+        "Once per day, when a half-orc is brought below 0 hit points but not killed, they can fight on for 1 more round as if disabled.\n"
+            + "At the end of thier next turn, unless brought to above 0 hit points, they immediately fall unconscious and begin dying.");
+    setRacialTraits("Weapon Familiarity",
+        "Proficient with greataxes and falchions and treat any weapon with the word \"orc\" in its name as a martial weapon.");
+    setRacialTraits("Dark Vision", "Can see in the dark up to 60 feet.");
+    setRacialTraits("Light Sensitivity",
+        "Dazzled in areas of bright sunlight or within the radius of a daylight spell.");
+    setRacialTraits("Weapon Familiarity", "Proficient with greataxes and falchions.\n"
+        + "Also treat any weapon with the word “orc” in its name as a martial weapon.");
+    setRacialTraits("Bonus Feat", "Select one extra feat at 1st level.");
+    setRacialTraits("Skilled",
+        "Gain an additional skill rank at first level and one additional rank whenever they gain a level.");
+
     size = "Medium";
     baseSpeed = 30;
 
     setLanguages();
   }
-  
+
   public String getAlignment()
   {
     return DEFAULT_ALIGN;
   }
-  
+
   public int getAgeModifier(String cclass)
   {
     int ageMod = 0;
@@ -53,12 +75,6 @@ public class HalfOrc extends Race
   {
     languages.add("Common");
     languages.add("Orc");
-
-    // TODO
-    /*
-     * Half-orcs with high Intelligence scores can choose from the following: Abyssal, Draconic,
-     * Giant, Gnoll, and Goblin.
-     */
   }
 
   @Override

@@ -3,8 +3,9 @@ package base;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
-public abstract class Race implements Dice, Abilities
+public abstract class Race implements Dice, Abilities, Languages
 {
   protected final DecimalFormat FORMAT = new DecimalFormat("#");
 
@@ -24,9 +25,12 @@ public abstract class Race implements Dice, Abilities
   protected double weight;
 
   protected int abilityScoreBonusToSpend;
+  protected boolean canLearnLang;
 
-  protected HashMap<String, Integer> abilityBonuses = new HashMap<String, Integer>(6);
+  protected HashMap<String, Integer> abilityBonuses = new LinkedHashMap<String, Integer>(6);
   protected ArrayList<String> languages = new ArrayList<String>();
+  protected ArrayList<String> languagesToLearn = new ArrayList<String>();
+  protected HashMap<String, String> racialTraits = new LinkedHashMap<String, String>();
 
   public Race(String gender)
   {
@@ -34,6 +38,7 @@ public abstract class Race implements Dice, Abilities
     this.gender = gender;
 
     abilityScoreBonusToSpend = 0;
+    canLearnLang = false;
 
     abilityBonuses.put(STR, 0);
     abilityBonuses.put(DEX, 0);
@@ -42,7 +47,7 @@ public abstract class Race implements Dice, Abilities
     abilityBonuses.put(WIS, 0);
     abilityBonuses.put(CHA, 0);
   }
-  
+
   /***********************************************************************************************/
   /*
    * BELOW ARE THE SETTERS FOR APPYING DETAILS ABOUT THE PLAYER'S CHARACTER'S.
@@ -61,6 +66,31 @@ public abstract class Race implements Dice, Abilities
   public void setAbilityBonuses(String ability, int score)
   {
     abilityBonuses.put(ability, abilityBonuses.get(ability) + score);
+  }
+
+  /**
+   * If the player's character has a high enough INT, they can learn a new language. This determines
+   * whether or not that condition is true.
+   * 
+   * @param b
+   *          condition
+   */
+  public void setCanLearnLang(boolean b)
+  {
+    canLearnLang = b;
+  }
+
+  /**
+   * Sets the racial traits of the player's characters.
+   * 
+   * @param trait
+   *          The racial trait
+   * @param desc
+   *          The description of the trait
+   */
+  public void setRacialTraits(String trait, String desc)
+  {
+    racialTraits.put(trait, desc);
   }
 
   /***********************************************************************************************/
@@ -91,6 +121,16 @@ public abstract class Race implements Dice, Abilities
   }
 
   /**
+   * Returns whether or not the player's character can learn a new language or not.
+   * 
+   * @return canLearnLang
+   */
+  public boolean getCanLearnLang()
+  {
+    return canLearnLang;
+  }
+
+  /**
    * Returns a String representation of the height of the player's character.
    * 
    * @return height
@@ -111,6 +151,16 @@ public abstract class Race implements Dice, Abilities
   public ArrayList<String> getLanguages()
   {
     return languages;
+  }
+
+  /**
+   * Returns the list of languages the player's character can learn.
+   * 
+   * @return languagesToLearn.
+   */
+  public ArrayList<String> getLanguagesToLearn()
+  {
+    return languagesToLearn;
   }
 
   /**

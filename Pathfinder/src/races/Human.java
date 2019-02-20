@@ -1,6 +1,9 @@
 package races;
 
+import java.util.Arrays;
+
 import base.Classification;
+import base.Languages;
 import base.Race;
 
 public class Human extends Race
@@ -17,17 +20,23 @@ public class Human extends Race
     // Alter standard racial traits
     abilityScoreBonusToSpend = 2;
 
+    languagesToLearn.addAll(Languages.allLanguages);
+
+    setRacialTraits("Bonus Feat", "Select one extra feat at 1st level.");
+    setRacialTraits("Skilled",
+        "Gain an additional skill rank at first level and one additional rank whenever they gain a level.");
+
     size = "Medium";
     baseSpeed = 30;
 
     setLanguages();
   }
-  
+
   public String getAlignment()
   {
     return DEFAULT_ALIGN;
   }
-  
+
   public int getAgeModifier(String cclass)
   {
     int ageMod = 0;

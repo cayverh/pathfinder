@@ -1,8 +1,10 @@
 package races;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import base.Classification;
+import base.Languages;
 import base.Race;
 
 public class Halfling extends Race
@@ -21,17 +23,26 @@ public class Halfling extends Race
     abilityBonuses.put(CHA, 2);
     abilityBonuses.put(STR, -2);
 
+    languagesToLearn.addAll(
+        Arrays.asList(Languages.DWARVEN, Languages.ELVEN, Languages.GNOME, Languages.GOBLIN));
+
+    setRacialTraits("Fearless", "+2 racial bonus on all saving throws against fear. This bonus stacks with the bonus granted by halfling luck.");
+    setRacialTraits("Halfling Luck", "+1 racial bonus on all saving throws.");
+    setRacialTraits("Sure-Footed", "+2 racial bonus on Acrobatics and Climb checks.");
+    setRacialTraits("Weapon Familiarity", "Proficient with slings and treat any weapon with the word “halfling” in its name as a martial weapon.");
+    setRacialTraits("Keen Senses", "+2 racial bonus on Perception checks.");
+    
     size = "Medium";
     baseSpeed = 30;
 
     setLanguages();
   }
-  
+
   public String getAlignment()
   {
     return DEFAULT_ALIGN;
   }
-  
+
   public int getAgeModifier(String cclass)
   {
     int ageMod = 0;
