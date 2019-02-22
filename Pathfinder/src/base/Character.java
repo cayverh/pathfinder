@@ -20,6 +20,7 @@ public class Character implements Abilities
   private String player;
 
   private int age;
+  private int level;
   private String alignment;
   private String charName;
   private String diety;
@@ -57,19 +58,26 @@ public class Character implements Abilities
    *          The Classification of the player's character
    */
   public Character(String player, String charName, String gend, String align, String race,
-      String cclass, String hairColor, String eyeColor, int age)
+      String cclass, String hairColor, String eyeColor, int age, int level)
   {
     this.player = player;
     this.charName = charName;
     alignment = align;
     this.age = age;
+    this.level = level;
 
     gender = Generator.genGender(gend);
 
     // Gets the Race of the character based on user input.
     // If none, a Race is randomly generated.
     charRace = Generator.genRace(gender, race);
-    charClass = Generator.genClass(cclass);
+
+    // TODO - Does this stay here??
+    genAbilityScores();
+    genAbilityMods();
+
+    charClass = Generator.genClass(cclass, abilityMods, level);
+    charClass.setSkillTotals();
 
     setAppearance(hairColor, eyeColor);
   }
@@ -117,7 +125,7 @@ public class Character implements Abilities
   public void genAbilityMods()
   {
     Generator.genAbilityMods(abilityScores, abilityMods, charRace);
-    
+
     if (abilityMods.get(INT) > 0)
       charRace.setCanLearnLang(true);
     else
@@ -235,7 +243,11 @@ public class Character implements Abilities
     charInfo +=
         String.format("\t  Race: %-20.20s\t    Class: %s\n", getRace(), getClassification());
     charInfo += String.format("     Alignment: %-20.20s\t    Diety: %s\n", getAlignment(), diety);
-    charInfo += String.format("      Homeland: %-20.20s\n", homeland);
+    charInfo += String.format("      Homeland: %-20.20s\n\n", homeland);
+
+    charInfo += String.format("%21s    %s\t   %s    %s\n", "Skill", "Total", "Mod", "Ranks");
+    charInfo += String.format("%21s    %s\t  %s   %s\n", "-----", "-----", "-----", "-----");
+    charInfo += String.format("%s", charClass.getSkills());
 
     return charInfo;
   }
@@ -247,7 +259,7 @@ public class Character implements Abilities
    */
   public String getNewClass()
   {
-    charClass = Generator.genClass("");
+    charClass = Generator.genClass("", abilityMods, 1);
     return getClassification();
   }
 

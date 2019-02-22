@@ -61,9 +61,13 @@ public class PathfinderApp extends JApplication
     JLabel playText;
 
     // Initialize components
-    charText = new JLabel("Character Name: ______________");
+    charText = new JLabel("Character Name: ");
     charText.setFont(FONT_HEADING);
     charText.setBounds(350, 10, 300, 30);
+    
+    JTextField charNameBox = new JTextField();
+    charNameBox.setFont(FONT_HEADING);
+    charNameBox.setBounds(465, 10, 200, 30);
 
     playText = new JLabel("Player: ______________");
     playText.setFont(FONT_HEADING);
@@ -74,7 +78,7 @@ public class PathfinderApp extends JApplication
     
     contentPane.add(charText);
     contentPane.add(playText);
-    
+    contentPane.add(charNameBox);
 
   }
 

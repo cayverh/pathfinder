@@ -1,6 +1,10 @@
 package application;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
 import base.Character;
+import base.Generator;
 
 public class Driver
 {
@@ -20,19 +24,25 @@ public class Driver
     String hairColor = "Dusty Pink";
     String eyeColor = "Brown";
     
-    int age = 23;
+    int age = 0;
     int charLevel;
 
-    Character c = new Character(player, charName, gend, alignment, charRace,
-        charClass, hairColor, eyeColor, age);
+    
 
-    c.genAbilityScores();
-    c.genAbilityMods();
+    HashMap<String, Integer> abilityScores = new LinkedHashMap<String, Integer>(6);
+    
+    /*Generator.genAbilityScores(abilityScores);
+    System.out.println(abilityScores.isEmpty());*/
+    
+    //c.genAbilityMods();
+    
+    Character c = new Character(player, charName, gend, alignment, charRace,
+        charClass, hairColor, eyeColor, age, 1);
 
     System.out.println(c.getGeneralCharInfo());
 
     c.setAbilityScoreMod("Dex");
 
-    // System.out.println(c.getAbilityInfo());
+    System.out.println(c.getAbilityInfo());
   }
 }

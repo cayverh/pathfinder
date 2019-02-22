@@ -130,14 +130,14 @@ public final class Generator implements Abilities
    *          The desired Class of the player's character
    * @return Class
    */
-  public static Classification genClass(String cclass)
+  public static Classification genClass(String cclass, HashMap<String, Integer> mods, int level)
   {
     Classification charClass;
 
     if (cclass.equals(Classification.BARBARIAN))
-      charClass = new Barbarian();
+      charClass = new Barbarian(mods, level);
     else if (cclass.equals(Classification.BARD))
-      charClass = new Bard();
+      charClass = new Bard(mods, level);
     else
     {
 
@@ -146,39 +146,37 @@ public final class Generator implements Abilities
       switch (classIdentifier)
       {
         case 0:
-          charClass = new Barbarian();
+          charClass = new Barbarian(mods, level);
           break;
         case 1:
-          charClass = new Bard();
+          charClass = new Bard(mods, level);
           break;
-
         case 2:
-          charClass = new Cleric();
+          charClass = new Cleric(mods, level);
           break;
         case 3:
-          charClass = new Druid();
+          charClass = new Druid(mods, level);
           break;
         case 4:
-          charClass = new Fighter();
+          charClass = new Fighter(mods, level);
           break;
         case 5:
-          charClass = new Monk();
+          charClass = new Monk(mods, level);
           break;
         case 6:
-          charClass = new Paladin();
+          charClass = new Paladin(mods, level);
           break;
         case 7:
-          charClass = new Ranger();
+          charClass = new Ranger(mods, level);
           break;
         case 8:
-          charClass = new Rogue();
+          charClass = new Rogue(mods, level);
           break;
         case 9:
-          charClass = new Sorcerer();
+          charClass = new Sorcerer(mods, level);
           break;
-
         default:
-          charClass = new Wizard();
+          charClass = new Wizard(mods, level);
           break;
       }
     }

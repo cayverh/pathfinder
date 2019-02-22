@@ -122,7 +122,5 @@ public class Dwarf extends Race
     // Generate the actual height and weight of the player's character
     height = height + (D4.roll(2) / 12.0);
     weight = weight + D4.roll(2) * 7;
-
-    System.out.println(height);
   }
 }
