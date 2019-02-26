@@ -138,9 +138,26 @@ public final class Generator implements Abilities
       charClass = new Barbarian(mods, level);
     else if (cclass.equals(Classification.BARD))
       charClass = new Bard(mods, level);
+    else if (cclass.equals(Classification.CLERIC))
+      charClass = new Cleric(mods, level);
+    else if (cclass.equals(Classification.DRUID))
+      charClass = new Druid(mods, level);
+    else if (cclass.equals(Classification.FIGHTER))
+      charClass = new Fighter(mods, level);
+    else if (cclass.equals(Classification.MONK))
+      charClass = new Monk(mods, level);
+    else if (cclass.equals(Classification.PALADIN))
+      charClass = new Paladin(mods, level);
+    else if (cclass.equals(Classification.RANGER))
+      charClass = new Ranger(mods, level);
+    else if (cclass.equals(Classification.ROGUE))
+      charClass = new Rogue(mods, level);
+    else if (cclass.equals(Classification.SORCERER))
+      charClass = new Sorcerer(mods, level);
+    else if (cclass.equals(Classification.WIZARD))
+      charClass = new Wizard(mods, level);
     else
     {
-
       int classIdentifier = new Random().nextInt(NUM_CLASSES);
 
       switch (classIdentifier)

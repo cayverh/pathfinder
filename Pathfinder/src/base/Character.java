@@ -58,12 +58,15 @@ public class Character implements Abilities
    *          The Classification of the player's character
    */
   public Character(String player, String charName, String gend, String align, String race,
-      String cclass, String hairColor, String eyeColor, int age, int level)
+      String cclass, String hairColor, String eyeColor, int age, String diety, String home,
+      int level)
   {
     this.player = player;
     this.charName = charName;
     alignment = align;
     this.age = age;
+    this.diety = diety;
+    this.homeland = home;
     this.level = level;
 
     gender = Generator.genGender(gend);
@@ -187,9 +190,10 @@ public class Character implements Abilities
 
     for (String ability : abilityScores.keySet())
     {
-      abilityInfo += String.format("%s: %s, Mod: %s\n", ability, abilityScores.get(ability),
+      abilityInfo += String.format("\t%s: %s, Mod: %s\n", ability, abilityScores.get(ability),
           abilityMods.get(ability));
     }
+    
 
     return abilityInfo;
   }
@@ -231,11 +235,12 @@ public class Character implements Abilities
   {
     String charInfo = "";
 
-    charInfo += String.format("   Player Name: %-20.20s\tCharacter: %s\n", player, charName,
+    charInfo += String.format("   Player Name: %-20.20s\n", player);
+    charInfo += String.format("     Character: %s\t\t\t      Age: %d\n", charName, getAge(),
         charRace.getBaseAge());
-    charInfo += String.format("\tGender: %-20.20s\t      Age: %d\n", gender, getAge());
-    charInfo += String.format("\tHeight: %-20.20s\t   Weight: %-20.10s\tSize: %s\n", getHeight(),
-        getWeight(), getSize());
+    charInfo += String.format("\tGender: %-20.20s\t     Size: %s\n", gender, getSize());
+    charInfo +=
+        String.format("\tHeight: %-20.20s\t   Weight: %-20.10s\n", getHeight(), getWeight());
     charInfo += String.format("    Hair Color: %-20.20s\tEye Color: %s\n", hairColor, eyeColor);
 
     charInfo += "\n";
@@ -245,11 +250,18 @@ public class Character implements Abilities
     charInfo += String.format("     Alignment: %-20.20s\t    Diety: %s\n", getAlignment(), diety);
     charInfo += String.format("      Homeland: %-20.20s\n\n", homeland);
 
-    charInfo += String.format("%21s    %s\t   %s    %s\n", "Skill", "Total", "Mod", "Ranks");
-    charInfo += String.format("%21s    %s\t  %s   %s\n", "-----", "-----", "-----", "-----");
-    charInfo += String.format("%s", charClass.getSkills());
-
     return charInfo;
+  }
+
+  public String getSkillInfo()
+  {
+    String abilityInfo = "";
+
+    abilityInfo += String.format("%21s    %s\t   %s    %s\n", "Skill", "Total", "Mod", "Ranks");
+    abilityInfo += String.format("%21s    %s\t  %s   %s\n", "-----", "-----", "-----", "-----");
+    abilityInfo += String.format("%s", charClass.getSkills());
+
+    return abilityInfo;
   }
 
   /**

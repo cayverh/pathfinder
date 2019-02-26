@@ -38,7 +38,7 @@ public abstract class Classification implements Skills, Dice
   {
     this.abilityMods = abilityMods;
     this.level = level;
-    
+
     baseAttackBonus = 0;
     fortSave = 0;
     refSave = 0;
@@ -60,6 +60,12 @@ public abstract class Classification implements Skills, Dice
         }
       }
     }
+  }
+
+  public static String getAllClasses()
+  {
+    return String.format("\t%s\n\t%s\n\t%s\n\t%s\n\t%s\n\t%s\n\t%s\n\t%s\n\t%s\n\t%s\n\t%s\n", BARBARIAN,
+        BARD, CLERIC, DRUID, FIGHTER, MONK, PALADIN, RANGER, ROGUE, SORCERER, WIZARD);
   }
 
   /**
@@ -145,16 +151,16 @@ public abstract class Classification implements Skills, Dice
       skillTotals.put(skill, skillMods.get(skill) + skillRanks.get(skill));
     }
   }
-  
+
   public ArrayList<String> getSpecials()
   {
     return specials;
   }
-  
+
   public abstract int getAdditionalHP();
 
   public abstract String getClassification();
-  
+
   public abstract void setBaseAttack();
 
   public abstract void setFortSave();
@@ -162,6 +168,6 @@ public abstract class Classification implements Skills, Dice
   public abstract void setRefSave();
 
   public abstract void setWillSave();
-  
+
   public abstract void setSpecials();
 }

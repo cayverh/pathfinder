@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Random;
 
 public abstract class Race implements Dice, Abilities, Languages
 {
@@ -65,6 +66,34 @@ public abstract class Race implements Dice, Abilities, Languages
    */
   public void setAbilityBonuses(String ability, int score)
   {
+    if (!ability.equals(STR) && !ability.equals(DEX) && !ability.equals(CON) && !ability.equals(INT)
+        && !ability.equals(WIS) && !ability.equals(CHA))
+    {
+      int a = new Random().nextInt(6);
+
+      switch (a)
+      {
+        case 0:
+          ability = STR;
+          break;
+        case 1:
+          ability = DEX;
+          break;
+        case 2:
+          ability = CON;
+          break;
+        case 3:
+          ability = INT;
+          break;
+        case 4:
+          ability = WIS;
+          break;
+        case 5:
+          ability = CHA;
+          break;
+      }
+    }
+    
     abilityBonuses.put(ability, abilityBonuses.get(ability) + score);
   }
 
@@ -161,6 +190,17 @@ public abstract class Race implements Dice, Abilities, Languages
   public ArrayList<String> getLanguagesToLearn()
   {
     return languagesToLearn;
+  }
+
+  /**
+   * Returns a formatted String listing all of the Races.
+   * 
+   * @return allRaces
+   */
+  public static String getAllRaces()
+  {
+    return String.format("\t%s\n\t%s\n\t%s\n\t%s\n\t%s\n\t%s\n\t%s\n", DWARF, ELF, GNOME, HALFELF,
+        HALFORC, HALFLING, HUMAN);
   }
 
   /**
