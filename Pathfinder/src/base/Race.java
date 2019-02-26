@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Random;
 
+import abilities.Abilities;
+
 public abstract class Race implements Dice, Abilities, Languages
 {
   protected final DecimalFormat FORMAT = new DecimalFormat("#");

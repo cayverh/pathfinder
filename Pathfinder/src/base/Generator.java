@@ -3,6 +3,7 @@ package base;
 import java.util.HashMap;
 import java.util.Random;
 
+import abilities.Abilities;
 import classes.*;
 import races.*;
 

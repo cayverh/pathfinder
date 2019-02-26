@@ -1,4 +1,4 @@
-package base;
+package abilities;
 
 public interface Abilities
 {

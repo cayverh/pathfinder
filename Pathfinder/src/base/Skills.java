@@ -3,6 +3,8 @@ package base;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import abilities.Abilities;
+
 public interface Skills extends Abilities
 {
   public final int NUM_SKILLS = 39;
