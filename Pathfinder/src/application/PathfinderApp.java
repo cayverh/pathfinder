@@ -7,6 +7,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
@@ -25,17 +27,18 @@ import javax.swing.UIManager.*;
 
 import abilities.*;
 
-public class PathfinderApp implements Runnable, WindowListener {
+public class PathfinderApp implements Runnable, WindowListener, ActionListener {
 	private static final Font FONT_HEADING = new Font("Onyx", Font.PLAIN, 25);
 	private static JPanel contentPane;
 	private JFrame mainWindow;
 	private static Engebrechtre font;
 	private int height, width;
 	private AbilitiesPane abilitiesPane;
+	private CharacterPane charPane;
+	private AbilityScores abilityScores;
 
 	public PathfinderApp(int width, int height) throws FontFormatException, IOException {
 		font = new Engebrechtre();
-		
 		
 		this.width = width;
 		this.height = height;
@@ -72,56 +75,25 @@ public class PathfinderApp implements Runnable, WindowListener {
 	}
 
 	public void init() {
-		contentPane.setLayout(new GridLayout(0,1));
-
 		
-		HashMap<String, Integer> abilityScores = new AbilityScores().getAbilityScores();
-		HashMap<String, Integer> abilityMods = new AbilityMods(abilityScores).getAbilityMods();
-		
-		contentPane.add((abilitiesPane = new AbilitiesPane(abilityScores, abilityMods)));
-
-		
-		contentPane.setVisible(true);
-	}
-
-	public void constructLabels(GridBagConstraints c) {
-		JLabel playerNameLabel = new JLabel("Player Name: ");
-		JLabel charNameLabel = new JLabel("Character Name: ");
-		JLabel raceLabel = new JLabel("Race: ");
-		JLabel classLabel = new JLabel("Class: ");
-		JLabel alignLabel = new JLabel("Alignment: ");
-		JLabel dietyLabel = new JLabel("Diety: ");
-		JLabel homeLabel = new JLabel("Homeland: ");
-		JLabel sizeLabel = new JLabel("Size: ");
-		JLabel genderLabel = new JLabel("Gender: ");
-		JLabel heightLabel = new JLabel("Height: ");
-		JLabel weightLabel = new JLabel("Weight: ");
-		JLabel ageLabel = new JLabel("Age: ");
-		JLabel hairLabel = new JLabel("Hair Color: ");
-		JLabel eyeLabel = new JLabel("Eye Color: ");
-
-		JLabel[] labels = { playerNameLabel, charNameLabel, raceLabel, classLabel, alignLabel, dietyLabel, homeLabel,
-				sizeLabel, genderLabel, heightLabel, weightLabel, ageLabel, hairLabel, eyeLabel};
-		
-		for (JLabel l : labels)
-		{
-			l.setFont(new Font("Calibri", Font.BOLD, 16));
-		}
-		
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 0.1;
-		c.gridx = 10;
-		c.gridy = 10;
-		
-		
-		playerNameLabel.setBounds(10, 10, 100, 50);
-		//contentPane.add(playerNameLabel, c);
 	}
 
 	@Override
 	public void run() {
 		constructMainWindow();
-		init();
+		JPanel abilitySection = new JPanel();
+		abilitySection.setLayout(new GridLayout(1, 0));
+		
+		contentPane.setLayout(new GridLayout(2,1));
+
+		abilityScores = new AbilityScores();
+		
+		abilitySection.add((abilitiesPane = new AbilitiesPane()));
+		contentPane.add(abilitySection);
+		contentPane.add((charPane = new CharacterPane()));
+		
+		contentPane.setVisible(true);
+		
 		mainWindow.setVisible(true);
 	}
 
@@ -164,6 +136,11 @@ public class PathfinderApp implements Runnable, WindowListener {
 	@Override
 	public void windowOpened(WindowEvent arg0) {
 		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent ae) {
 
 	}
 

@@ -9,11 +9,9 @@ public class Dwarf extends Race
   protected final int BASE_AGE = 40;
   protected final String DEFAULT_ALIGN = "Lawful Good";
 
-  public Dwarf(String gender)
+  public Dwarf()
   {
-    super(gender);
-
-    setWeightAndHeight();
+    super();
 
     // Alter standard racial traits
     setAbilityBonuses(CON, 2);
@@ -84,13 +82,13 @@ public class Dwarf extends Race
   public String getDesc()
   {
     return "These short and stocky defenders of mountain fortresses are often seen as stern and "
-        + "humorless. Known for mining the earth’s treasures and crafting magnificent items from "
+        + "humorless. Known for mining the earthï¿½s treasures and crafting magnificent items from "
         + "ore and gemstones, they have an unrivaled affinity for the bounties of the deep earth. "
         + "Dwarves also have a tendency toward traditionalism and isolation that sometimes "
         + "manifests as xenophobia.";
   }
 
-  public String getRace()
+  public String toString()
   {
     return DWARF;
   }
@@ -100,7 +98,7 @@ public class Dwarf extends Race
    * gender.
    */
   @Override
-  public void setWeightAndHeight()
+  public void setWeightAndHeight(String gender)
   {
 
     if (gender.equals("Male"))

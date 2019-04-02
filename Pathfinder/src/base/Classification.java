@@ -156,6 +156,11 @@ public abstract class Classification implements Skills, Dice
   {
     return specials;
   }
+  
+  public static String[] getClasses()
+  {
+	  return new String[] {BARBARIAN, BARD, CLERIC, DRUID, FIGHTER, MONK, PALADIN, RANGER, ROGUE, SORCERER, WIZARD};
+  }
 
   public abstract int getAdditionalHP();
 

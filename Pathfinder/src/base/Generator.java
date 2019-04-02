@@ -241,24 +241,24 @@ public final class Generator implements Abilities
    *          The desired Race of the player's character
    * @return Race
    */
-  public static Race genRace(String gender, String race)
+  public static Race genRace(String race)
   {
     Race charRace;
 
     if (race.equals(Race.DWARF))
-      charRace = new Dwarf(gender);
+      charRace = new Dwarf();
     else if (race.equals(Race.ELF))
-      charRace = new Elf(gender);
+      charRace = new Elf();
     else if (race.equals(Race.GNOME))
-      charRace = new Gnome(gender);
+      charRace = new Gnome();
     else if (race.equals(Race.HALFELF))
-      charRace = new HalfElf(gender);
+      charRace = new HalfElf();
     else if (race.equals(Race.HALFLING))
-      charRace = new Halfling(gender);
+      charRace = new Halfling();
     else if (race.equals(Race.HALFORC))
-      charRace = new HalfOrc(gender);
+      charRace = new HalfOrc();
     else if (race.equals(Race.HUMAN))
-      charRace = new Human(gender);
+      charRace = new Human();
     else
     {
       int raceIdentifier = new Random().nextInt(NUM_RACES);
@@ -266,25 +266,25 @@ public final class Generator implements Abilities
       switch (raceIdentifier)
       {
         case 0:
-          charRace = new Dwarf(gender);
+          charRace = new Dwarf();
           break;
         case 1:
-          charRace = new Elf(gender);
+          charRace = new Elf();
           break;
         case 2:
-          charRace = new Gnome(gender);
+          charRace = new Gnome();
           break;
         case 3:
-          charRace = new HalfElf(gender);
+          charRace = new HalfElf();
           break;
         case 4:
-          charRace = new Halfling(gender);
+          charRace = new Halfling();
           break;
         case 5:
-          charRace = new HalfOrc(gender);
+          charRace = new HalfOrc();
           break;
         default:
-          charRace = new Human(gender);
+          charRace = new Human();
           break;
       }
     }

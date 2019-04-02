@@ -21,7 +21,6 @@ public abstract class Race implements Dice, Abilities, Languages
   public static final String HUMAN = "Human";
 
   protected int age;
-  protected String gender;
   protected String size;
   protected int baseSpeed;
   protected double height;
@@ -35,11 +34,8 @@ public abstract class Race implements Dice, Abilities, Languages
   protected ArrayList<String> languagesToLearn = new ArrayList<String>();
   protected HashMap<String, String> racialTraits = new LinkedHashMap<String, String>();
 
-  public Race(String gender)
+  public Race()
   {
-    // Set the gender of the player's character
-    this.gender = gender;
-
     abilityScoreBonusToSpend = 0;
     canLearnLang = false;
 
@@ -204,6 +200,11 @@ public abstract class Race implements Dice, Abilities, Languages
     return String.format("\t%s\n\t%s\n\t%s\n\t%s\n\t%s\n\t%s\n\t%s\n", DWARF, ELF, GNOME, HALFELF,
         HALFORC, HALFLING, HUMAN);
   }
+  
+  public static String[] getRaces()
+  {
+	  return new String[]{DWARF, ELF, GNOME, HALFELF, HALFORC, HALFLING, HUMAN};
+  }
 
   /**
    * Returns the size of the player's character.
@@ -317,15 +318,8 @@ public abstract class Race implements Dice, Abilities, Languages
   public abstract void setLanguages();
 
   /**
-   * Returns a String representation of the player's character's Race.
-   * 
-   * @return
-   */
-  public abstract String getRace();
-
-  /**
    * Sets the weight and height of the player's character. These are determined by the player's
    * character's Race and gender.
    */
-  public abstract void setWeightAndHeight();
+  public abstract void setWeightAndHeight(String gender);
 }

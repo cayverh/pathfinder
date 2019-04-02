@@ -12,12 +12,8 @@ public class Halfling extends Race
   protected final int BASE_AGE = 20;
   protected final String DEFAULT_ALIGN = "Neutral";
 
-  public Halfling(String gender)
+  public Halfling()
   {
-    super(gender);
-
-    setWeightAndHeight();
-
     // Alter standard racial traits
     abilityBonuses.put(DEX, 2);
     abilityBonuses.put(CHA, 2);
@@ -29,7 +25,7 @@ public class Halfling extends Race
     setRacialTraits("Fearless", "+2 racial bonus on all saving throws against fear. This bonus stacks with the bonus granted by halfling luck.");
     setRacialTraits("Halfling Luck", "+1 racial bonus on all saving throws.");
     setRacialTraits("Sure-Footed", "+2 racial bonus on Acrobatics and Climb checks.");
-    setRacialTraits("Weapon Familiarity", "Proficient with slings and treat any weapon with the word “halfling” in its name as a martial weapon.");
+    setRacialTraits("Weapon Familiarity", "Proficient with slings and treat any weapon with the word ï¿½halflingï¿½ in its name as a martial weapon.");
     setRacialTraits("Keen Senses", "+2 racial bonus on Perception checks.");
     
     size = "Medium";
@@ -85,7 +81,7 @@ public class Halfling extends Race
         + "with an incredible knack for getting out the worst situations.";
   }
 
-  public String getRace()
+  public String toString()
   {
     return HALFLING;
   }
@@ -95,7 +91,7 @@ public class Halfling extends Race
    * gender.
    */
   @Override
-  public void setWeightAndHeight()
+  public void setWeightAndHeight(String gender)
   {
     if (gender.equals("Male"))
     {

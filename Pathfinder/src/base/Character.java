@@ -75,7 +75,8 @@ public class Character implements Abilities
 
     // Gets the Race of the character based on user input.
     // If none, a Race is randomly generated.
-    charRace = Generator.genRace(gender, race);
+    charRace = Generator.genRace(race);
+    charRace.setWeightAndHeight(gend);
 
     // TODO - Does this stay here??
     genAbilityScores();
@@ -309,7 +310,7 @@ public class Character implements Abilities
    */
   public String getNewRace()
   {
-    charRace = Generator.genRace(gender, "");
+    charRace = Generator.genRace("");
     return getRace();
   }
 
@@ -320,7 +321,7 @@ public class Character implements Abilities
    */
   public String getRace()
   {
-    return charRace.getRace();
+    return charRace.toString();
   }
 
   /**

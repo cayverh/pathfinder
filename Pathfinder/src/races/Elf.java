@@ -9,12 +9,8 @@ public class Elf extends Race
   protected final int BASE_AGE = 110;
   protected final String DEFAULT_ALIGN = "Chaotic Good";
 
-  public Elf(String gender)
+  public Elf()
   {
-    super(gender);
-
-    setWeightAndHeight();
-
     // Alter standard racial traits
     setAbilityBonuses(DEX, 2);
     setAbilityBonuses(INT, 2);
@@ -92,7 +88,7 @@ public class Elf extends Race
         + "can give the impression they are indifferent to the plights of others.";
   }
 
-  public String getRace()
+  public String toString()
   {
     return ELF;
   }
@@ -102,7 +98,7 @@ public class Elf extends Race
    * gender.
    */
   @Override
-  public void setWeightAndHeight()
+  public void setWeightAndHeight(String gender)
   {
     height = 5.33;
 

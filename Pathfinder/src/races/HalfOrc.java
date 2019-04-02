@@ -11,12 +11,8 @@ public class HalfOrc extends Race
   protected final int BASE_AGE = 14;
   protected final String DEFAULT_ALIGN = "Chaotic Neutral";
 
-  public HalfOrc(String gender)
+  public HalfOrc()
   {
-    super(gender);
-
-    setWeightAndHeight();
-
     // Alter standard racial traits
     abilityScoreBonusToSpend = 2;
 
@@ -34,7 +30,7 @@ public class HalfOrc extends Race
     setRacialTraits("Light Sensitivity",
         "Dazzled in areas of bright sunlight or within the radius of a daylight spell.");
     setRacialTraits("Weapon Familiarity", "Proficient with greataxes and falchions.\n"
-        + "Also treat any weapon with the word “orc” in its name as a martial weapon.");
+        + "Also treat any weapon with the word ï¿½orcï¿½ in its name as a martial weapon.");
     setRacialTraits("Bonus Feat", "Select one extra feat at 1st level.");
     setRacialTraits("Skilled",
         "Gain an additional skill rank at first level and one additional rank whenever they gain a level.");
@@ -87,7 +83,7 @@ public class HalfOrc extends Race
         + "if not monsters unworthy of pity or parley.";
   }
 
-  public String getRace()
+  public String toString()
   {
     return HALFORC;
   }
@@ -97,7 +93,7 @@ public class HalfOrc extends Race
    * gender.
    */
   @Override
-  public void setWeightAndHeight()
+  public void setWeightAndHeight(String gender)
   {
     if (gender.equals("Male"))
     {

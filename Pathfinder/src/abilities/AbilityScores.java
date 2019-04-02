@@ -12,6 +12,7 @@ public class AbilityScores implements Abilities {
 	public static final int MIN = 1;
 
 	private HashMap<String, Integer> abilityScores = new LinkedHashMap<String, Integer>(6);
+	private HashMap<String, Integer> abilityMods = new LinkedHashMap<String, Integer>(6);
 
 	public AbilityScores() {
 		int[] randNum = new int[4];
@@ -75,5 +76,11 @@ public class AbilityScores implements Abilities {
 	
 	public HashMap<String, Integer> getAbilityScores() {
 		return abilityScores;
+	}
+	
+	public HashMap<String, Integer> getAbilityMods() {
+		AbilityMods am = new AbilityMods(abilityScores);
+		
+		return am.getAbilityMods();
 	}
 }

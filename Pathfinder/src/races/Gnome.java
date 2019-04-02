@@ -11,12 +11,8 @@ public class Gnome extends Race
   protected final int BASE_AGE = 40;
   protected final String DEFAULT_ALIGN = "Neutral Good";
 
-  public Gnome(String gender)
+  public Gnome()
   {
-    super(gender);
-
-    setWeightAndHeight();
-
     // Alter standard racial traits
     setAbilityBonuses(CON, 2);
     setAbilityBonuses(CHA, 2);
@@ -93,7 +89,7 @@ public class Gnome extends Race
         + "insatiable need for new experiences that often gets them in trouble.";
   }
 
-  public String getRace()
+  public String toString()
   {
     return GNOME;
   }
@@ -103,7 +99,7 @@ public class Gnome extends Race
    * gender.
    */
   @Override
-  public void setWeightAndHeight()
+  public void setWeightAndHeight(String gender)
   {
     if (gender.equals("Male"))
     {
