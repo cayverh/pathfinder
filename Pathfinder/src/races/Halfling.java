@@ -39,7 +39,7 @@ public class Halfling extends Race
     return DEFAULT_ALIGN;
   }
 
-  public int getAgeModifier(String cclass)
+  public void setAge(String cclass)
   {
     int ageMod = 0;
 
@@ -50,7 +50,7 @@ public class Halfling extends Race
     else if (isTrainedClass(cclass))
       ageMod = D6.roll(4);
 
-    return ageMod;
+    age = BASE_AGE + ageMod;
   }
 
   @Override
@@ -87,31 +87,50 @@ public class Halfling extends Race
   }
 
   /**
-   * Set the base height and weight of the player's character. These attributes vary depending on
+   * Set the base height of the player's character. These attributes vary depending on
    * gender.
    */
   @Override
-  public void setWeightAndHeight(String gender)
+  public void setHeight(String gender)
   {
     if (gender.equals("Male"))
     {
       height = 2.75;
-      weight = 30;
     }
     else if (gender.equals("Female"))
     {
       height = 2.5;
-      weight = 25;
     }
     else if (gender.equals("Non-Binary"))
     {
       height = 2.625;
+    }
+
+    // Generate the actual height of the player's character
+    height = height + (D4.roll(2) / 12.0);
+  }
+
+  /**
+   * Set the base weight of the player's character. These attributes vary depending on
+   * gender.
+   */
+  @Override
+  public void setWeight(String gender)
+  {
+    if (gender.equals("Male"))
+    {
+      weight = 30;
+    }
+    else if (gender.equals("Female"))
+    {
+      weight = 25;
+    }
+    else if (gender.equals("Non-Binary"))
+    {
       weight = 27.5;
     }
 
-    // Generate the actual height and weight of the player's character
-    height = height + (D4.roll(2) / 12.0);
+    // Generate the actual weight of the player's character
     weight = weight + D4.roll(2);
   }
-
 }

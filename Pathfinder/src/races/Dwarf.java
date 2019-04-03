@@ -49,7 +49,7 @@ public class Dwarf extends Race
     return DEFAULT_ALIGN;
   }
 
-  public int getAgeModifier(String cclass)
+  public void setAge(String cclass)
   {
     int ageMod = 0;
 
@@ -59,8 +59,8 @@ public class Dwarf extends Race
       ageMod = D6.roll(5);
     else if (isTrainedClass(cclass))
       ageMod = D6.roll(7);
-
-    return ageMod;
+    
+    age = BASE_AGE + ageMod;
   }
 
   /**
@@ -98,27 +98,46 @@ public class Dwarf extends Race
    * gender.
    */
   @Override
-  public void setWeightAndHeight(String gender)
+  public void setHeight(String gender)
   {
-
     if (gender.equals("Male"))
     {
       height = 3.75;
-      weight = 150;
     }
     else if (gender.equals("Female"))
     {
       height = 3.58;
-      weight = 120;
     }
     else if (gender.equals("Non-Binary"))
     {
       height = 3.66;
+    }
+
+    // Generate the actual height of the player's character
+    height = height + (D4.roll(2) / 12.0);
+  }
+  
+  /**
+   * Set the base height and weight of the player's character. These attributes vary depending on
+   * gender.
+   */
+  @Override
+  public void setWeight(String gender)
+  {
+    if (gender.equals("Male"))
+    {
+      weight = 150;
+    }
+    else if (gender.equals("Female"))
+    {
+      weight = 120;
+    }
+    else if (gender.equals("Non-Binary"))
+    {
       weight = 135;
     }
 
-    // Generate the actual height and weight of the player's character
-    height = height + (D4.roll(2) / 12.0);
+    // Generate the actual weight of the player's character
     weight = weight + D4.roll(2) * 7;
   }
 }

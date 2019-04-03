@@ -17,12 +17,8 @@ import java.util.HashMap;
 
 import javax.swing.*;
 
-import app.JApplication;
 import base.Generator;
-import io.ResourceFinder;
 import resources.Engebrechtre;
-import visual.Visualization;
-import visual.VisualizationView;
 import javax.swing.UIManager.*;
 
 import abilities.*;
@@ -90,7 +86,10 @@ public class PathfinderApp implements Runnable, WindowListener, ActionListener {
 		
 		abilitySection.add((abilitiesPane = new AbilitiesPane()));
 		contentPane.add(abilitySection);
-		contentPane.add((charPane = new CharacterPane()));
+		
+		AbilitiesPane.submitButton.addActionListener(this);
+		
+		
 		
 		contentPane.setVisible(true);
 		
@@ -141,7 +140,10 @@ public class PathfinderApp implements Runnable, WindowListener, ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-
+	  if (ae.getActionCommand().equals(AbilitiesPane.SUBMIT))
+	  {
+	    contentPane.add((charPane = new CharacterPane(abilityScores)));
+	  }
 	}
 
 }

@@ -44,7 +44,7 @@ public class Paladin extends Classification
   }
 
   @Override
-  public String getClassification()
+  public String toString()
   {
     return MONK;
   }

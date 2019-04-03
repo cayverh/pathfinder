@@ -65,7 +65,7 @@ public class Sorcerer extends Classification
   }
 
   @Override
-  public String getClassification()
+  public String toString()
   {
     return SORCERER;
   }

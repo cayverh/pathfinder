@@ -66,7 +66,7 @@ public class Rogue extends Classification
   }
 
   @Override
-  public String getClassification()
+  public String toString()
   {
     return ROGUE;
   }

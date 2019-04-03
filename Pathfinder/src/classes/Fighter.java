@@ -37,7 +37,7 @@ public class Fighter extends Classification
   }
 
   @Override
-  public String getClassification()
+  public String toString()
   {
     return FIGHTER;
   }

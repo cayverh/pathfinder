@@ -45,8 +45,8 @@ public class Gnome extends Race
   {
     return DEFAULT_ALIGN;
   }
-
-  public int getAgeModifier(String cclass)
+  
+  public void setAge(String cclass)
   {
     int ageMod = 0;
 
@@ -57,7 +57,12 @@ public class Gnome extends Race
     else if (isTrainedClass(cclass))
       ageMod = D6.roll(9);
 
-    return ageMod;
+    age = BASE_AGE + ageMod;
+  }
+
+  public int getAgeModifier()
+  {
+    return age;
   }
 
   @Override
@@ -95,31 +100,51 @@ public class Gnome extends Race
   }
 
   /**
-   * Set the base height and weight of the player's character. These attributes vary depending on
+   * Set the base weight of the player's character. These attributes vary depending on
    * gender.
    */
   @Override
-  public void setWeightAndHeight(String gender)
+  public void setHeight(String gender)
   {
     if (gender.equals("Male"))
     {
       height = 3.0;
-      weight = 35;
     }
     else if (gender.equals("Female"))
     {
       height = 2.0;
-      weight = 30;
     }
     else if (gender.equals("Non-Binary"))
     {
       height = 2.5;
+    }
+
+    // Generate the actual height of the player's character
+    height = height + (D4.roll(2) / 12.0);
+  }
+
+  /**
+   * Set the base weight of the player's character. These attributes vary depending on
+   * gender.
+   */
+  @Override
+  public void setWeight(String gender)
+  {
+    if (gender.equals("Male"))
+    {
+      weight = 35;
+    }
+    else if (gender.equals("Female"))
+    {
+      weight = 30;
+    }
+    else if (gender.equals("Non-Binary"))
+    {
+
       weight = 32.5;
     }
 
-    // Generate the actual height and weight of the player's character
-    height = height + (D4.roll(2) / 12.0);
+    // Generate the actual weight of the player's character
     weight = weight + D4.roll(2);
   }
-
 }

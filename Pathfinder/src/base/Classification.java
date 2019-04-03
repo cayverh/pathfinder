@@ -164,8 +164,6 @@ public abstract class Classification implements Skills, Dice
 
   public abstract int getAdditionalHP();
 
-  public abstract String getClassification();
-
   public abstract void setBaseAttack();
 
   public abstract void setFortSave();

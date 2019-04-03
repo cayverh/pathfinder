@@ -41,8 +41,8 @@ public class Elf extends Race
   {
     return DEFAULT_ALIGN;
   }
-
-  public int getAgeModifier(String cclass)
+  
+  public void setAge(String cclass)
   {
     int ageMod = 0;
 
@@ -52,10 +52,10 @@ public class Elf extends Race
       ageMod = D6.roll(5);
     else if (isTrainedClass(cclass))
       ageMod = D6.roll(7);
-
-    return ageMod;
+    
+    age = BASE_AGE + ageMod;
   }
-
+  
   /**
    * Set the age of the player's elf. Based on class.
    */
@@ -98,32 +98,48 @@ public class Elf extends Race
    * gender.
    */
   @Override
-  public void setWeightAndHeight(String gender)
+  public void setHeight(String gender)
   {
     height = 5.33;
 
     if (gender.equals("Male"))
     {
+      // Generate the actual height of the player's character
+      height = height + (D8.roll(2) / 12.0);
+    }
+    else if (gender.equals("Female"))
+    {
+      // Generate the actual height and weight of the player's character
+      height = height + (D6.roll(2) / 12.0);
+    }
+    else if (gender.equals("Non-Binary"))
+    {
+      // Generate the actual height and weight of the player's character
+      height = height + (D6.roll(1) + D8.roll(1) / 12.0);
+    }
+  }
+  
+  public void setWeight(String gender)
+  {
+    if (gender.equals("Male"))
+    {
       weight = 110;
 
-      // Generate the actual height and weight of the player's character
-      height = height + (D8.roll(2) / 12.0);
+      // Generate the actual weight of the player's character
       weight = weight + D8.roll(2) * 3;
     }
     else if (gender.equals("Female"))
     {
       weight = 90;
 
-      // Generate the actual height and weight of the player's character
-      height = height + (D6.roll(2) / 12.0);
+      // Generate the actual weight of the player's character
       weight = weight + D6.roll(2) * 3;
     }
     else if (gender.equals("Non-Binary"))
     {
       weight = 100;
 
-      // Generate the actual height and weight of the player's character
-      height = height + (D6.roll(1) + D8.roll(1) / 12.0);
+      // Generate the actual weight of the player's character
       weight = weight + (D6.roll(2) * 3 + D8.roll(2) * 3) / 3;
     }
   }

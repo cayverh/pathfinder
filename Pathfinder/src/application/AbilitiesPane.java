@@ -7,22 +7,21 @@ import java.util.HashMap;
 
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.table.TableModel;
 
 import abilities.*;
 
 public class AbilitiesPane extends JPanel implements Abilities, ActionListener {
-	public static final String REROLL = "Re-Roll Scores!";
+	public final String REROLL = "Re-Roll Scores!";
 	public static final String SUBMIT = "Submit Scores!";
 	
-	boolean scoresSubmitted;
+	static boolean scoresSubmitted;
 	JScrollPane scrollPane;
 	public static JButton rerollButton;
 	public static JButton submitButton;
 	JTable table;
 	String[] columns = { "Ability", "Ability Score", "Ability Modifier" };
 	
-	AbilityScores as;
+	static AbilityScores as;
 
 	HashMap<String, Integer> scores;
 	HashMap<String, Integer> mods;
@@ -111,12 +110,12 @@ public class AbilitiesPane extends JPanel implements Abilities, ActionListener {
 		}
 	}
 	
-	public AbilityScores getAbilityScores()
+	public static AbilityScores getAbilityScores()
 	{
 		return as;
 	}
 	
-	public boolean scoresSubmitted()
+	public static boolean scoresSubmitted()
 	{
 		return scoresSubmitted;
 	}

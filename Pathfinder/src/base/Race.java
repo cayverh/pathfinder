@@ -288,6 +288,11 @@ public abstract class Race implements Dice, Abilities, Languages
    */
   public abstract String getAlignment();
 
+  public int getAge()
+  {
+    return age;
+  }
+  
   /**
    * Retrieves the number to which the player's character's age is modified based on their Race and
    * Class.
@@ -296,7 +301,7 @@ public abstract class Race implements Dice, Abilities, Languages
    *          The String representation of the Class of the player's character
    * @return ageModifier
    */
-  public abstract int getAgeModifier(String cclass);
+  public abstract void setAge(String cclass);
 
   /**
    * Retrieves the default age of the player's character's Race.
@@ -321,5 +326,7 @@ public abstract class Race implements Dice, Abilities, Languages
    * Sets the weight and height of the player's character. These are determined by the player's
    * character's Race and gender.
    */
-  public abstract void setWeightAndHeight(String gender);
+  public abstract void setHeight(String gender);
+
+  public abstract void setWeight(String gender);
 }

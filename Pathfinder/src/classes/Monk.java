@@ -72,7 +72,7 @@ public class Monk extends Classification
   }
 
   @Override
-  public String getClassification()
+  public String toString()
   {
     return MONK;
   }

@@ -37,7 +37,7 @@ public class Bard extends Classification
   }
 
   @Override
-  public String getClassification()
+  public String toString()
   {
     return BARD;
   }

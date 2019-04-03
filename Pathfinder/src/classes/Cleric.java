@@ -37,7 +37,7 @@ public class Cleric extends Classification
   }
 
   @Override
-  public String getClassification()
+  public String toString()
   {
     return CLERIC;
   }

@@ -33,7 +33,7 @@ public class Human extends Race
     return DEFAULT_ALIGN;
   }
 
-  public int getAgeModifier(String cclass)
+  public void setAge(String cclass)
   {
     int ageMod = 0;
 
@@ -44,7 +44,7 @@ public class Human extends Race
     else if (isTrainedClass(cclass))
       ageMod = D6.roll(2);
 
-    return ageMod;
+    age = BASE_AGE + ageMod;
   }
 
   @Override
@@ -80,31 +80,50 @@ public class Human extends Race
   }
 
   /**
-   * Set the base height and weight of the player's character. These attributes vary depending on
+   * Set the base height of the player's character. These attributes vary depending on
    * gender.
    */
   @Override
-  public void setWeightAndHeight(String gender)
+  public void setHeight(String gender)
   {
     if (gender.equals("Male"))
     {
       height = 4.8;
-      weight = 120;
     }
     else if (gender.equals("Female"))
     {
       height = 4.42;
-      weight = 85;
     }
     else if (gender.equals("Non-Binary"))
     {
       height = 4.61;
+    }
+
+    // Generate the actual height of the player's character
+    height = height + (D10.roll(2) / 12.0);
+  }
+
+  /**
+   * Set the base weight of the player's character. These attributes vary depending on
+   * gender.
+   */
+  @Override
+  public void setWeight(String gender)
+  {
+    if (gender.equals("Male"))
+    {
+      weight = 120;
+    }
+    else if (gender.equals("Female"))
+    {
+      weight = 85;
+    }
+    else if (gender.equals("Non-Binary"))
+    {
       weight = 102.5;
     }
 
-    // Generate the actual height and weight of the player's character
-    height = height + (D10.roll(2) / 12.0);
+    // Generate the actual weight of the player's character
     weight = weight + D10.roll(2) * 5;
   }
-
 }

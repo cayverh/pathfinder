@@ -37,7 +37,7 @@ public class Druid extends Classification
   }
 
   @Override
-  public String getClassification()
+  public String toString()
   {
     return DRUID;
   }
