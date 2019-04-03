@@ -97,21 +97,23 @@ public class HalfElf extends Race
   @Override
   public void setHeight(String gender)
   {
+    double h = 0;
+    
     if (gender.equals("Male"))
     {
-      height = 5.16;
+      h = 5.16;
     }
     else if (gender.equals("Female"))
     {
-      height = 5.0;
+      h = 5.0;
     }
     else if (gender.equals("Non-Binary"))
     {
-      height = 5.08;
+      h = 5.08;
     }
 
     // Generate the actual height of the player's character
-    height = height + (D8.roll(2) / 12.0);
+    height = h + (D8.roll(2) / 12.0);
   }
 
   /**
@@ -121,20 +123,22 @@ public class HalfElf extends Race
   @Override
   public void setWeight(String gender)
   {
+    double w = 0;
+    
     if (gender.equals("Male"))
     {
-      weight = 100;
+      w = 100;
     }
     else if (gender.equals("Female"))
     {
-      weight = 90;
+      w = 90;
     }
     else if (gender.equals("Non-Binary"))
     {
-      weight = 95;
+      w = 95;
     }
 
     // Generate the actual weight of the player's character
-    weight = weight + D8.roll(2) * 5;
+    weight = w + D8.roll(2) * 5;
   }
 }

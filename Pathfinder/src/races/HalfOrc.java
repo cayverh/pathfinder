@@ -95,21 +95,23 @@ public class HalfOrc extends Race
   @Override
   public void setHeight(String gender)
   {
+    double h = 0;
+    
     if (gender.equals("Male"))
     {
-      height = 4.8;
+      h = 4.8;
     }
     else if (gender.equals("Female"))
     {
-      height = 4.42;
+      h = 4.42;
     }
     else if (gender.equals("Non-Binary"))
     {
-      height = 4.61;
+      h = 4.61;
     }
 
     // Generate the actual height of the player's character
-    height = height + (D12.roll(2) / 12.0);
+    height = h + (D12.roll(2) / 12.0);
   }
 
   /**
@@ -119,20 +121,22 @@ public class HalfOrc extends Race
   @Override
   public void setWeight(String gender)
   {
+    double w = 0;
+    
     if (gender.equals("Male"))
     {
-      weight = 150;
+      w = 150;
     }
     else if (gender.equals("Female"))
     {
-      weight = 110;
+      w = 110;
     }
     else if (gender.equals("Non-Binary"))
     {
-      weight = 130;
+      w = 130;
     }
 
     // Generate the actual weight of the player's character
-    weight = weight + D12.roll(2) * 7;
+    weight = w + D12.roll(2) * 7;
   }
 }

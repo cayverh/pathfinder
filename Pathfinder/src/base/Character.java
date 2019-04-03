@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import abilities.Abilities;
+import abilities.AbilityScores;
 
 /**
  * The creation of a Pathfinder character.
@@ -21,8 +22,11 @@ public class Character implements Abilities
 
   private String player;
 
+  private String height;
+  private String weight;
   private int age;
   private int level;
+  private String size;
   private String alignment;
   private String charName;
   private String diety;
@@ -40,6 +44,8 @@ public class Character implements Abilities
   private HashMap<String, Integer> abilityScores = new LinkedHashMap<String, Integer>(6);
   private HashMap<String, Integer> abilityMods = new LinkedHashMap<String, Integer>(6);
 
+  AbilityScores abilities;
+  
   private ArrayList<String> languages;
 
   /**
@@ -61,6 +67,37 @@ public class Character implements Abilities
    */
   public Character(String player, String charName, String gend, String align, String race,
       String cclass, String hairColor, String eyeColor, int age, String diety, String home,
+      int level, AbilityScores as)
+  {
+    this.player = player;
+    this.charName = charName;
+    alignment = align;
+    this.age = age;
+    this.diety = diety;
+    this.homeland = home;
+    this.level = level;
+
+    abilities = as;
+    
+    gender = Generator.genGender(gend);
+
+    // Gets the Race of the character based on user input.
+    // If none, a Race is randomly generated.
+    charRace = Generator.genRace(race);
+    charRace.setHeight(gend);
+    charRace.setWeight(gend);
+    
+    height = charRace.getHeight();
+    weight = charRace.getWeight();
+
+    charClass = Generator.genClass(cclass, abilities.getAbilityMods(), level);
+    charClass.setSkillTotals();
+
+    setAppearance(hairColor, eyeColor);
+  }
+  
+  public Character(String player, String charName, String gend, String align, Race race,
+      Classification cclass, String hairColor, String eyeColor, String height, String weight, int age, String diety, String home,
       int level)
   {
     this.player = player;
@@ -75,15 +112,11 @@ public class Character implements Abilities
 
     // Gets the Race of the character based on user input.
     // If none, a Race is randomly generated.
-    charRace = Generator.genRace(race);
-    charRace.setHeight(gend);
-    charRace.setWeight(gend);
+    charRace = race;
+    this.height = height;
+    this.weight = weight;
 
-    // TODO - Does this stay here??
-    genAbilityScores();
-    genAbilityMods();
-
-    charClass = Generator.genClass(cclass, abilityMods, level);
+    charClass = cclass;
     charClass.setSkillTotals();
 
     setAppearance(hairColor, eyeColor);
@@ -122,7 +155,7 @@ public class Character implements Abilities
    */
   public void genAbilityScores()
   {
-    Generator.genAbilityScores(abilityScores);
+    Generator.genAbilityScores(abilities.getAbilityScores());
   }
 
   /**
@@ -131,7 +164,7 @@ public class Character implements Abilities
    */
   public void genAbilityMods()
   {
-    Generator.genAbilityMods(abilityScores, abilityMods, charRace);
+    Generator.genAbilityMods(abilities.getAbilityScores(), abilities.getAbilityMods(), charRace);
 
     if (abilityMods.get(INT) > 0)
       charRace.setCanLearnLang(true);
@@ -151,7 +184,7 @@ public class Character implements Abilities
   {
     int toSpend = charRace.getAbilityScoreBonusToSpend();
 
-    abilityScores.put(ability, abilityScores.get(ability) + toSpend);
+    abilityScores.put(ability, abilities.getAbilityScores().get(ability) + toSpend);
 
     if (toSpend != 0)
       genAbilityMods();
@@ -192,12 +225,11 @@ public class Character implements Abilities
   {
     String abilityInfo = "";
 
-    for (String ability : abilityScores.keySet())
+    for (String ability : abilities.getAbilityScores().keySet())
     {
-      abilityInfo += String.format("\t%s: %s, Mod: %s\n", ability, abilityScores.get(ability),
-          abilityMods.get(ability));
+      abilityInfo += String.format("\t%s: %s, Mod: %s\n", ability, abilities.getAbilityScores().get(ability),
+          abilities.getAbilityMods().get(ability));
     }
-    
 
     return abilityInfo;
   }
@@ -211,7 +243,7 @@ public class Character implements Abilities
   public int getAge()
   {
     if (age == 0)
-      return charRace.getBaseAge() + charRace.getAgeModifier(getClassification());
+      return charRace.getAge();
     else
       return age;
   }
@@ -250,8 +282,8 @@ public class Character implements Abilities
     charInfo += "\n";
 
     charInfo +=
-        String.format("\t  Race: %-20.20s\t    Class: %s\n", getRace(), getClassification());
-    charInfo += String.format("     Alignment: %-20.20s\t    Diety: %s\n", getAlignment(), diety);
+        String.format("\t  Race: %-20.20s\t    Class: %s\n", getRace().toString(), getClassification().toString());
+    charInfo += String.format("     Alignment: %-20.20s\t    Diety: %s\n", alignment, diety);
     charInfo += String.format("      Homeland: %-20.20s\n\n", homeland);
 
     return charInfo;
@@ -273,10 +305,9 @@ public class Character implements Abilities
    * 
    * @return new Race
    */
-  public String getNewClass()
+  public void genNewClass()
   {
-    charClass = Generator.genClass("", abilityMods, 1);
-    return getClassification();
+    charClass = Generator.genClass("", abilities.getAbilityMods(), 1);
   }
 
   /**
@@ -284,19 +315,9 @@ public class Character implements Abilities
    * 
    * @return classification
    */
-  public String getClassification()
+  public Classification getClassification()
   {
-    return charClass.toString();
-  }
-
-  /**
-   * Returns the height of the player's character.
-   * 
-   * @return
-   */
-  public String getHeight()
-  {
-    return charRace.getHeight();
+    return charClass;
   }
 
   public ArrayList<String> getLanguages()
@@ -309,10 +330,10 @@ public class Character implements Abilities
    * 
    * @return new Race
    */
-  public String getNewRace()
+  public void genNewRace()
   {
     charRace = Generator.genRace("");
-    return getRace();
+    size = charRace.getSize();
   }
 
   /**
@@ -320,9 +341,9 @@ public class Character implements Abilities
    * 
    * @return race
    */
-  public String getRace()
+  public Race getRace()
   {
-    return charRace.toString();
+    return charRace;
   }
 
   /**
@@ -344,6 +365,21 @@ public class Character implements Abilities
   {
     return charRace.getSpeed();
   }
+  
+  /**
+   * Returns the height of the player's character.
+   * 
+   * @return
+   */
+  public String getHeight()
+  {
+    return charRace.getHeight();
+  }
+  
+  public String getGender()
+  {
+    return gender;
+  }
 
   /**
    * Gets the String representation of the character's weight.
@@ -353,6 +389,71 @@ public class Character implements Abilities
   public String getWeight()
   {
     return charRace.getWeight();
+  }
+  
+  public void setPlayerName(String pn)
+  {
+    player = pn;
+  }
+  
+  public void setCharName(String cn)
+  {
+    charName = cn;
+  }
+  
+  public void setGender(String g)
+  {
+    gender = g;
+  }
+  
+  public void setAge(int i)
+  {
+    age = i;
+  }
+  
+  public void setAlignment(String a)
+  {
+    alignment = a;
+  }
+  
+  public void setDiety(String d)
+  {
+    diety = d;
+  }
+  
+  public void setHomeland(String h)
+  {
+    homeland = h;
+  }
+  
+  public void setHairColor(String h)
+  {
+    hairColor = h;
+  }
+  
+  public void setEyeColor(String e)
+  {
+    eyeColor = e;
+  }
+  
+  public void setSize(String s)
+  {
+    size = s;
+  }
+  
+  public void setLevel(int l)
+  {
+    level = l;
+  }
+  
+  public void setRace(String r)
+  {
+    charRace = Generator.genRace(r);
+  }
+  
+  public void setClass(String c)
+  {
+    charClass = Generator.genClass(c, abilities.getAbilityMods(), level);
   }
 
   /********************************************************************************************************/

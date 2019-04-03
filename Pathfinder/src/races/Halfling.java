@@ -93,21 +93,23 @@ public class Halfling extends Race
   @Override
   public void setHeight(String gender)
   {
+    double h = 0;
+    
     if (gender.equals("Male"))
     {
-      height = 2.75;
+      h = 2.75;
     }
     else if (gender.equals("Female"))
     {
-      height = 2.5;
+      h = 2.5;
     }
     else if (gender.equals("Non-Binary"))
     {
-      height = 2.625;
+      h = 2.625;
     }
 
     // Generate the actual height of the player's character
-    height = height + (D4.roll(2) / 12.0);
+    height = h + (D4.roll(2) / 12.0);
   }
 
   /**
@@ -117,20 +119,22 @@ public class Halfling extends Race
   @Override
   public void setWeight(String gender)
   {
+    double w = 0;
+    
     if (gender.equals("Male"))
     {
-      weight = 30;
+      w = 30;
     }
     else if (gender.equals("Female"))
     {
-      weight = 25;
+      w = 25;
     }
     else if (gender.equals("Non-Binary"))
     {
-      weight = 27.5;
+      w = 27.5;
     }
 
     // Generate the actual weight of the player's character
-    weight = weight + D4.roll(2);
+    weight = w + D4.roll(2);
   }
 }

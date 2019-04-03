@@ -100,21 +100,23 @@ public class Dwarf extends Race
   @Override
   public void setHeight(String gender)
   {
+    double h = 0;
+    
     if (gender.equals("Male"))
     {
-      height = 3.75;
+      h = 3.75;
     }
     else if (gender.equals("Female"))
     {
-      height = 3.58;
+      h = 3.58;
     }
     else if (gender.equals("Non-Binary"))
     {
-      height = 3.66;
+      h = 3.66;
     }
 
     // Generate the actual height of the player's character
-    height = height + (D4.roll(2) / 12.0);
+    height = h + (D4.roll(2) / 12.0);
   }
   
   /**
@@ -124,20 +126,22 @@ public class Dwarf extends Race
   @Override
   public void setWeight(String gender)
   {
+    double w = 0;
+    
     if (gender.equals("Male"))
     {
-      weight = 150;
+      w = 150;
     }
     else if (gender.equals("Female"))
     {
-      weight = 120;
+      w = 120;
     }
     else if (gender.equals("Non-Binary"))
     {
-      weight = 135;
+      w = 135;
     }
 
     // Generate the actual weight of the player's character
-    weight = weight + D4.roll(2) * 7;
+    weight = w + D4.roll(2) * 7;
   }
 }

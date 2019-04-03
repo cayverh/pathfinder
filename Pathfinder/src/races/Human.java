@@ -86,21 +86,23 @@ public class Human extends Race
   @Override
   public void setHeight(String gender)
   {
+    double h = 0;
+    
     if (gender.equals("Male"))
     {
-      height = 4.8;
+      h = 4.8;
     }
     else if (gender.equals("Female"))
     {
-      height = 4.42;
+      h = 4.42;
     }
     else if (gender.equals("Non-Binary"))
     {
-      height = 4.61;
+      h = 4.61;
     }
 
     // Generate the actual height of the player's character
-    height = height + (D10.roll(2) / 12.0);
+    height = h + (D10.roll(2) / 12.0);
   }
 
   /**
@@ -110,20 +112,22 @@ public class Human extends Race
   @Override
   public void setWeight(String gender)
   {
+    double w = 0;
+    
     if (gender.equals("Male"))
     {
-      weight = 120;
+      w = 120;
     }
     else if (gender.equals("Female"))
     {
-      weight = 85;
+      w = 85;
     }
     else if (gender.equals("Non-Binary"))
     {
-      weight = 102.5;
+      w = 102.5;
     }
 
     // Generate the actual weight of the player's character
-    weight = weight + D10.roll(2) * 5;
+    weight = w + D10.roll(2) * 5;
   }
 }

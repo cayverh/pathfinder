@@ -100,47 +100,49 @@ public class Elf extends Race
   @Override
   public void setHeight(String gender)
   {
-    height = 5.33;
+    double h = 5.33;
 
     if (gender.equals("Male"))
     {
       // Generate the actual height of the player's character
-      height = height + (D8.roll(2) / 12.0);
+      height = h + (D8.roll(2) / 12.0);
     }
     else if (gender.equals("Female"))
     {
       // Generate the actual height and weight of the player's character
-      height = height + (D6.roll(2) / 12.0);
+      height = h + (D6.roll(2) / 12.0);
     }
     else if (gender.equals("Non-Binary"))
     {
       // Generate the actual height and weight of the player's character
-      height = height + (D6.roll(1) + D8.roll(1) / 12.0);
+      height = h + (D6.roll(1) + D8.roll(1) / 12.0);
     }
   }
   
   public void setWeight(String gender)
   {
+    double w = 0;
+    
     if (gender.equals("Male"))
     {
-      weight = 110;
+      w = 110;
 
       // Generate the actual weight of the player's character
-      weight = weight + D8.roll(2) * 3;
+      weight = w + D8.roll(2) * 3;
     }
     else if (gender.equals("Female"))
     {
-      weight = 90;
+      w = 90;
 
       // Generate the actual weight of the player's character
-      weight = weight + D6.roll(2) * 3;
+      weight = w + D6.roll(2) * 3;
     }
     else if (gender.equals("Non-Binary"))
     {
-      weight = 100;
+      w = 100;
 
       // Generate the actual weight of the player's character
-      weight = weight + (D6.roll(2) * 3 + D8.roll(2) * 3) / 3;
+      weight = w + (D6.roll(2) * 3 + D8.roll(2) * 3) / 3;
     }
   }
 }

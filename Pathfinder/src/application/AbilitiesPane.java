@@ -10,113 +10,110 @@ import javax.swing.border.*;
 
 import abilities.*;
 
-public class AbilitiesPane extends JPanel implements Abilities, ActionListener {
-	public final String REROLL = "Re-Roll Scores!";
-	public static final String SUBMIT = "Submit Scores!";
-	
-	static boolean scoresSubmitted;
-	JScrollPane scrollPane;
-	public static JButton rerollButton;
-	public static JButton submitButton;
-	JTable table;
-	String[] columns = { "Ability", "Ability Score", "Ability Modifier" };
-	
-	static AbilityScores as;
+public class AbilitiesPane extends JPanel implements Abilities, ActionListener
+{
+  public final String REROLL = "Re-Roll Scores!";
+  public static final String SUBMIT = "Submit Scores!";
 
-	HashMap<String, Integer> scores;
-	HashMap<String, Integer> mods;
+  static boolean scoresSubmitted;
+  JScrollPane scrollPane;
+  public static JButton rerollButton;
+  public static JButton submitButton;
+  JTable table;
+  String[] columns = {"Ability", "Ability Name", "Ability Score", "Ability Modifier"};
 
-	public AbilitiesPane() {
-		this.setLayout(new BorderLayout());
-		
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new GridLayout(1, 2));
+  static AbilityScores as;
 
-		as = new AbilityScores();
-		scores = as.getAbilityScores();
-		mods = as.getAbilityMods();
-		scoresSubmitted = false;
+  HashMap<String, Integer> scores;
+  HashMap<String, Integer> mods;
 
-		setBorder(new CompoundBorder(new TitledBorder("Abilities"), new EmptyBorder(0, 0, 0, 0)));
+  public AbilitiesPane()
+  {
+    this.setLayout(new BorderLayout());
 
-		Object[][] data = { { "STR (Strength)", scores.get(STR), mods.get(STR) },
-				{ "DEX (Dexterity)", scores.get(DEX), mods.get(DEX) },
-				{ "CON (Constitution)", scores.get(CON), mods.get(CON) },
-				{ "INT (Intelligence)", scores.get(INT), mods.get(INT) },
-				{ "WIS (Wisdom)", scores.get(WIS), mods.get(WIS) },
-				{ "CHA (Charisma)", scores.get(CHA), mods.get(CHA) } };
+    JPanel buttonPanel = new JPanel();
+    buttonPanel.setLayout(new GridLayout(2, 1));
 
-		table = new JTable(data, columns);
-		table.setPreferredScrollableViewportSize(new Dimension(500, 100));
-		table.setFillsViewportHeight(true);
+    as = new AbilityScores();
+    scores = as.getAbilityScores();
+    mods = as.getAbilityMods();
+    scoresSubmitted = false;
 
-		// Create the scroll pane and add the table to it.
-		scrollPane = new JScrollPane(table);
+    setBorder(new CompoundBorder(new TitledBorder("Abilities"), new EmptyBorder(0, 0, 0, 0)));
 
-		rerollButton = new JButton(REROLL);
-		rerollButton.addActionListener(this);
-		
-		submitButton = new JButton(SUBMIT);
-		submitButton.addActionListener(this);
+    Object[][] data = {{"STR", "Strength", scores.get(STR), mods.get(STR)},
+        {"DEX", "Dexterity", scores.get(DEX), mods.get(DEX)},
+        {"CON", "Constitution", scores.get(CON), mods.get(CON)},
+        {"INT", "Intelligence", scores.get(INT), mods.get(INT)},
+        {"WIS", "Wisdom", scores.get(WIS), mods.get(WIS)},
+        {"CHA", "Charisma", scores.get(CHA), mods.get(CHA)}};
 
-		buttonPanel.add(rerollButton);
-		buttonPanel.add(submitButton);
-		
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(2, 1));
-		
-		panel.add(scrollPane);
-		panel.add(buttonPanel);
-		
-		// Add the scroll pane to this panel.
-		add(panel, BorderLayout.PAGE_START);
-	}
+    table = new JTable(data, columns);
+    table.setPreferredScrollableViewportSize(new Dimension(500, 100));
+    table.setFillsViewportHeight(true);
 
-	@Override
-	public void actionPerformed(ActionEvent ae) {
-		if (ae.getActionCommand().equals(REROLL)) {
-			as = new AbilityScores();
-			scores = as.getAbilityScores();
-			mods = as.getAbilityMods();
-			
-			Object[][] data = { { "STR (Strength)", scores.get(STR), mods.get(STR) },
-					{ "DEX (Dexterity)", scores.get(DEX), mods.get(DEX) },
-					{ "CON (Constitution)", scores.get(CON), mods.get(CON) },
-					{ "INT (Intelligence)", scores.get(INT), mods.get(INT) },
-					{ "WIS (Wisdom)", scores.get(WIS), mods.get(WIS) },
-					{ "CHA (Charisma)", scores.get(CHA), mods.get(CHA) } };
+    // Create the scroll pane and add the table to it.
+    scrollPane = new JScrollPane(table);
 
-			for (int i = 0; i < 6; i++)
-			{
-				for (int j = 1; j < 3; j++)
-				{
-					table.getModel().setValueAt(data[i][j],  i, j);
-				}
-			}
-			/*
-			 * table = new JTable(data, columns);
-			 * table.setPreferredScrollableViewportSize(new Dimension(500, 100));
-			 * table.setFillsViewportHeight(true); scrollPane = new JScrollPane(table);
-			 * 
-			 * add(scrollPane, BorderLayout.PAGE_START);
-			 */
-		}
-		
-		if (ae.getActionCommand().equals(SUBMIT))
-		{
-			rerollButton.setEnabled(false);
-			submitButton.setEnabled(false);
-			scoresSubmitted = true;
-		}
-	}
-	
-	public static AbilityScores getAbilityScores()
-	{
-		return as;
-	}
-	
-	public static boolean scoresSubmitted()
-	{
-		return scoresSubmitted;
-	}
+    rerollButton = new JButton(REROLL);
+    rerollButton.addActionListener(this);
+
+    submitButton = new JButton(SUBMIT);
+    submitButton.addActionListener(this);
+
+    buttonPanel.add(rerollButton);
+    buttonPanel.add(submitButton);
+
+    JPanel panel = new JPanel();
+    panel.setLayout(new GridLayout(2, 1));
+
+    panel.add(scrollPane);
+    panel.add(buttonPanel);
+
+    // Add the scroll pane to this panel.
+    add(panel, BorderLayout.PAGE_START);
+  }
+
+  @Override
+  public void actionPerformed(ActionEvent ae)
+  {
+    if (ae.getActionCommand().equals(REROLL))
+    {
+      as = new AbilityScores();
+      scores = as.getAbilityScores();
+      mods = as.getAbilityMods();
+
+      Object[][] data = {{"STR", "Strength", scores.get(STR), mods.get(STR)},
+          {"DEX", "Dexterity", scores.get(DEX), mods.get(DEX)},
+          {"CON", "Constitution", scores.get(CON), mods.get(CON)},
+          {"INT", "Intelligence", scores.get(INT), mods.get(INT)},
+          {"WIS", "Wisdom", scores.get(WIS), mods.get(WIS)},
+          {"CHA", "Charisma", scores.get(CHA), mods.get(CHA)}};
+
+      for (int i = 0; i < 6; i++)
+      {
+        for (int j = 2; j < 4; j++)
+        {
+          table.getModel().setValueAt(data[i][j], i, j);
+        }
+      }
+    }
+
+    if (ae.getActionCommand().equals(SUBMIT))
+    {
+      rerollButton.setEnabled(false);
+      submitButton.setEnabled(false);
+      scoresSubmitted = true;
+    }
+  }
+
+  public static AbilityScores getAbilityScores()
+  {
+    return as;
+  }
+
+  public static boolean scoresSubmitted()
+  {
+    return scoresSubmitted;
+  }
 }

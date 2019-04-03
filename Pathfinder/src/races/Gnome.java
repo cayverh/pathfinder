@@ -106,21 +106,23 @@ public class Gnome extends Race
   @Override
   public void setHeight(String gender)
   {
+    double h = 0;
+    
     if (gender.equals("Male"))
     {
-      height = 3.0;
+      h = 3.0;
     }
     else if (gender.equals("Female"))
     {
-      height = 2.0;
+      h = 2.0;
     }
     else if (gender.equals("Non-Binary"))
     {
-      height = 2.5;
+      h = 2.5;
     }
 
     // Generate the actual height of the player's character
-    height = height + (D4.roll(2) / 12.0);
+    height = h + (D4.roll(2) / 12.0);
   }
 
   /**
@@ -130,21 +132,23 @@ public class Gnome extends Race
   @Override
   public void setWeight(String gender)
   {
+    double w = 0;
+    
     if (gender.equals("Male"))
     {
-      weight = 35;
+      w = 35;
     }
     else if (gender.equals("Female"))
     {
-      weight = 30;
+      w = 30;
     }
     else if (gender.equals("Non-Binary"))
     {
 
-      weight = 32.5;
+      w = 32.5;
     }
 
     // Generate the actual weight of the player's character
-    weight = weight + D4.roll(2);
+    weight = w + D4.roll(2);
   }
 }

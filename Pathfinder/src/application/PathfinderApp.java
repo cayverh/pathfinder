@@ -32,6 +32,8 @@ public class PathfinderApp implements Runnable, WindowListener, ActionListener {
 	private AbilitiesPane abilitiesPane;
 	private CharacterPane charPane;
 	private AbilityScores abilityScores;
+	
+	GridBagConstraints c;
 
 	public PathfinderApp(int width, int height) throws FontFormatException, IOException {
 		font = new Engebrechtre();
@@ -78,13 +80,19 @@ public class PathfinderApp implements Runnable, WindowListener, ActionListener {
 	public void run() {
 		constructMainWindow();
 		JPanel abilitySection = new JPanel();
-		abilitySection.setLayout(new GridLayout(1, 0));
+		abilitySection.setLayout(new GridLayout(1, 1));
 		
-		contentPane.setLayout(new GridLayout(2,1));
+		contentPane.setLayout(new GridBagLayout());
+		
+		c = new GridBagConstraints();
+		c.fill = GridBagConstraints.VERTICAL;
 
 		abilityScores = new AbilityScores();
+		abilitiesPane = new AbilitiesPane();
+		c.gridx = 0;
+		c.gridy = 0;
 		
-		abilitySection.add((abilitiesPane = new AbilitiesPane()));
+		abilitySection.add(abilitiesPane, c);
 		contentPane.add(abilitySection);
 		
 		AbilitiesPane.submitButton.addActionListener(this);
@@ -142,7 +150,10 @@ public class PathfinderApp implements Runnable, WindowListener, ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 	  if (ae.getActionCommand().equals(AbilitiesPane.SUBMIT))
 	  {
-	    contentPane.add((charPane = new CharacterPane(abilityScores)));
+	    charPane = new CharacterPane(abilityScores);
+	    c.gridx = 0;
+	    c.gridy = 1;
+	    contentPane.add(charPane, c);
 	  }
 	}
 

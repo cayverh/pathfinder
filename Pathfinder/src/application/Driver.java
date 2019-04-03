@@ -180,7 +180,7 @@ public class Driver
       while (!valid);
     }
 
-    Character c = new Character(player, charName, gender, alignment, charRace, charClass, hairColor,
+    /*Character c = new Character(player, charName, gender, alignment, charRace, charClass, hairColor,
         eyeColor, age, diety, homeland, charLevel);
 
     //System.out.print(c.getGeneralCharInfo());
@@ -203,13 +203,13 @@ public class Driver
     while (input.equals("R"));
     
     
-    /*
-     * 
-     * 
-     * c.setAbilityScoreMod("Dex");
-     * 
-     * System.out.println(c.getAbilityInfo());
-     */
+    
+     
+     
+     c.setAbilityScoreMod("Dex");
+     
+     System.out.println(c.getAbilityInfo());*/
+     
   }
 
   public static boolean checkStringInput(String input)
