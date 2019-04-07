@@ -76,6 +76,9 @@ public class Character implements Abilities
     this.diety = diety;
     this.homeland = home;
     this.level = level;
+    this.height = "";
+    this.weight = "";
+    this.size = "";
 
     abilities = as;
     
@@ -86,9 +89,10 @@ public class Character implements Abilities
     charRace = Generator.genRace(race);
     charRace.setHeight(gend);
     charRace.setWeight(gend);
+    size = charRace.getSize();
     
-    height = charRace.getHeight();
-    weight = charRace.getWeight();
+    //height = charRace.getHeight();
+    //weight = charRace.getWeight();
 
     charClass = Generator.genClass(cclass, abilities.getAbilityMods(), level);
     charClass.setSkillTotals();
@@ -97,7 +101,7 @@ public class Character implements Abilities
   }
   
   public Character(String player, String charName, String gend, String align, Race race,
-      Classification cclass, String hairColor, String eyeColor, String height, String weight, int age, String diety, String home,
+      Classification cclass, String hairColor, String eyeColor, int age, String diety, String home,
       int level)
   {
     this.player = player;
@@ -113,8 +117,8 @@ public class Character implements Abilities
     // Gets the Race of the character based on user input.
     // If none, a Race is randomly generated.
     charRace = race;
-    this.height = height;
-    this.weight = weight;
+    //this.height = charRace.getHeight();
+    //this.weight = charRace.getWeight();
 
     charClass = cclass;
     charClass.setSkillTotals();
@@ -233,6 +237,14 @@ public class Character implements Abilities
 
     return abilityInfo;
   }
+  
+  public int getLevel()
+  {
+    if (level <= 0)
+      level = 1;
+    
+    return level;
+  }
 
   /**
    * Returns the age of the player's character. If the player doesn't enter a desired age, the age
@@ -260,6 +272,54 @@ public class Character implements Abilities
       alignment = charRace.getAlignment();
 
     return alignment;
+  }
+  
+  public String getAlignmentShort()
+  {
+    String align = getAlignment();
+    
+    switch (align)
+    {
+      case "Chaotic Good":
+        align = "CG";
+        break;
+      case "Chaotic Neutral":
+        align = "CN";
+        break;
+      case "Chaotic Evil":
+        align = "CE";
+        break;
+      case "Neutral Good":
+        align = "NG";
+        break;
+      case "Neutral":
+        align = "N";
+        break;
+      case "Neutral Evil":
+        align = "NE";
+        break;
+      case "Lawful Good":
+        align = "LG";
+        break;
+      case "Lawful Neutral":
+        align = "LN";
+        break;
+      case "Lawful Evil":
+        align = "LE";
+        break;
+    }
+    
+    return align;
+  }
+  
+  public String getName()
+  {
+    return charName;
+  }
+  
+  public String getPlayer()
+  {
+    return player;
   }
 
   /**
@@ -334,6 +394,8 @@ public class Character implements Abilities
   {
     charRace = Generator.genRace("");
     size = charRace.getSize();
+    //height = charRace.getHeight();
+    //weight = charRace.getWeight();
   }
 
   /**
@@ -353,7 +415,7 @@ public class Character implements Abilities
    */
   public String getSize()
   {
-    return charRace.getSize();
+    return size;
   }
 
   /**
@@ -454,6 +516,26 @@ public class Character implements Abilities
   public void setClass(String c)
   {
     charClass = Generator.genClass(c, abilities.getAbilityMods(), level);
+  }
+  
+  public String getDiety()
+  {
+    return diety;
+  }
+  
+  public String getHairColor()
+  {
+    return hairColor;
+  }
+  
+  public String getEyeColor()
+  {
+    return eyeColor;
+  }
+  
+  public String getHomeland()
+  {
+    return homeland;
   }
 
   /********************************************************************************************************/

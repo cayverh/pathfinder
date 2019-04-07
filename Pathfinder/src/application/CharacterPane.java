@@ -1,11 +1,11 @@
 package application;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.*;
@@ -34,6 +34,7 @@ public class CharacterPane extends JPanel implements ActionListener
   JComboBox<String> classField;
   JComboBox<String> alignmentField;
   JComboBox<String> genderField;
+  JComboBox<String> languageField;
 
   JButton randomRaceButton = new JButton("Randomize Race!");
   JButton randomClassButton = new JButton("Randomize Class!");
@@ -42,16 +43,11 @@ public class CharacterPane extends JPanel implements ActionListener
   JButton randomHeightButton = new JButton("Randomize Height!");
   JButton randomWeightButton = new JButton("Randomize Weight!");
   JButton randomAgeButton = new JButton("Randomize Age!");
+  JButton randomLanguageButton = new JButton("Randomize Language to Learn!");
   JButton randomizeAllButton = new JButton("Randomize All!");
-  JButton submitButton = new JButton("Submit Character Profile!");
+  public static JButton submitButton = new JButton("Submit Character Profile!");
 
   Character character;
-  /*
-   * String playerName; String charName; Race race; Classification charClass; String alignment;
-   * String diety; String homeland; String size; String gender; String height; String weight; int
-   * age; String hairColor; String eyeColor;
-   */
-
   AbilityScores as;
 
   /**
@@ -69,12 +65,6 @@ public class CharacterPane extends JPanel implements ActionListener
 
     character = new Character("", "", "", "", "", "", "", "", 0, "", "", 1, as);
 
-    /*
-     * playerName = ""; charName = ""; race = null; charClass = null; alignment = ""; diety = "";
-     * homeland = ""; size = ""; gender = ""; height = ""; weight = ""; age = 0; hairColor = "";
-     * eyeColor = "";
-     */
-
     constructLabels();
     constructFields();
     constructButtons();
@@ -86,7 +76,7 @@ public class CharacterPane extends JPanel implements ActionListener
   public void constructLabels()
   {
     JPanel labelPane = new JPanel();
-    GridLayout layout = new GridLayout(14, 1);
+    GridLayout layout = new GridLayout(15, 1);
 
     labelPane.setLayout(layout);
 
@@ -99,6 +89,7 @@ public class CharacterPane extends JPanel implements ActionListener
     JLabel homeLabel = new JLabel("Homeland: ");
     JLabel sizeLabel = new JLabel("Size: ");
     JLabel genderLabel = new JLabel("Gender: ");
+    JLabel languageLabel = new JLabel("Language to Learn: ");
     JLabel heightLabel = new JLabel("Height: ");
     JLabel weightLabel = new JLabel("Weight: ");
     JLabel ageLabel = new JLabel("Age: ");
@@ -111,7 +102,7 @@ public class CharacterPane extends JPanel implements ActionListener
 
     JLabel[] labels =
         {playerNameLabel, charNameLabel, raceLabel, classLabel, alignLabel, dietyLabel, homeLabel,
-            sizeLabel, genderLabel, heightLabel, weightLabel, ageLabel, hairLabel, eyeLabel};
+            sizeLabel, genderLabel, languageLabel, heightLabel, weightLabel, ageLabel, hairLabel, eyeLabel};
 
     for (JLabel l : labels)
     {
@@ -138,7 +129,7 @@ public class CharacterPane extends JPanel implements ActionListener
     String[] genders = new String[] {"Non-Binary", "Female", "Male"};
 
     JPanel fieldPane = new JPanel();
-    GridLayout layout = new GridLayout(14, 1);
+    GridLayout layout = new GridLayout(15, 1);
     fieldPane.setLayout(layout);
 
     // Panel for the character's height
@@ -172,6 +163,7 @@ public class CharacterPane extends JPanel implements ActionListener
     classField = new JComboBox<String>(classes);
     alignmentField = new JComboBox<String>(alignments);
     genderField = new JComboBox<String>(genders);
+    languageField = new JComboBox<String>();
 
     // Set the "default" selected item for the combo boxes to nothing
     raceField.setSelectedIndex(-1);
@@ -197,6 +189,7 @@ public class CharacterPane extends JPanel implements ActionListener
     fieldPane.add(homelandField);
     fieldPane.add(sizeField);
     fieldPane.add(genderField);
+    fieldPane.add(languageField);
     fieldPane.add(heightPane);
     fieldPane.add(weightPane);
     fieldPane.add(ageField);
@@ -213,7 +206,7 @@ public class CharacterPane extends JPanel implements ActionListener
   public void constructButtons()
   {
     JPanel buttonPane = new JPanel();
-    GridLayout layout = new GridLayout(14, 1);
+    GridLayout layout = new GridLayout(15, 1);
     buttonPane.setLayout(layout);
 
     buttonPane.add(new JLabel());
@@ -225,6 +218,7 @@ public class CharacterPane extends JPanel implements ActionListener
     buttonPane.add(new JLabel());
     buttonPane.add(new JLabel());
     buttonPane.add(randomGenderButton);
+    buttonPane.add(randomLanguageButton);
     buttonPane.add(randomHeightButton);
     buttonPane.add(randomWeightButton);
     buttonPane.add(randomAgeButton);
@@ -235,6 +229,7 @@ public class CharacterPane extends JPanel implements ActionListener
     randomClassButton.addActionListener(this);
     randomAlignButton.addActionListener(this);
     randomGenderButton.addActionListener(this);
+    randomLanguageButton.addActionListener(this);
     randomHeightButton.addActionListener(this);
     randomWeightButton.addActionListener(this);
     randomAgeButton.addActionListener(this);
@@ -356,7 +351,15 @@ public class CharacterPane extends JPanel implements ActionListener
       character.setHairColor(hairColorField.getText());
       character.setEyeColor(eyeColorField.getText());
       
-      JOptionPane.showMessageDialog(new JFrame(), character.getGeneralCharInfo());
+      //JOptionPane.showMessageDialog(new JFrame(), character.getGeneralCharInfo());
+    }
+    
+    if (ae.getActionCommand().equals(randomLanguageButton.getText()))
+    {
+      if (raceField.getSelectedIndex() == -1 )
+      {
+        JOptionPane.showMessageDialog(new JFrame(), "Please select a Race.");
+      }
     }
 
     /********************************************************************************************************/
@@ -371,12 +374,6 @@ public class CharacterPane extends JPanel implements ActionListener
       weightField.setText("");
       ageField.setText("");
 
-      /*
-       * race = Generator.genRace(raceField.getSelectedItem().toString()); size = race.getSize();
-       * 
-       * sizeField.setText(size);
-       */
-
       character.setRace(raceField.getSelectedItem().toString());
       sizeField.setText(character.getSize());
     }
@@ -386,18 +383,12 @@ public class CharacterPane extends JPanel implements ActionListener
     {
       ageField.setText("");
 
-      /*
-       * charClass = Generator.genClass(classField.getSelectedItem().toString(),
-       * as.getAbilityMods(), 1);
-       */
       character.setClass(classField.getSelectedItem().toString());
     }
 
     // Sets the alignment to the Alignment selected.
     if (ae.getSource().equals(alignmentField))
     {
-      // alignment = alignmentField.getSelectedItem().toString();
-
       character.setAlignment(alignmentField.getSelectedItem().toString());
     }
 
@@ -407,8 +398,6 @@ public class CharacterPane extends JPanel implements ActionListener
       // Reset the fields that rely on gender
       heightField.setText("");
       weightField.setText("");
-
-      // gender = genderField.getSelectedItem().toString();
 
       character.setGender(genderField.getSelectedItem().toString());
     }
@@ -427,37 +416,23 @@ public class CharacterPane extends JPanel implements ActionListener
     heightField.setText("");
     weightField.setText("");
     ageField.setText("");
-
-    /*
-     * race = Generator.genRace(""); size = race.getSize(); for (int i = 0; i <
-     * raceField.getItemCount(); i++) { if
-     * (race.toString().equals(raceField.getItemAt(i).toString())) { raceField.setSelectedIndex(i);
-     * sizeField.setText(size); break; } }
-     */
+    languageField.removeAllItems();
 
     character.genNewRace();
     raceField.setSelectedItem(character.getRace().toString());
     sizeField.setText(character.getSize());
-    /*
-     * for (int i = 0; i < raceField.getItemCount(); i++) { if
-     * (character.getRace().toString().equals(raceField.getItemAt(i).toString())) {
-     * raceField.setSelectedIndex(i); sizeField.setText(character.getSize());
-     * System.out.println(character.getRace()); break; } }
-     */
+    
+    ArrayList<String> languagesLearn = character.getRace().getLanguagesToLearn();
+    for (int i = 0; i < languagesLearn.size(); i++)
+    {
+      languageField.addItem(languagesLearn.get(i));
+    }
   }
 
   public void randomizeClass()
   {
     // Reset the fields the rely on Class
     ageField.setText("");
-
-    /*
-     * charClass = Generator.genClass("", as.getAbilityMods(), 1);
-     * 
-     * for (int i = 0; i < classField.getItemCount(); i++) { if
-     * (charClass.toString().equals(classField.getItemAt(i).toString())) {
-     * classField.setSelectedIndex(i); break; } }
-     */
 
     character.genNewClass();
 
@@ -486,7 +461,6 @@ public class CharacterPane extends JPanel implements ActionListener
     weightField.setText("");
 
     int random = new Random().nextInt(genderField.getItemCount());
-    /* gender = genderField.getItemAt(random); */
     character.setGender(genderField.getItemAt(random));
     genderField.setSelectedIndex(random);
   }
@@ -495,11 +469,6 @@ public class CharacterPane extends JPanel implements ActionListener
   {
     if (raceField.getSelectedIndex() != -1 && classField.getSelectedIndex() != -1)
     {
-      /*
-       * race.setAge(charClass.toString()); age = race.getAge(); ageField.setText(age +
-       * " years old");
-       */
-
       character.getRace().setAge(character.getClassification().toString());
       ageField.setText(character.getAge() + " years old");
 
@@ -514,10 +483,6 @@ public class CharacterPane extends JPanel implements ActionListener
   {
     if (raceField.getSelectedIndex() != -1 && genderField.getSelectedIndex() != -1)
     {
-      /*
-       * race.setHeight(gender); height = race.getHeight(); heightField.setText(height);
-       */
-
       character.getRace().setHeight(character.getGender());
       heightField.setText(character.getHeight());
     }
@@ -531,10 +496,6 @@ public class CharacterPane extends JPanel implements ActionListener
   {
     if (raceField.getSelectedIndex() != -1 && genderField.getSelectedIndex() != -1)
     {
-      /*
-       * race.setWeight(gender); weight = race.getWeight(); weightField.setText(weight);
-       */
-
       character.getRace().setWeight(character.getGender());
       weightField.setText(character.getWeight());
     }
@@ -542,5 +503,10 @@ public class CharacterPane extends JPanel implements ActionListener
     {
       JOptionPane.showMessageDialog(new JFrame(), "Please select a Race and Gender.");
     }
+  }
+  
+  public Character getCharacter()
+  {
+    return character;
   }
 }

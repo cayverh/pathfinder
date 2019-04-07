@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import base.Classification;
-import base.Dice;
 
 public class Barbarian extends Classification
 {

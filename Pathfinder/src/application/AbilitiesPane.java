@@ -9,6 +9,8 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 import abilities.*;
+import base.Classification;
+import base.Race;
 
 public class AbilitiesPane extends JPanel implements Abilities, ActionListener
 {
@@ -17,38 +19,37 @@ public class AbilitiesPane extends JPanel implements Abilities, ActionListener
 
   static boolean scoresSubmitted;
   JScrollPane scrollPane;
-  public static JButton rerollButton;
+  public JButton rerollButton;
   public static JButton submitButton;
   JTable table;
   String[] columns = {"Ability", "Ability Name", "Ability Score", "Ability Modifier"};
 
-  static AbilityScores as;
+  AbilityScores as;
 
   HashMap<String, Integer> scores;
   HashMap<String, Integer> mods;
+  
+  JPanel panel = new JPanel();
+  JPanel buttonPanel = new JPanel();
 
-  public AbilitiesPane()
+  /**
+   * 
+   * @param as
+   */
+  public AbilitiesPane(AbilityScores as)
   {
     this.setLayout(new BorderLayout());
-
-    JPanel buttonPanel = new JPanel();
+    
     buttonPanel.setLayout(new GridLayout(2, 1));
 
-    as = new AbilityScores();
+    this.as = as;
     scores = as.getAbilityScores();
     mods = as.getAbilityMods();
     scoresSubmitted = false;
 
     setBorder(new CompoundBorder(new TitledBorder("Abilities"), new EmptyBorder(0, 0, 0, 0)));
 
-    Object[][] data = {{"STR", "Strength", scores.get(STR), mods.get(STR)},
-        {"DEX", "Dexterity", scores.get(DEX), mods.get(DEX)},
-        {"CON", "Constitution", scores.get(CON), mods.get(CON)},
-        {"INT", "Intelligence", scores.get(INT), mods.get(INT)},
-        {"WIS", "Wisdom", scores.get(WIS), mods.get(WIS)},
-        {"CHA", "Charisma", scores.get(CHA), mods.get(CHA)}};
-
-    table = new JTable(data, columns);
+    table = new JTable(getData(), columns);
     table.setPreferredScrollableViewportSize(new Dimension(500, 100));
     table.setFillsViewportHeight(true);
 
@@ -64,7 +65,6 @@ public class AbilitiesPane extends JPanel implements Abilities, ActionListener
     buttonPanel.add(rerollButton);
     buttonPanel.add(submitButton);
 
-    JPanel panel = new JPanel();
     panel.setLayout(new GridLayout(2, 1));
 
     panel.add(scrollPane);
@@ -74,6 +74,53 @@ public class AbilitiesPane extends JPanel implements Abilities, ActionListener
     add(panel, BorderLayout.PAGE_START);
   }
 
+  /**
+   * 
+   * @return
+   */
+  public Object[][] getData()
+  {
+    scores = as.getAbilityScores();
+    mods = as.getAbilityMods();
+    
+    Object[][] data = {{"STR", "Strength", scores.get(STR), mods.get(STR)},
+        {"DEX", "Dexterity", scores.get(DEX), mods.get(DEX)},
+        {"CON", "Constitution", scores.get(CON), mods.get(CON)},
+        {"INT", "Intelligence", scores.get(INT), mods.get(INT)},
+        {"WIS", "Wisdom", scores.get(WIS), mods.get(WIS)},
+        {"CHA", "Charisma", scores.get(CHA), mods.get(CHA)}};
+    
+    return data;
+  }
+  
+  /**
+   * 
+   * @param race
+   */
+  public void updateData(Race race)
+  {
+    for (String key : as.getAbilityScores().keySet())
+    {
+      as.getAbilityScores().put(key, as.getAbilityScores().get(key) + race.getAbilityBonuses().get(key));
+    }
+
+    for (int i = 0; i < 6; i++)
+    {
+      for (int j = 2; j < 4; j++)
+      {
+        table.getModel().setValueAt(getData()[i][j], i, j);
+      }
+    }
+  }
+
+  public static boolean scoresSubmitted()
+  {
+    return scoresSubmitted;
+  }
+  
+  /**
+   * 
+   */
   @Override
   public void actionPerformed(ActionEvent ae)
   {
@@ -83,18 +130,11 @@ public class AbilitiesPane extends JPanel implements Abilities, ActionListener
       scores = as.getAbilityScores();
       mods = as.getAbilityMods();
 
-      Object[][] data = {{"STR", "Strength", scores.get(STR), mods.get(STR)},
-          {"DEX", "Dexterity", scores.get(DEX), mods.get(DEX)},
-          {"CON", "Constitution", scores.get(CON), mods.get(CON)},
-          {"INT", "Intelligence", scores.get(INT), mods.get(INT)},
-          {"WIS", "Wisdom", scores.get(WIS), mods.get(WIS)},
-          {"CHA", "Charisma", scores.get(CHA), mods.get(CHA)}};
-
       for (int i = 0; i < 6; i++)
       {
         for (int j = 2; j < 4; j++)
         {
-          table.getModel().setValueAt(data[i][j], i, j);
+          table.getModel().setValueAt(getData()[i][j], i, j);
         }
       }
     }
@@ -105,15 +145,5 @@ public class AbilitiesPane extends JPanel implements Abilities, ActionListener
       submitButton.setEnabled(false);
       scoresSubmitted = true;
     }
-  }
-
-  public static AbilityScores getAbilityScores()
-  {
-    return as;
-  }
-
-  public static boolean scoresSubmitted()
-  {
-    return scoresSubmitted;
   }
 }

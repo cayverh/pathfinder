@@ -1,9 +1,7 @@
 package races;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
-import base.Classification;
 import base.Languages;
 import base.Race;
 

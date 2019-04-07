@@ -72,15 +72,22 @@ public class AbilityScores implements Abilities {
 				break;
 			}
 		}
+		
+		setAbilityMods();
 	}
 	
 	public HashMap<String, Integer> getAbilityScores() {
+	  setAbilityMods();
+	  
 		return abilityScores;
 	}
 	
 	public HashMap<String, Integer> getAbilityMods() {
-		AbilityMods am = new AbilityMods(abilityScores);
-		
-		return am.getAbilityMods();
+		return abilityMods;
+	}
+	
+	public void setAbilityMods()
+	{
+	  abilityMods = new AbilityMods(abilityScores).getAbilityMods();
 	}
 }
