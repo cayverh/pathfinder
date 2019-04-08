@@ -167,7 +167,20 @@ public abstract class Race implements Dice, Abilities, Languages
     if (Math.round((height % 1) * 12) == 12)
       return (int) (height + 1) + "ft.";
     else
-      return (int) height + "ft. " + FORMAT.format((height % 1) * 12) + " in.";
+      return (int) height + " ft. " + FORMAT.format((height % 1) * 12) + " in.";
+  }
+  
+  public int getFeet()
+  {
+    if (Math.round((height % 1) * 12) == 12)
+      return (int) (height + 1);
+    else
+      return (int) height;
+  }
+  
+  public int getInches()
+  {
+    return (int) ((height % 1) * 12);
   }
 
   /**

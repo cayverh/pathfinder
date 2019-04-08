@@ -20,32 +20,24 @@ public class Character implements Abilities
   public static final int MAX = 6;
   public static final int MIN = 1;
 
-  private String player;
-
-  private String height;
-  private String weight;
+  private AbilityScores abilities;
+  private HashMap<String, Integer> abilityMods = new LinkedHashMap<String, Integer>(6);
+  private HashMap<String, Integer> abilityScores = new LinkedHashMap<String, Integer>(6);
   private int age;
-  private int level;
-  private String size;
   private String alignment;
+  private Classification charClass; // HP, starting wealth, skills, and skill ranks, base attack
   private String charName;
+  private Race charRace;
   private String diety;
   private String eyeColor;
   private String gender;
   private String hairColor;
+  private String height;
   private String homeland;
-
-  private Race charRace;
-
-  private Classification charClass; // HP, starting wealth, skills, and skill ranks, base attack
-                                    // bonus, fort save, ref save, and will save are determined by
-                                    // class
-
-  private HashMap<String, Integer> abilityScores = new LinkedHashMap<String, Integer>(6);
-  private HashMap<String, Integer> abilityMods = new LinkedHashMap<String, Integer>(6);
-
-  AbilityScores abilities;
-  
+  private int level;
+  private String player;
+  private String size;
+  private String weight;
   private ArrayList<String> languages;
 
   /**
@@ -96,8 +88,45 @@ public class Character implements Abilities
 
     charClass = Generator.genClass(cclass, abilities.getAbilityMods(), level);
     charClass.setSkillTotals();
+    
+    this.hairColor = hairColor;
+    this.eyeColor = eyeColor;
+  }
+  
+  public Character(String player, String charName, String gend, String align, String race,
+      String cclass, String hairColor, String eyeColor, int age, String diety, String home,
+      int level, double weight, int heightFt, int heightIn, AbilityScores as)
+  {
+    this.player = player;
+    this.charName = charName;
+    alignment = align;
+    this.age = age;
+    this.diety = diety;
+    this.homeland = home;
+    this.level = level;
+    this.height = "";
+    this.weight = "";
+    this.size = "";
 
-    setAppearance(hairColor, eyeColor);
+    abilities = as;
+    
+    gender = Generator.genGender(gend);
+
+    // Gets the Race of the character based on user input.
+    // If none, a Race is randomly generated.
+    charRace = Generator.genRace(race);
+    charRace.setHeight(gend);
+    charRace.setWeight(gend);
+    size = charRace.getSize();
+    
+    //height = charRace.getHeight();
+    //weight = charRace.getWeight();
+
+    charClass = Generator.genClass(cclass, abilities.getAbilityMods(), level);
+    charClass.setSkillTotals();
+    
+    this.hairColor = hairColor;
+    this.eyeColor = eyeColor;
   }
   
   public Character(String player, String charName, String gend, String align, Race race,
@@ -122,36 +151,16 @@ public class Character implements Abilities
 
     charClass = cclass;
     charClass.setSkillTotals();
-
-    setAppearance(hairColor, eyeColor);
+    
+    this.hairColor = hairColor;
+    this.eyeColor = eyeColor;
   }
 
   /********************************************************************************************************/
   /*
-   * BELOW ARE THE SETTERS/GENERATORS FOR APPLYING DETAILS TO THE PLAYER'S CHARACTER.
+   * BELOW ARE THE GENERATORS/SETTERS FOR APPLYING DETAILS ABOUT THE PLAYER'S CHARACTER.
    */
   /********************************************************************************************************/
-
-  /**
-   * Sets the player's character's appearance.
-   * 
-   * @param hairColor
-   *          Color of character's hair
-   * @param eyeColor
-   *          Color of character's eyes
-   */
-  public void setAppearance(String hairColor, String eyeColor)
-  {
-    if (hairColor != null)
-      this.hairColor = hairColor;
-    else
-      this.hairColor = "";
-
-    if (eyeColor != null)
-      this.eyeColor = eyeColor;
-    else
-      this.eyeColor = "";
-  }
 
   /**
    * Generate random scores for the six abilities: Strength, Dexterity, Constitution, Intelligence,
@@ -177,24 +186,6 @@ public class Character implements Abilities
   }
 
   /**
-   * Applies an Ability Score Bonus Modifier to an ability of the player's choice. If the player has
-   * a Modifier to spend, the Ability Modifiers are regenerated in order to account for the change
-   * in Ability Score.
-   * 
-   * @param ability
-   *          Ability to spend bonus on
-   */
-  public void setAbilityScoreMod(String ability)
-  {
-    int toSpend = charRace.getAbilityScoreBonusToSpend();
-
-    abilityScores.put(ability, abilities.getAbilityScores().get(ability) + toSpend);
-
-    if (toSpend != 0)
-      genAbilityMods();
-  }
-
-  /**
    * Adds a language to the list of languages known to the player's character.
    * 
    * @param language
@@ -206,6 +197,98 @@ public class Character implements Abilities
   }
 
   /**
+   * Generates, sets, and returns a new race for the player's character.
+   * 
+   * @return new Race
+   */
+  public void genNewClass()
+  {
+    charClass = Generator.genClass("", abilities.getAbilityMods(), 1);
+  }
+
+  /**
+   * Generates, sets, and returns a new race for the player's character.
+   * 
+   * @return new Race
+   */
+  public void genNewRace()
+  {
+    charRace = Generator.genRace("");
+    size = charRace.getSize();
+    //height = charRace.getHeight();
+    //weight = charRace.getWeight();
+  }
+
+  /**
+   * Applies an Ability Score Bonus Modifier to an ability of the player's choice. If the player has
+   * a Modifier to spend, the Ability Modifiers are regenerated in order to account for the change
+   * in Ability Score.
+   * 
+   * @param ability
+   *          Ability to spend bonus on
+   */
+  public void setAbilityScoreMod(String ability)
+  {
+    int toSpend = charRace.getAbilityScoreBonusToSpend();
+  
+    abilityScores.put(ability, abilities.getAbilityScores().get(ability) + toSpend);
+  
+    if (toSpend != 0)
+      genAbilityMods();
+  }
+
+  public void setAge(int i)
+  {
+    age = i;
+  }
+  
+  public void setAlignment(String a)
+  {
+    alignment = a;
+  }
+  
+  /********************************************************************************************************/
+  /*
+   * BELOW ARE THE SETTERS FOR APPLYING DETAILS TO THE PLAYER'S CHARACTER.
+   */
+  /********************************************************************************************************/
+  
+  public void setCharName(String cn)
+  {
+    charName = cn;
+  }
+
+  public void setClass(String c)
+  {
+    charClass = Generator.genClass(c, abilities.getAbilityMods(), level);
+  }
+
+  public void setDiety(String d)
+  {
+    diety = d;
+  }
+  
+  public void setEyeColor(String e)
+  {
+    eyeColor = e;
+  }
+
+  public void setGender(String g)
+  {
+    gender = g;
+  }
+
+  public void setHomeland(String h)
+  {
+    homeland = h;
+  }
+  
+  public void setHairColor(String h)
+  {
+    hairColor = h;
+  }
+  
+  /**
    * Sets the list of languages known to the player's character.
    */
   public void setLanguages()
@@ -213,12 +296,37 @@ public class Character implements Abilities
     languages = getLanguages();
   }
 
+  public void setLevel(int l)
+  {
+    level = l;
+  }
+  
+  public void setPlayerName(String pn)
+  {
+    player = pn;
+  }
+
+  public void setRace(String r)
+  {
+    charRace = Generator.genRace(r);
+  }
+
+  public void setSize(String s)
+  {
+    size = s;
+  }
+  
+  public void setWeight(String w)
+  {
+    
+  }
+
   /********************************************************************************************************/
   /*
    * BELOW ARE THE GETTERS FOR RETREIVING DETAILS ABOUT THE PLAYER'S CHARACTER.
    */
   /********************************************************************************************************/
-
+  
   /**
    * Creates a formatted String representing the Ability Scores and Modifiers of the player's
    * character.
@@ -228,22 +336,14 @@ public class Character implements Abilities
   public String getAbilityInfo()
   {
     String abilityInfo = "";
-
+  
     for (String ability : abilities.getAbilityScores().keySet())
     {
       abilityInfo += String.format("\t%s: %s, Mod: %s\n", ability, abilities.getAbilityScores().get(ability),
           abilities.getAbilityMods().get(ability));
     }
-
-    return abilityInfo;
-  }
   
-  public int getLevel()
-  {
-    if (level <= 0)
-      level = 1;
-    
-    return level;
+    return abilityInfo;
   }
 
   /**
@@ -270,104 +370,8 @@ public class Character implements Abilities
   {
     if (alignment.isEmpty())
       alignment = charRace.getAlignment();
-
+  
     return alignment;
-  }
-  
-  public String getAlignmentShort()
-  {
-    String align = getAlignment();
-    
-    switch (align)
-    {
-      case "Chaotic Good":
-        align = "CG";
-        break;
-      case "Chaotic Neutral":
-        align = "CN";
-        break;
-      case "Chaotic Evil":
-        align = "CE";
-        break;
-      case "Neutral Good":
-        align = "NG";
-        break;
-      case "Neutral":
-        align = "N";
-        break;
-      case "Neutral Evil":
-        align = "NE";
-        break;
-      case "Lawful Good":
-        align = "LG";
-        break;
-      case "Lawful Neutral":
-        align = "LN";
-        break;
-      case "Lawful Evil":
-        align = "LE";
-        break;
-    }
-    
-    return align;
-  }
-  
-  public String getName()
-  {
-    return charName;
-  }
-  
-  public String getPlayer()
-  {
-    return player;
-  }
-
-  /**
-   * Creates a formatted String representing the general information about the player's character.
-   * 
-   * @return charInfo
-   */
-  public String getGeneralCharInfo()
-  {
-    String charInfo = "";
-
-    charInfo += String.format("   Player Name: %-20.20s\n", player);
-    charInfo += String.format("     Character: %s\t\t\t      Age: %d\n", charName, getAge(),
-        charRace.getBaseAge());
-    charInfo += String.format("\tGender: %-20.20s\t     Size: %s\n", gender, getSize());
-    charInfo +=
-        String.format("\tHeight: %-20.20s\t   Weight: %-20.10s\n", getHeight(), getWeight());
-    charInfo += String.format("    Hair Color: %-20.20s\tEye Color: %s\n", hairColor, eyeColor);
-
-    charInfo += "\n";
-
-    charInfo +=
-        String.format("\t  Race: %-20.20s\t    Class: %s\n", getRace().toString(), getClassification().toString());
-    charInfo += String.format("     Alignment: %-20.20s\t    Diety: %s\n", alignment, diety);
-    charInfo += String.format("      Homeland: %-20.20s\n\n", homeland);
-
-    return charInfo;
-  }
-
-  public String getSkillInfo()
-  {
-    String abilityInfo = "";
-
-    abilityInfo += String.format("%21s    %s\t   %s    %s\n", "Skill", "Total", "Mod", "Ranks");
-    abilityInfo += String.format("%21s    %s\t  %s   %s\n", "-----", "-----", "-----", "-----");
-    abilityInfo += String.format("%s", charClass.getSkills());
-
-    return abilityInfo;
-  }
-
-  /**
-   * Generates, sets, and returns a new race for the player's character.
-   * 
-   * @return new Race
-   */
-  public void genNewClass()
-  {
-    charClass = Generator.genClass("", abilities.getAbilityMods(), 1);
   }
 
   /**
@@ -380,22 +384,89 @@ public class Character implements Abilities
     return charClass;
   }
 
+  public String getDiety()
+  {
+    return diety;
+  }
+  
+  public String getEyeColor()
+  {
+    return eyeColor;
+  }
+
+  public String getGender()
+  {
+    return gender;
+  }
+
+  /**
+   * Creates a formatted String representing the general information about the player's character.
+   * 
+   * @return charInfo
+   */
+  public String getGeneralCharInfo()
+  {
+    String charInfo = "";
+  
+    charInfo += String.format("   Player Name: %-20.20s\n", player);
+    charInfo += String.format("     Character: %s\t\t\t      Age: %d\n", charName, getAge(),
+        charRace.getBaseAge());
+    charInfo += String.format("\tGender: %-20.20s\t     Size: %s\n", gender, getSize());
+    charInfo +=
+        String.format("\tHeight: %-20.20s\t   Weight: %-20.10s\n", getHeight(), getWeight());
+    charInfo += String.format("    Hair Color: %-20.20s\tEye Color: %s\n", hairColor, eyeColor);
+  
+    charInfo += "\n";
+  
+    charInfo +=
+        String.format("\t  Race: %-20.20s\t    Class: %s\n", getRace().toString(), getClassification().toString());
+    charInfo += String.format("     Alignment: %-20.20s\t    Diety: %s\n", alignment, diety);
+    charInfo += String.format("      Homeland: %-20.20s\n\n", homeland);
+  
+    return charInfo;
+  }
+
+  public String getHairColor()
+  {
+    return hairColor;
+  }
+  
+  /**
+   * Returns the height of the player's character.
+   * 
+   * @return
+   */
+  public String getHeight()
+  {
+    return charRace.getHeight();
+  }
+
+  public String getHomeland()
+  {
+    return homeland;
+  }
+
   public ArrayList<String> getLanguages()
   {
     return charRace.getLanguages();
   }
 
-  /**
-   * Generates, sets, and returns a new race for the player's character.
-   * 
-   * @return new Race
-   */
-  public void genNewRace()
+  public int getLevel()
   {
-    charRace = Generator.genRace("");
-    size = charRace.getSize();
-    //height = charRace.getHeight();
-    //weight = charRace.getWeight();
+    if (level <= 0)
+      level = 1;
+    
+    return level;
+  }
+
+  public String getName()
+  {
+    return charName;
+  }
+
+  public String getPlayer()
+  {
+    return player;
   }
 
   /**
@@ -427,21 +498,6 @@ public class Character implements Abilities
   {
     return charRace.getSpeed();
   }
-  
-  /**
-   * Returns the height of the player's character.
-   * 
-   * @return
-   */
-  public String getHeight()
-  {
-    return charRace.getHeight();
-  }
-  
-  public String getGender()
-  {
-    return gender;
-  }
 
   /**
    * Gets the String representation of the character's weight.
@@ -451,216 +507,5 @@ public class Character implements Abilities
   public String getWeight()
   {
     return charRace.getWeight();
-  }
-  
-  public void setPlayerName(String pn)
-  {
-    player = pn;
-  }
-  
-  public void setCharName(String cn)
-  {
-    charName = cn;
-  }
-  
-  public void setGender(String g)
-  {
-    gender = g;
-  }
-  
-  public void setAge(int i)
-  {
-    age = i;
-  }
-  
-  public void setAlignment(String a)
-  {
-    alignment = a;
-  }
-  
-  public void setDiety(String d)
-  {
-    diety = d;
-  }
-  
-  public void setHomeland(String h)
-  {
-    homeland = h;
-  }
-  
-  public void setHairColor(String h)
-  {
-    hairColor = h;
-  }
-  
-  public void setEyeColor(String e)
-  {
-    eyeColor = e;
-  }
-  
-  public void setSize(String s)
-  {
-    size = s;
-  }
-  
-  public void setLevel(int l)
-  {
-    level = l;
-  }
-  
-  public void setRace(String r)
-  {
-    charRace = Generator.genRace(r);
-  }
-  
-  public void setClass(String c)
-  {
-    charClass = Generator.genClass(c, abilities.getAbilityMods(), level);
-  }
-  
-  public String getDiety()
-  {
-    return diety;
-  }
-  
-  public String getHairColor()
-  {
-    return hairColor;
-  }
-  
-  public String getEyeColor()
-  {
-    return eyeColor;
-  }
-  
-  public String getHomeland()
-  {
-    return homeland;
-  }
-
-  /********************************************************************************************************/
-  /*
-   * BELOW ARE THE GETTERS AND SETTERS FOR THE ABILITY SCORES AND MODIFIERS. MAY NOT EVER BE USED.
-   */
-  /********************************************************************************************************/
-
-  /**
-   * Returns the Ability Score for STRENGTH.
-   * 
-   * @return strength score
-   */
-  public int getStr()
-  {
-    return abilityScores.get(STR);
-  }
-
-  /**
-   * Returns the Ability Modifier for STRENGTH.
-   * 
-   * @return strength mod
-   */
-  public int getStrMod()
-  {
-    return abilityMods.get(STR);
-  }
-
-  /**
-   * Returns the Ability Score for DEXTERITY.
-   * 
-   * @return dexterity score
-   */
-  public int getDex()
-  {
-    return abilityScores.get(DEX);
-  }
-
-  /**
-   * Returns the Ability Modifier for DEXTERITY.
-   * 
-   * @return dexterity mod
-   */
-  public int getDexMod()
-  {
-    return abilityMods.get(DEX);
-  }
-
-  /**
-   * Returns the Ability Score for CONSTITUTION.
-   * 
-   * @return constitution score
-   */
-  public int getCon()
-  {
-    return abilityScores.get(CON);
-  }
-
-  /**
-   * Returns the Ability Modifier for CONSTITUTION.
-   * 
-   * @return constitution mod
-   */
-  public int getConMod()
-  {
-    return abilityMods.get(CON);
-  }
-
-  /**
-   * Returns the Ability Score for INTELLIGENCE.
-   * 
-   * @return intelligence score
-   */
-  public int getInt()
-  {
-    return abilityScores.get(INT);
-  }
-
-  /**
-   * Returns the Ability Mod for INTELLIGENCE.
-   * 
-   * @return intelligence mod
-   */
-  public int getIntMod()
-  {
-    return abilityMods.get(INT);
-  }
-
-  /**
-   * Returns the Ability Score for WISDOM.
-   * 
-   * @return wisdom score
-   */
-  public int getWis()
-  {
-    return abilityScores.get(WIS);
-  }
-
-  /**
-   * Returns the Ability Modifier for WISDOM.
-   * 
-   * @return wisdom mod
-   */
-  public int getWisMod()
-  {
-    return abilityMods.get(WIS);
-  }
-
-  /**
-   * Returns the Ability Score for CHARISMA.
-   * 
-   * @return charisma score
-   */
-  public int getCha()
-  {
-    return abilityScores.get(CHA);
-  }
-
-  /**
-   * Returns the Ability Modifier for CHARISMA.
-   * 
-   * @return charisma mod
-   */
-  public int getChaMod()
-  {
-    return abilityMods.get(CHA);
   }
 }

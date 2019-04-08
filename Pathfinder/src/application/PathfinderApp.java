@@ -1,14 +1,9 @@
 package application;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -20,11 +15,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import resources.Engebrechtre;
 import javax.swing.UIManager.*;
 
 import abilities.*;
-import resources.*;
 
 public class PathfinderApp implements Runnable, WindowListener, ActionListener
 {
@@ -33,7 +26,6 @@ public class PathfinderApp implements Runnable, WindowListener, ActionListener
   JPanel abilitySection = new JPanel();
   JPanel characterSection = new JPanel();
   protected static JFrame mainWindow;
-  private static Engebrechtre font;
   private int height, width;
   private AbilitiesPane abilitiesPane;
   private CharacterPane charPane;
@@ -42,8 +34,6 @@ public class PathfinderApp implements Runnable, WindowListener, ActionListener
 
   public PathfinderApp(int width, int height) throws FontFormatException, IOException
   {
-    //font = new Engebrechtre();
-
     this.width = width;
     this.height = height;
   }
