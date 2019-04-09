@@ -1,6 +1,8 @@
 package application;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -100,10 +102,6 @@ public class CharacterPane extends JPanel implements ActionListener
     JLabel hairLabel = new JLabel("Hair Color: ");
     JLabel eyeLabel = new JLabel("Eye Color: ");
 
-    /*
-     * int x = 10; int y = 10; int w = 200; int h = 50;
-     */
-
     JLabel[] labels = {playerNameLabel, charNameLabel, raceLabel, classLabel, alignLabel,
         dietyLabel, homeLabel, sizeLabel, genderLabel, languageLabel, heightLabel, weightLabel,
         ageLabel, hairLabel, eyeLabel};
@@ -146,7 +144,7 @@ public class CharacterPane extends JPanel implements ActionListener
     };
     formatter.setValueClass(Integer.class);
     formatter.setMinimum(0);
-    formatter.setMaximum(Integer.MAX_VALUE);
+    formatter.setMaximum(1000);
     formatter.setAllowsInvalid(false);
     formatter.setCommitsOnValidEdit(true);
 
@@ -156,16 +154,11 @@ public class CharacterPane extends JPanel implements ActionListener
 
     // Panel for the character's height
     JPanel heightPane = new JPanel();
-    heightPane.setLayout(new GridLayout(1, 2));
-    JPanel feetPane = new JPanel();
-    feetPane.setLayout(new BorderLayout());
-    JPanel inchesPane = new JPanel();
-    inchesPane.setLayout(new BorderLayout());
+    heightPane.setLayout(new BoxLayout(heightPane, BoxLayout.X_AXIS));
 
     // Panel for the character's weight
     JPanel weightPane = new JPanel();
-    GridLayout wl = new GridLayout(1, 2);
-    weightPane.setLayout(wl);
+    weightPane.setLayout(new GridLayout(1, 2));
 
     // Initialize the text fields
     playerNameField = new JTextField();
@@ -177,14 +170,18 @@ public class CharacterPane extends JPanel implements ActionListener
     hairColorField = new JTextField();
     eyeColorField = new JTextField();
 
+    // TODO - Size of text fields will get too small. Gotta find the balance.
+    // Create a pane for all of the height info fields
     heightFtField = new JFormattedTextField(formatter);
-    feetPane.add(heightFtField, BorderLayout.CENTER);
-    feetPane.add(new JLabel(" feet, "), BorderLayout.EAST);
+    heightFtField.setHorizontalAlignment(SwingConstants.RIGHT);
+    heightPane.add(heightFtField);
+    heightPane.add(new JLabel(" feet, "));
+    
     heightInField = new JFormattedTextField(formatter);
-    inchesPane.add(heightInField, BorderLayout.CENTER);
-    inchesPane.add(new JLabel(" inches "), BorderLayout.EAST);
-    heightPane.add(feetPane);
-    heightPane.add(inchesPane);
+    heightInField.setHorizontalAlignment(SwingConstants.RIGHT);
+    heightPane.add(heightInField);
+    heightPane.add(new JLabel(" inches"));
+    heightPane.add(Box.createRigidArea(new Dimension(300, 0)));
 
     weightField = new JFormattedTextField(formatter);
     weightPane.add(weightField);
